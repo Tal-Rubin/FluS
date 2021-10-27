@@ -5,7 +5,7 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{xcolor}
 \bibliographystyle{apsrev4-2}
-
+\include{shortcuts}
 
 \begin{document}
 \title{Design Document\\APC 524}
@@ -19,6 +19,19 @@
 Fluids are ubiquitous in physical systems of all sizes; astronomical-scale Magnetohydrodynamics, planetary weather models, rivers and pipe-flows, to the smallest blood-vessels. Fluids can describe liquids, gases and plasmas, and appear in the limit of short mean-free-path of a \textit{N}-body problem.
 
 \section{Mathematical Model}
+
+The mathematical description of fluids boils down to conservation laws. 
+
+Conservation of mass, or particle number density is called the continuity equation, and is written in Eulerian form as,
+\begin{gather}
+	\pdv{n}{t} + \nabla \cdot (n \bv) = 0,
+\end{gather}
+with $n$ being the number density, $t$, the time, and $\bv$ the velocity vector.
+
+Conservation of the vector linear momentum is expressed by,
+\begin{gather}
+    \pdv{\bP}{t} + \nabla \cdot\left(\bv \bP \right) +\nabla \cdot \pi + \nabla p=  F.~\label{eq:momentum}
+\end{gather}
 
 \section{UML Diagram}
 
