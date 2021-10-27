@@ -23,16 +23,16 @@ In the case of $\bF=0$, the momentum equation becomes a conservation law:
 
 In some fluid models (e.g. Navier–Stokes), these equations are sufficient to close the system of equations. In other models, an energy equation is added:
 \begin{gather}
-    \pdv{E}{t} + \nabla \cdot\left(\bv (E + p)+\bq\right) =  \bv\cdot\bF + Q,~\label{eq:energy}
+    \pdv{E}{t} + \nabla \cdot\left( (E + p)\bv+\bq\right) =  \bv\cdot\bF + Q,~\label{eq:energy}
 \end{gather}
 with $E$ being the internal energy of a fluid element, $\bq$ begin the heat diffusion, $\bv\cdot\bF$ is the work done on the fluid element by external forces, and $Q$ being energy source terms such as external heating.
 
 Again, in the case of $\bv\cdot\bF = 0$ and $Q=0$, this is a conservation equation. 
 \begin{gather}
-    \pdv{E}{t} + \nabla \cdot\left(\bv (E + p)+\bq\right) =  0.~\label{eq:energy_conservation}
+    \pdv{E}{t} + \nabla \cdot\left((E + p)\bv +\bq\right) =  0.~\label{eq:energy_conservation}
 \end{gather}
 
-\subsection{Finite volume and discontinuous Galerkin methods}
+\subsection{Finite volume method}
 
 A popular numerical discretization of this equation set is the finite volume method. Assume the solution domain is divided into several non-overlapping ``control volumes", denoted by $C$. Integrating the equations over a cell yields,
 \begin{gather}
@@ -42,10 +42,15 @@ with $dV$ being a volume element of the right dimensionality. Using $\overline X
 \begin{gather}
 	\pdv{\overline n}{t} + \int_{\partial C} \hat n \cdot (n \bv)dS = 0,\\
     	\pdv{\overline \bP}{t} + \int_{\partial C} \hat n  \cdot\left(\bv \bP + p \bI + \pi\right)dS = \overline \bF,\\
-    	\pdv{\overline E}{t} +  \int_{\partial C} \hat n \cdot \left(\bv (E + p)+\bq\right)dS =  \overline{\bv\cdot\bF}+ \overline Q,
+    	\pdv{\overline E}{t} +  \int_{\partial C} \hat n \cdot \left( (E + p)\bv+\bq\right)dS =  \overline{\bv\cdot\bF}+ \overline Q,
 \end{gather}
 with $dS$ being a surface element of the right dimensionality.
 
+In other words, an average quantity in a cell depends on the fluxes in and out of a cell, and on the average source of that quantity in the cell. Because the computational domain is divided divided into control volumes that share boundaries, the flux out of a cell A though a boundary with cell B is the same flux going into cell B through the same boundary.
+
+Determination of the flux out of a cell boundary is in the heart of the Finite Volume method. The boundary term (appearing in the surface integrals of the previous equations) is called the flux function. The discrete numerical method would generally compute different values of the flux function on each side of the boundary, using the different quantities quantities at each cell.
+
+One can define a ``numerical flux" function, which depends on the fluxes on the two sides of the boundary, $F_{num}(F_L, F_R)$. A constraint on this function is $F_{num}(F, F) = F$. 
 
 
 
