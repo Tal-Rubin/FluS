@@ -1,0 +1,26 @@
+\section{Proposed work}
+
+We propose to build a code capable of handling different fluid models, and different solvers.
+
+The code would be split into three computational steps: 
+\noindent
+\begin{enumerate}
+\item Pre-processor: \newline
+Meshing, Initial conditions.
+
+\item Solver: \newline
+Time-stepping, Boundary conditions.
+
+\item Post-processor: \newline
+Visualization.
+
+\end{enumerate}
+
+The code could be written to be extensible from 1 to higher dimensionality.
+
+It is likely we would attempt to use an external library for the pre-processor (such as \textit{MFEM}, or others).
+We might want to have a choice between ``regular" time-stepping algorithms such as Runge-Kutta or Adams-Moulton, and symplectic algorithms such as leap-frog.
+
+The fluid model must be written such that it fits a symplectic time-stepper.
+
+
