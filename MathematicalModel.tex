@@ -40,11 +40,11 @@ A popular numerical discretization of this equation set is the finite volume met
 \end{gather}
 with $dV$ being a volume element of the right dimensionality. Using $\overline X = \int_C X dV$, and $\hat n$ as the unit vector normal to the surface $\partial C$ of the volume $C$, the equations for the average density, momentum and energy in a volume become:
 \begin{gather}
-	\pdv{\overline n}{t} + \int_{\partial C} \hat n \cdot (n \bv)dS = 0,\\
-    	\pdv{\overline \bP}{t} + \int_{\partial C} \hat n  \cdot\left(\bv \bP + p \bI + \pi\right)dS = \overline \bF,\\
-    	\pdv{\overline E}{t} +  \int_{\partial C} \hat n \cdot \left( (E + p)\bv+\bq\right)dS =  \overline{\bv\cdot\bF}+ \overline Q,
+	V\pdv{\overline n}{t} + \int_{\partial C} \hat n \cdot (n \bv)dS = 0,\\
+    	V\pdv{\overline \bP}{t} + \int_{\partial C} \hat n  \cdot\left(\bv \bP + p \bI + \pi\right)dS = \overline \bF,\\
+    	V\pdv{\overline E}{t} +  \int_{\partial C} \hat n \cdot \left( (E + p)\bv+\bq\right)dS =  \overline{\bv\cdot\bF}+ \overline Q,
 \end{gather}
-with $dS$ being a surface element of the right dimensionality.
+with $dS$ being a surface element of the right dimensionality, and V being the volume of a cell.
 
 In other words, an average quantity in a cell depends on the fluxes in and out of a cell, and on the average source of that quantity in the cell. Because the computational domain is divided divided into control volumes that share boundaries, the flux out of a cell A though a boundary with cell B is the same flux going into cell B through the same boundary.
 
