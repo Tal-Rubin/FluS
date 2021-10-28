@@ -42,9 +42,9 @@ A popular numerical discretization of this equation set is the finite volume met
 \end{gather}
 with $dV$ being a volume element of the right dimensionality. Using $\overline X = \int_C X dV$, and $\hat n$ as the unit vector normal to the surface $\partial C$ of the volume $C$, the equations for the average density, momentum and energy in a volume become:
 \begin{gather}
-	V\pdv{\overline n}{t} + \int_{\partial C} \hat n \cdot (n \bv)dS = 0,\\
-    	V\pdv{\overline \bP}{t} + \int_{\partial C} \hat n  \cdot\left(\bv \bP + p \bI + \pi\right)dS = \overline \bF,\\
-    	V\pdv{\overline E}{t} +  \int_{\partial C} \hat n \cdot \left( (E + p)\bv+\bq\right)dS =  \overline{\bv\cdot\bF}+ \overline Q,
+	\pdv{\overline n}{t} + \frac{1}{V}\int_{\partial C} \hat n \cdot (n \bv)dS = 0,\\
+    	\pdv{\overline \bP}{t} + \frac{1}{V} \int_{\partial C} \hat n  \cdot\left(\bv \bP + p \bI + \pi\right)dS = \overline \bF,\\
+    	\pdv{\overline E}{t} +   \frac{1}{V}\int_{\partial C} \hat n \cdot \left( (E + p)\bv+\bq\right)dS =  \overline{\bv\cdot\bF}+ \overline Q,
 \end{gather}
 with $dS$ being a surface element of the right dimensionality, and V being the volume of a cell.
 
