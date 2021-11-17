@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # add the executable
-set(SOURCE_FILES src/flus.cpp src/exactRS/ers.h src/exactRS/ers.cpp)
+set(SOURCE_FILES src/flus.cpp src/exactRS/ers.h src/exactRS/ers.cpp src/extFunc/externalMath.hpp)
 add_executable(flus ${SOURCE_FILES})
 
 
