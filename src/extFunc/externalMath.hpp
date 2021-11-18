@@ -44,7 +44,7 @@ namespace extaMath{
 
       if (val < min || val > max) throw std::out_of_range( "iteration left range" );
       if (std::abs(delta) <tol) {
-        std::cout<<i<<std::endl;
+ //       std::cout<<i<<std::endl; //number of iterations
         return val;      
       }
       f_ = f(val);
@@ -79,8 +79,8 @@ namespace extaMath{
       val -= delta;
 
       if (val < min || val > max) throw std::out_of_range( "iteration left range" );
-      if (std::abs(delta) <tol) {
-        std::cout<<i<<std::endl;
+      if (std::abs(2*delta/(2*val)) <tol) {
+     //   std::cout<<i<<std::endl; //number of iterations
         return val;      
       }
       f_ = f(val);
