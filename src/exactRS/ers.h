@@ -29,7 +29,8 @@ class Ers {
     //! ERS destructor
     ~Ers();
     //! Exact solution for the Euler equations at (x,t)
-    std::array<double,5> sample(double t, double x);
+    std::array<double,5> W(double t, double x);
+    std::array<double,5> U(double t, double x);
 
   protected:
     //! State std::array containing \f$(\rho, u, v, w, p)\f$ for the left initial state 

@@ -1,5 +1,5 @@
 /**
- * @file 
+ * @file testErs.cpp
  * Test code for the Exact Riemann Solver portion
  * 
  * \copyright Copyright (c) 2021 Tal Rubin Distributed under MIT License.
@@ -70,7 +70,7 @@ void test(std::array<double,5> left,std::array<double,5> right, double time) {
   std::array<double,5> res;
   for (int i =0; i <101; i++){
     x = -0.5+i*dx;
-    res = ers.sample(time, x);
+    res = ers.W(time, x);
     printf("%15.8f ", x);
     for (int j = 0; j < 5; j++) printf("%15.8f ", res[j]);
     printf("\n");
