@@ -1,5 +1,5 @@
 /**
- * @file 
+ * @file externalMath.hpp
  * External useful math functions
  * 
  * \copyright Copyright (c) 2021 Tal Rubin Distributed under MIT License.

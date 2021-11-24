@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def runErsTest():
   params = [1., 0., 0., 0., 1., .125, 0., 0., 0., .10, 0.25]
-  command_str = "./testErs"
+  command_str = "src/exactRS/./testErs"
   command_str += " {}".format(params[0])
   if len(params) == 11:
     for i in range(10):
