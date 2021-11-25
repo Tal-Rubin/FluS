@@ -4,21 +4,33 @@
 #include <vector>
 using std::vector;
 
-class Mesh2D{
+#include "mesh2d.h"
 
-private:
-    static const int DIM = 2;
-    
-    int Elem_row_;
-    int Elem_col_;
 
-    int Node_row_;
-    int Node_col_;
+    Mesh2D::Mesh2D(int elem_row, int elem_col)
+    {
+        Elem_row_ = elem_row;
+        Elem_col_ = elem_col;
 
-    vector<int> NodesList_ID;
-    vector< vector<double> > NodesList_pos;
+        Node_row_ = 2 * elem_row + 1;
+        Node_col_ = 2 * elem_col + 1;
 
-    void define_NodesList_ID(){
+    }
+
+    vector<int> Mesh2D::get_NodesList_ID(){
+
+        define_NodesList_ID();
+        return NodesList_ID;
+
+    }
+
+    vector< vector<double> > Mesh2D::get_NodesList_pos(){
+        define_NodesList_pos();
+        return NodesList_pos;
+    }
+
+
+    void Mesh2D::define_NodesList_ID(){
         
         int dim_NodesList_ID = Node_row_ * Node_col_;
 
@@ -31,7 +43,7 @@ private:
         }
     }
 
-    void define_NodesList_pos(){
+    void Mesh2D::define_NodesList_pos(){
 
         int dim1_NodesList_pos = DIM;
         int dim2_NodesList_pos = Node_row_ * Node_col_;
@@ -45,30 +57,6 @@ private:
             }
         }
     }
-
-public:
-    Mesh2D(int elem_row, int elem_col)
-    {
-        Elem_row_ = elem_row;
-        Elem_col_ = elem_col;
-
-        Node_row_ = 2 * elem_row + 1;
-        Node_col_ = 2 * elem_col + 1;
-
-    }
-
-    vector<int>  get_NodesList_ID(){
-
-        define_NodesList_ID();
-        return NodesList_ID;
-
-    }
-
-    vector< vector<double> >  get_NodesList_pos(){
-        define_NodesList_pos();
-        return NodesList_pos;
-    }
-};
 
 int main()
 {
