@@ -6,7 +6,7 @@
 #include "../FluS/dynamic_variable.h"
 #include "../FluS/forward_euler.h"
 
-int main(int argc, char **argv) {
+int main() {
 
   Dynamic_Variable a(10,4,1);
   int i =0;

@@ -16,7 +16,7 @@ class functor {
 };
 
 
-int main(int argc, char **argv) {
+int main() {
   double newton_sol = extaMath::newton(functor::f0, -1., -200.,200., 1e-5, 10);
   double halley_sol = extaMath::halley(functor::f0, -1., -200.,200., 1e-5, 10);
   std::cout.setf(std::ios::fixed, std::ios::floatfield);
