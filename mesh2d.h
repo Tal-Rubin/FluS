@@ -27,12 +27,12 @@ private:
     int Node_row_;  // The number of rows and columns for nodes
     int Node_col_;  
 
-    int num_Nodes;  // The number of Nodes
-    int num_Edges;  // The number of Edges
+    int Num_Nodes;  // The number of Nodes
+    int Num_Edges;  // The number of Edges
 
-    vector<int> EdgesList_ID;               // ID of Edges, dim=(num_Edges). 
-    vector<int> NodesList_ID;               // ID of Nodes, dim=(num_Nodes). 
-    vector< vector<double> > NodesList_pos; // x and y coordinates of Nodes, dim=(2, num_Nodes). 
+    vector<int> EdgesList_ID;               // ID of Edges, dim=(Num_Edges). 
+    vector<int> NodesList_ID;               // ID of Nodes, dim=(Num_Nodes). 
+    vector< vector<double> > NodesList_pos; // x and y coordinates of Nodes, dim=(2, Num_Nodes). 
 
     void define_EdgesList_ID();
     void define_NodesList_ID();

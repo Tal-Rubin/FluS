@@ -15,8 +15,8 @@ Mesh2D::Mesh2D(int elem_row, int elem_col)
     Node_row_ = 2*elem_row + 1;
     Node_col_ = 2*elem_col + 1;
 
-    num_Nodes = Node_row_*Node_col_;
-    num_Edges = (Elem_row_+1)*Elem_col_ + (Elem_col_+1)*Elem_row_;
+    Num_Nodes = Node_row_*Node_col_;
+    Num_Edges = (Elem_row_+1)*Elem_col_ + (Elem_col_+1)*Elem_row_;
 
 }
 
@@ -45,7 +45,7 @@ vector< vector<double> > Mesh2D::get_NodesList_pos(){
 
 void Mesh2D::define_EdgesList_ID(){
 
-    EdgesList_ID.resize(num_Edges, 0);
+    EdgesList_ID.resize(Num_Edges, 0);
 
     for (int i = 0; i < Elem_col_; i++){
         for (int j = 0; j < 2*Elem_row_+1; j++){
@@ -60,7 +60,7 @@ void Mesh2D::define_EdgesList_ID(){
 
 void Mesh2D::define_NodesList_ID(){
     
-    NodesList_ID.resize(num_Nodes, 0);
+    NodesList_ID.resize(Num_Nodes, 0);
 
     for (int i = 0; i < Node_col_; i++){
         for (int j = 0; j < Node_row_; j++){
@@ -71,7 +71,7 @@ void Mesh2D::define_NodesList_ID(){
 
 void Mesh2D::define_NodesList_pos(){
 
-    NodesList_pos.resize(DIM, vector<double> (num_Nodes, 0.0));
+    NodesList_pos.resize(DIM, vector<double> (Num_Nodes, 0.0));
     
     for (int i = 0; i < Node_col_; i++){
         for (int j = 0; j< Node_row_; j++){
