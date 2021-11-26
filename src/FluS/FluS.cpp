@@ -26,7 +26,8 @@ int main(int argc, char **argv){
     Mesh
     IC
   */
-
+  // Dynamic variable is initilized after a const Mesh object is generated.
+  // Mesh remains const object until the end.
 
   //solver
 
