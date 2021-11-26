@@ -15,7 +15,7 @@
 
 #include <valarray>
 #include <array>
-#include <set>
+#include <vector>
 #include <utility>
 
 struct Edge {
@@ -36,7 +36,7 @@ struct Node {
   std::array<double,1> position;
 };
 
-
+/*
 struct EdgeCmp {
   bool operator()(const Edge& lhs, const Edge& rhs) const { 
     return lhs.edge_number < rhs.edge_number; 
@@ -52,7 +52,7 @@ struct NodeCmp {
     return lhs.node_number < rhs.node_number; 
   }
 };
-
+*/
 class Mesh_1d_mock {
   public:
   Mesh_1d_mock(unsigned int num_ele, double x0, double x1): element_volume(num_ele+2){
@@ -73,7 +73,7 @@ class Mesh_1d_mock {
       temp_node.node_number = node_number++;
       temp_node.position[0] = x;
       
-      node_set.insert(temp_node);
+      node_vect.push_back(temp_node);
 
       x+=dx;
     }
@@ -82,7 +82,7 @@ class Mesh_1d_mock {
       temp_edge.neighbor_elements = {i, i+1};
       temp_edge.unit_vector = {1};
       
-      edge_set.insert(temp_edge);
+      edge_vect.push_back(temp_edge);
     }
     for (unsigned int i = 0; i < num_ele+2; i++) {
       temp_elem.elem_number = ele_number++;
@@ -92,11 +92,12 @@ class Mesh_1d_mock {
 
       if (i==0 ||i == num_ele+1){
         temp_elem.ghost = true;
+        ghost_elements.push_back(temp_elem.elem_number);
       }
-      elem_set.insert(temp_elem);
+      elem_vect.push_back(temp_elem);
     }
     ele_number = 0;
-    for (auto ele: elem_set) {
+    for (auto ele: elem_vect) {
       element_volume[ele_number++] = ele.volume;
     }
 
@@ -104,9 +105,11 @@ class Mesh_1d_mock {
   };
 
   std::valarray<double> element_volume;
-  std::set<Edge, EdgeCmp> edge_set;
-  std::set<Elem, ElemCmp> elem_set;
-  std::set<Node, NodeCmp> node_set;
+  std::vector<Edge> edge_vect;
+  std::vector<Elem> elem_vect;
+  std::vector<Node> node_vect;
+
+  std::vector<unsigned int> ghost_elements;
 
 
 

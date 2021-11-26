@@ -17,13 +17,16 @@
 #include <vector>
 
 #include "../model.h"
+#include "../dynamic_variable.h"
+
+#include "../../mocks/mesh_mock.h"
 
 class Advection_1D : public Model {
 
   public:
 
-  Advection_1D(double advection_velocity): advection_velocity_(advection_velocity) {};
-  ~Advection_1D();
+  Advection_1D(double advection_velocity, const Mesh_1d_mock& mesh): advection_velocity_(advection_velocity), mesh_(mesh) {};
+  ~Advection_1D() {};
 
   int dimen() const {
     return dimen_;
@@ -37,12 +40,27 @@ class Advection_1D : public Model {
     return local_;
   }
 
-  std::vector<std::valarray<double>> flux(double t, std::valarray<double> state) const {
-    return std::vector<std::valarray<double>> (dimen_, advection_velocity_ * state );             
+  double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt)const {
+    (void) t;
+
+    for (auto ed: mesh_.edge_vect)  {
+      std::valarray<double> el_flux (state.dim_[1]*state.dim_[2]);
+      if (ed.unit_vector[0]*advection_velocity_ > 0){
+        el_flux = advection_velocity_ * state.get_element(ed.neighbor_elements.first);
+      } else {
+        el_flux = advection_velocity_ * state.get_element(ed.neighbor_elements.second);
+      }
+      ddt.element(ed.neighbor_elements.first) -=el_flux;
+      ddt.element(ed.neighbor_elements.second) +=el_flux;
+    }
+
+    ddt.data_ /= mesh_.element_volume;
+    return std::abs(advection_velocity_)/mesh_.element_volume.min();
   }
-  std::valarray<double> source(double t, std::valarray<double> state) const {
-    return std::valarray<double> (dimen_);                        
-  }
+/*  Dynamic_Variable source(const double t, const Dynamic_Variable& state) const {
+    (void) t;
+    return (state.dim_);
+  }*/
 
 
   private:
@@ -54,6 +72,9 @@ class Advection_1D : public Model {
   static const bool local_ = true;
 
   const double advection_velocity_;
+
+  const Mesh_1d_mock& mesh_;
+
 };
 
 

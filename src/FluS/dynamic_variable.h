@@ -21,9 +21,14 @@
 class Dynamic_Variable {
   public:
   Dynamic_Variable(std::size_t num_ele, std::size_t num_fields, std::size_t num_dg_dof);
+  Dynamic_Variable(std::size_t num_ele, std::size_t num_fields);
+
   Dynamic_Variable(std::array<std::size_t, 3> dim);
 
-  const std::array<std::size_t, 3> dim_;
+ // Dynamic_Variable (const Dynamic_Variable &DV);
+
+
+  std::array<std::size_t, 3> dim_;
   std::valarray<double> data_;
 
   /**
@@ -43,9 +48,9 @@ class Dynamic_Variable {
    * @param ele_number 
    * @return std::valarray<double> 
    */
-  inline std::valarray<double> get_element (std::size_t ele_number) {
+  inline std::valarray<double> get_element (std::size_t ele_number) const {
     return data_[std::slice(ele_number * (dim_[1]*dim_[2]),(dim_[1]*dim_[2]),1)];
-  };
+  } ;
 }; 
 
 
