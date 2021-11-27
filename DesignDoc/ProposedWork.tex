@@ -1,0 +1,32 @@
+\section{Proposed work}
+
+We propose to build a code capable of handling different fluid models, and different solvers.
+
+The code would be split into three computational steps: 
+\noindent
+\begin{enumerate}
+\item Pre-processor: \newline
+Meshing, Initial conditions.
+\item Solver: \newline
+Time-stepping, Boundary conditions.
+\item Post-processor: \newline
+Visualization.
+\end{enumerate}
+
+A driver code would navigate between the code steps. The user would define a domain and the mesh parameters. The domain dimensionality would inform the fluid model selection (possibly by reducing the number of equations from 3D to the appropriate dimentionality).
+
+It is likely we would attempt to use an external library for the mesher - as this is a complex task on its own. 
+
+
+The user would define boundary conditions, and the fluid would be initilized with a quiesent initial conditions.
+
+We would want to have a choice between ``regular" time-stepping algorithms such as Runge-Kutta or Adams-Moulton, and symplectic algorithms such as leap-frog, or a splitting method.
+
+The user would also determine the time-limit for the integration and the frequency of data output. The solver would advanve the fluid in time using the selected time-stepping algorithm, and save the information.
+
+The post-processor would visualize the resulting information. The post processor would be written in python.
+
+
+We plan on using GitHub using a centralized workflow, in which the master branch is updated via pull requests. Current repository is \href{git@github.com:Tal-Rubin/APC524.git}{git@github.com:Tal-Rubin/APC524.git}.
+
+

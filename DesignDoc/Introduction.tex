@@ -1,0 +1,26 @@
+\section{Introduction}
+
+Fluids are ubiquitous in physical systems of all scales: from astronomical-scale
+Magnetohydrodynamics, planetary weather models, rivers and pipe-flows, to the smallest
+blood-vessels. Fluids can describe liquids, gases and plasmas, and appear in the limit
+of short mean-free-path of an \textit{N}-body problem.\\
+
+In physics, fluids are usually described by a set of partial differential equations,
+which are specified according the model we choose. We can apply different models to study different regimes. 
+First of all, the Navier-Stokes equations predict the motion of Newtonian Fluids. They are composed of
+the conservations of particle, momentum, and energy, and sometimes accompanied by an
+equation of state. If we consider conductive fluid subeject to the electromagnetic
+field such as plasma, then the set of N-S equations must be associated with Maxwell's
+equations of electromagnetism to account for the reciprocation of the fluid and the
+field. Furthermore, when we consider the anisotropic transport caused by the gyromotion
+of magnetized plasma, then we will need to apply Braginskii's equations. The given
+initial conditions are often dicontinuous to the 1st order in the study of shocks and
+rarefaction waves with these models, which makes a Riemann problem in the classical
+system.\\
+
+In this work, we want to build an fluid for a set of hyperbolic
+advection-diffusion PDEs. To begin with, we have a preprocessor to generate the mesh
+and prescribe the initial conditions. Then we can set the boundary condition and select
+a model that applies to the problem. A robust solver is developped to accostom to the
+different models. And the results will be plotted by the postprocessor. This solver
+may be a symplectic phase-space volume preserving, or a ``regular" multi-step time stepper such as Runge-Kutta.\\

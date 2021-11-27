@@ -1,0 +1,35 @@
+\documentclass[aip, amsmath, amssymb, reprint,floatfix]{revtex4-2}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx} % Required for including pictures
+
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\bibliographystyle{apsrev4-2}
+\include{shortcuts}
+
+\begin{document}
+\title{Design Document\\APC 524}
+\date{2021}
+
+\author{Dingyun Liu, Bingjia Yang, Kehan Cai, and Tal Rubin}
+\maketitle
+
+\input{Introduction}
+
+\input{MathematicalModel}
+
+\input{ProposedWork}
+\section{UML Diagram}
+See Figure \ref{fig:UML}.
+\begin{figure*}
+\includegraphics[width = \linewidth]{APC524UML.pdf}
+\caption{UML diagram for the proposed work} \label{fig:UML}
+\end{figure*}
+\input{Milestones}
+
+\bibliography{APC524Bib}
+
+
+
+
+\end{document}

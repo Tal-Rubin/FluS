@@ -1,0 +1,20 @@
+driver 
+-pre-processor:
+--mesh (computational geometry)
+	inputs: dimensionality (1D/2D), geometry ("square torus", think how to make this flexible)
+			,coarse / fine meshing 
+	outputs: mesh object ((structured) - cubic meshes)
+--model/solver selection (advection, burgers, euler)
+--dynamic variable (element x fields x (subfields))
+
+--initial condition setter (manual, read from file)
+		dynamic variable containing initial conditions
+		boundary conditions
+
+
+-solver
+
+
+-post-proc
+
+example repo https://github.com/Tal-Rubin/APC523Project2020
