@@ -20,16 +20,36 @@
 
 class Dynamic_Variable {
   public:
-  Dynamic_Variable(std::size_t num_ele, std::size_t num_fields, std::size_t num_dg_dof);
+  /**
+   * @brief Construct a new Dynamic_Variable object
+   * 
+   * @param num_ele 
+   * @param num_fields 
+   * @param num_coeff 
+   */
+  Dynamic_Variable(std::size_t num_ele, std::size_t num_fields, std::size_t num_coeff);
+
+  /**
+   * @brief Construct a new Dynamic_Variable object
+   * 
+   * @param num_ele 
+   * @param num_fields 
+   */
   Dynamic_Variable(std::size_t num_ele, std::size_t num_fields);
 
+  /**
+   * @brief Construct a new Dynamic_Variable object
+   * 
+   * @param dim 
+   */
   Dynamic_Variable(std::array<std::size_t, 3> dim);
 
-  Dynamic_Variable (const Dynamic_Variable &DV);
+  /// Copy constructor
+ // Dynamic_Variable (const Dynamic_Variable &DV);
 
 
-  const std::array<std::size_t, 3> dim_;
-  std::valarray<double> data_;
+
+
 
   /**
    * @brief Access an element (non-iterable, read / write)
@@ -38,8 +58,8 @@ class Dynamic_Variable {
    * @return std::slice_array<double> 
    */
 
-  inline std::slice_array<double> element (std::size_t ele_number) {
-    return data_[std::slice(ele_number * (dim_[1]*dim_[2]),(dim_[1]*dim_[2]),1)];
+  inline std::slice_array<double> element (std::size_t ele_number) { 
+    return data_[std::slice(ele_number * element_size_, element_size_, 1)];
   };
 
   /**
@@ -49,8 +69,44 @@ class Dynamic_Variable {
    * @return std::valarray<double> 
    */
   inline std::valarray<double> get_element (std::size_t ele_number) const {
-    return data_[std::slice(ele_number * (dim_[1]*dim_[2]),(dim_[1]*dim_[2]),1)];
+    return data_[std::slice(ele_number * element_size_, element_size_, 1)];
+  };
+  
+  /**
+   * @brief 
+   * 
+   * @param field_number 
+   * @param coeff_number 
+   * @return std::slice_array<double> 
+   */
+  inline std::slice_array<double> field_coeff (std::size_t field_number, std::size_t coeff_number) { 
+    return data_[std::slice(field_number * dim_[2] + coeff_number, dim_[0], element_size_)];
+  };
+
+  /**
+   * @brief Get the field coeff object
+   * 
+   * @param field_number 
+   * @param coeff_number 
+   * @return std::valarray<double> 
+   */
+  inline std::valarray<double> get_field_coeff (std::size_t field_number, std::size_t coeff_number) const {
+    return data_[std::slice(field_number * dim_[2] + coeff_number, dim_[0], element_size_)];
   } ;
+
+
+  /// @brief Getter funciton for the dim_ array
+  std::array<std::size_t, 3> dim() const;
+  /// Getter funciton for the element size
+  std::size_t element_size() const;
+  /// Getter funciton for number of coefficinets
+  std::size_t coeff_num() const;
+
+
+  std::valarray<double> data_;
+  private:
+  std::array<std::size_t, 3> dim_;
+  std::size_t element_size_;
 }; 
 
 
