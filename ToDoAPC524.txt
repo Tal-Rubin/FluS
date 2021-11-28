@@ -29,3 +29,7 @@ Mesh should have elements with pointers to nodes, rather than only have their nu
 Change all classes to have private attributes, and access through an access functions rather than using a const class instance or const variable
 (except the dynamic variable data_)
 
+dynamic variable should be initilized as :
+Dynamic_Variable state (mesh.get_num_elements(ghost = true), model.get_state_size()); 
+
+

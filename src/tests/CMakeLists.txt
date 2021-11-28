@@ -14,3 +14,9 @@ add_executable(test_mesh test_mesh.cpp)
 
 add_executable(test_advection test_advection.cpp ../FluS/dynamic_variable.cpp ../FluS/forward_euler.cpp)
 
+
+
+#add_executable(test_catch test_catch.cpp)
+
+
+#add_test(test_catch test_catch)

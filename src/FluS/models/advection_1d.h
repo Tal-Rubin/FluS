@@ -44,7 +44,7 @@ class Advection_1D : public Model {
     (void) t;
 
     for (auto ed: mesh_.edge_vect)  {
-      std::valarray<double> el_flux (state.dim_[1]*state.dim_[2]);
+      std::valarray<double> el_flux (state.element_size());
       el_flux = std::signbit(advection_velocity_ * ed.unit_vector[0])*advection_velocity_ * state.get_element(ed.neighbor_elements.second) + \
                   (1-std::signbit(advection_velocity_ * ed.unit_vector[0]))*advection_velocity_ * state.get_element(ed.neighbor_elements.first);
       ddt.element(ed.neighbor_elements.first) -=el_flux;

@@ -49,7 +49,7 @@ int main() {
   std::cout<<std::endl;
   for (int i = 0; i<100; i++) {
     
-    Dynamic_Variable ddt (u.dim_); 
+    Dynamic_Variable ddt (u.dim()); 
 
     double max_dt = advect.flux(0, u, ddt);
 

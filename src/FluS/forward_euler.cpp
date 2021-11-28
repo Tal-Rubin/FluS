@@ -12,7 +12,7 @@
 #include "forward_euler.h"
 
 Dynamic_Variable forward_euler(const double dt, const Dynamic_Variable &state, const Dynamic_Variable &ddt) {
-  Dynamic_Variable res(state.dim_);
+  Dynamic_Variable res(state.dim());
   
   res.data_ = state.data_+dt * ddt.data_;
   return res;
