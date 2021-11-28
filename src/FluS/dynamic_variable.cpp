@@ -1,7 +1,7 @@
 /**
  * @file dynamic_variable.cpp
- * @author your name (you@domain.com)
- * @brief 
+ * @author Tal Rubin (trubin@princeton.edu)
+ * @brief A state data structure
  * @version 0.1
  * @date 2021-11-25
  * 
