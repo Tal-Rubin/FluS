@@ -6,11 +6,29 @@ using std::vector;
 
 #include "mesh2d.h"
 
+struct Edge {
+    unsigned int edge_number;
+    std::pair<unsigned int, unsigned int> neighbor_elements;
+    std::valarray<double> unit_vector;
+};
+
+struct Elem {
+    unsigned int elem_number;
+    std::array<unsigned int,2> nodes;
+    double volume;
+    bool ghost;
+};
+
+struct Node {
+    unsigned int node_number;
+    std::array<double,2> position;
+};
+
 Mesh2D::Mesh2D(int elem_row, int elem_col, double x0, double x1, double y0, double y1)
     :Elem_row_(elem_row), Elem_col_(elem_col), x0_(x0), x1_(x1), y0_(y0), y1_(y1)
 {
-    Node_row_ = 2*elem_row + 1;
-    Node_col_ = 2*elem_col + 1;
+    Node_row_ = elem_row + 3;
+    Node_col_ = elem_col + 3;
 
     Num_Elems_ = Elem_row_*Elem_col_;
     Num_Nodes_ = Node_row_*Node_col_;
@@ -40,7 +58,7 @@ int Mesh2D::n_interfaces(){
 
 std::vector<Node> Mesh2D::get_NodeVector(){
 
-    define_NodesVector();
+    define_NodeVector();
 
     return node_vect;
 }
@@ -68,7 +86,7 @@ int main(){
 
     /* Some Tests */
 
-    Mesh2D* mesh2d = new Mesh2D(3,2,-2,2,-1,1);
+    Mesh2D* mesh2d = new Mesh2D(4,5,-1,1,-1,1);
 
     std::vector<Node> nodeVector = mesh2d->get_NodeVector();
 

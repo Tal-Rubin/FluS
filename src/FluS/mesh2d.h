@@ -10,23 +10,9 @@
 
 #include "mesh.h"
 
-struct Edge {
-    unsigned int edge_number;
-    std::pair<unsigned int, unsigned int> neighbor_elements;
-    std::valarray<double> unit_vector;
-};
-
-struct Elem {
-    unsigned int elem_number;
-    std::array<unsigned int,2> nodes;
-    double volume;
-    bool ghost;
-};
-
-struct Node {
-    unsigned int node_number;
-    std::array<double,2> position;
-};
+struct Edge;
+struct Elem;
+struct Node;
 
 class Mesh2D : public Mesh {
 
