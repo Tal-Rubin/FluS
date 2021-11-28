@@ -19,5 +19,5 @@ Dynamic_Variable::Dynamic_Variable(std::array<std::size_t, 3> dim):dim_(dim), da
 Dynamic_Variable::Dynamic_Variable(std::size_t num_ele, std::size_t num_fields): 
                     dim_{num_ele, num_fields,1}, data_(dim_[0]*dim_[1]*dim_[2]) {}
 
-//Dynamic_Variable::Dynamic_Variable(const Dynamic_Variable &DV): dim_(DV.dim_), data_(DV.data_){}
+Dynamic_Variable::Dynamic_Variable(const Dynamic_Variable &DV): dim_(DV.dim_), data_(DV.data_){}
 

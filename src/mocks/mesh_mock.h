@@ -100,7 +100,7 @@ class Mesh_1d_mock {
     for (auto ele: elem_vect) {
       element_volume[ele_number++] = ele.volume;
     }
-
+    min_elem_vol = element_volume.min();
 
   };
 
@@ -111,7 +111,7 @@ class Mesh_1d_mock {
 
   std::vector<unsigned int> ghost_elements;
 
-
+  double min_elem_vol;
 
 
 };

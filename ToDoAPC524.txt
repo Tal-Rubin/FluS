@@ -17,4 +17,15 @@ driver
 
 -post-proc
 
-example repo https://github.com/Tal-Rubin/APC523Project2020
+Implement IC functionality:
+
+Dynamic_variable should have access to a coefficient of a field
+IC should have a fill field (to DG order) with initial data
+two const states, gaussian, indicator (f(x) = a, x \in (a,b), f(x) = 0 otherwise)
+
+
+Mesh should have elements with pointers to nodes, rather than only have their number
+
+Change all classes to have private attributes, and access through an access functions rather than using a const class instance or const variable
+(except the dynamic variable data_)
+

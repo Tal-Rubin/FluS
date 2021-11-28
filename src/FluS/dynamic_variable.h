@@ -25,10 +25,10 @@ class Dynamic_Variable {
 
   Dynamic_Variable(std::array<std::size_t, 3> dim);
 
- // Dynamic_Variable (const Dynamic_Variable &DV);
+  Dynamic_Variable (const Dynamic_Variable &DV);
 
 
-  std::array<std::size_t, 3> dim_;
+  const std::array<std::size_t, 3> dim_;
   std::valarray<double> data_;
 
   /**

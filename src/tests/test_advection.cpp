@@ -12,7 +12,7 @@
 
 int main() { 
 
-  std::size_t num_ele = 10;
+  std::size_t num_ele = 100;
 
   const Mesh_1d_mock mesh(num_ele, 0., 1.);
 
@@ -21,10 +21,21 @@ int main() {
   
   int i = 0;
   for (auto el: mesh.elem_vect){
+    // average
+    //TO DO implement field, coefficient 
     u.data_[i++] =  0.25*std::sqrt(M_PI/5.) * (std::erf(std::sqrt(5.)*(2*mesh.node_vect[el.nodes[1]].position[0]-1))  \
-                                          -std::erf(std::sqrt(5.)*(2*mesh.node_vect[el.nodes[0]].position[0]-1)));
+                                          -std::erf(std::sqrt(5.)*(2*mesh.node_vect[el.nodes[0]].position[0]-1)))/el.volume;
+
+    // 1sr Legendre polynomial
+    // ugly python code to convert fo c++
+/*
+    data[i,1] = (2*x_av-1)*np.sqrt(5*np.pi)*(sp.erf(np.sqrt(5)*(2*mesh_edges[i]-1))-sp.erf(np.sqrt(5)*(2*mesh_edges[i+1]-1)))
+    data[i,1] += np.exp(-5*(2*mesh_edges[i]-1)**2)-np.exp(-5*(2*mesh_edges[i+1]-1)**2)
+    
+    data[i,1] /= (10*delta_x)
+    data[i,1] *= 3/2
+    */
   }
-  u.data_ /= mesh.element_volume;
 
 
   // set bc:
@@ -36,7 +47,7 @@ int main() {
     std::cout<<v<<" ";
   }
   std::cout<<std::endl;
-  for (int i = 0; i<7; i++) {
+  for (int i = 0; i<100; i++) {
     
     Dynamic_Variable ddt (u.dim_); 
 
@@ -45,7 +56,8 @@ int main() {
     for (auto v: mesh.ghost_elements){
       ddt.element(v) = 0;
     }
-    u = forward_euler(max_dt, u, ddt);// set bc:
+    u.data_= forward_euler(0.9*max_dt, u, ddt).data_;
+    // set bc:
     u.element(mesh.ghost_elements[0]) = u.element(mesh.ghost_elements[1]-1);
     u.element(mesh.ghost_elements[1]) = u.element(mesh.ghost_elements[0]+1);
 

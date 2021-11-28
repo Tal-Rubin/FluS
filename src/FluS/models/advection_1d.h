@@ -45,17 +45,14 @@ class Advection_1D : public Model {
 
     for (auto ed: mesh_.edge_vect)  {
       std::valarray<double> el_flux (state.dim_[1]*state.dim_[2]);
-      if (ed.unit_vector[0]*advection_velocity_ > 0){
-        el_flux = advection_velocity_ * state.get_element(ed.neighbor_elements.first);
-      } else {
-        el_flux = advection_velocity_ * state.get_element(ed.neighbor_elements.second);
-      }
+      el_flux = std::signbit(advection_velocity_ * ed.unit_vector[0])*advection_velocity_ * state.get_element(ed.neighbor_elements.second) + \
+                  (1-std::signbit(advection_velocity_ * ed.unit_vector[0]))*advection_velocity_ * state.get_element(ed.neighbor_elements.first);
       ddt.element(ed.neighbor_elements.first) -=el_flux;
       ddt.element(ed.neighbor_elements.second) +=el_flux;
     }
 
     ddt.data_ /= mesh_.element_volume;
-    return std::abs(advection_velocity_)/mesh_.element_volume.min();
+    return mesh_.min_elem_vol/std::abs(advection_velocity_);
   }
 /*  Dynamic_Variable source(const double t, const Dynamic_Variable& state) const {
     (void) t;
