@@ -2,30 +2,48 @@
 #define MESH2D_H_
 
 #include <iostream>
+#include <valarray>
+#include <array>
 #include <vector>
-using std::vector;
+#include <utility>
+// using std::vector;
 
 #include "mesh.h"
+
+struct Edge {
+    unsigned int edge_number;
+    std::pair<unsigned int, unsigned int> neighbor_elements;
+    std::valarray<double> unit_vector;
+};
+
+struct Elem {
+    unsigned int elem_number;
+    std::array<unsigned int,2> nodes;
+    double volume;
+    bool ghost;
+};
+
+struct Node {
+    unsigned int node_number;
+    std::array<double,2> position;
+};
 
 class Mesh2D : public Mesh {
 
 public:
-    Mesh2D(int n_row, int n_col);  // Constructor
+    Mesh2D(int n_row, int n_col, double x0, double x1, double y0, double y1);  // Constructor
     ~Mesh2D();                     // Destructor      
 
     int dim();
 
     int n_elements();
 
-    int n_interfaces(); // in 1D, is the number of points on element edges, in 2D is the number of elements edges, in 3D is the number of faces, etc.
+    int n_interfaces(); 
 
     // double el_volume(int element);  // TO DO
 
-    /* ----- Some useful functions ----- */
-    vector<int> get_EdgesList_ID();                // Get the Edges ID
-    vector<int> get_NodesList_ID();                // Get the Nodes ID
-    vector< vector<double> > get_NodesList_pos();  // Get the global Nodes position
-    /* --------------------------------- */
+    std::vector<Node> get_NodeVector();
+
 
 private:
 
@@ -41,15 +59,21 @@ private:
     int Num_Nodes_;  
     int Num_Edges_;  
 
-    vector<int> EdgesList_ID;               // ID of Edges, dim=(Num_Edges). 
-    vector<int> NodesList_ID;               // ID of Nodes, dim=(Num_Nodes). 
-    vector< vector<double> > NodesList_pos; // x and y coordinates of Nodes, dim=(2, Num_Nodes). 
+    double x0_;
+    double x1_;
+    double y0_;
+    double y1_;
 
-    void define_EdgesList_ID();
-    void define_NodesList_ID();
-    void define_NodesList_pos();
-    void PBE_NodesList_pos();
-    
+    std::valarray<double> element_volume;
+
+    std::vector<Edge> edge_vect;
+    std::vector<Elem> elem_vect;
+    std::vector<Node> node_vect;
+
+    std::vector<unsigned int> ghost_elements;
+
+    void define_NodeVector();
+
 };
 
 #endif  // MESH2D_H_

@@ -6,8 +6,8 @@ using std::vector;
 
 #include "mesh2d.h"
 
-Mesh2D::Mesh2D(int elem_row, int elem_col)
-    :Elem_row_(elem_row), Elem_col_(elem_col)
+Mesh2D::Mesh2D(int elem_row, int elem_col, double x0, double x1, double y0, double y1)
+    :Elem_row_(elem_row), Elem_col_(elem_col), x0_(x0), x1_(x1), y0_(y0), y1_(y1)
 {
     Node_row_ = 2*elem_row + 1;
     Node_col_ = 2*elem_col + 1;
@@ -38,74 +38,29 @@ int Mesh2D::n_interfaces(){
 //     return tol_volume/double(Num_Elems_);
 // }  
 
-vector<int> Mesh2D::get_EdgesList_ID(){
+std::vector<Node> Mesh2D::get_NodeVector(){
 
-    define_EdgesList_ID();
+    define_NodesVector();
 
-    return EdgesList_ID;
+    return node_vect;
 }
 
-vector<int> Mesh2D::get_NodesList_ID(){
+void Mesh2D::define_NodeVector(){
+    double dx = (x1_-x0_)/double(Node_col_-1);
+    double dy = (y1_-y0_)/double(Node_row_-1);
 
-    define_NodesList_ID();
+    Node temp_node;
 
-    return NodesList_ID;
-}
-
-vector< vector<double> > Mesh2D::get_NodesList_pos(){
-
-    define_NodesList_pos();
-    PBE_NodesList_pos();
-
-    return NodesList_pos;
-}
-
-
-void Mesh2D::define_EdgesList_ID(){
-
-    EdgesList_ID.resize(Num_Edges_, 0);
-
-    for (int i = 0; i < Elem_col_; i++){
-        for (int j = 0; j < 2*Elem_row_+1; j++){
-            EdgesList_ID[i*(2*Elem_row_+1) + j] = i*(2*Elem_row_+1) + j;
-        }
-    }
-
-    for (int k =0; k < Elem_row_; k++){
-        EdgesList_ID[Elem_col_*(2*Elem_row_+1) + k] = Elem_col_*(2*Elem_row_+1) + k;
-    }
-}
-
-void Mesh2D::define_NodesList_ID(){
-    
-    NodesList_ID.resize(Num_Nodes_, 0);
-
-    for (int i = 0; i < Node_col_; i++){
-        for (int j = 0; j < Node_row_; j++){
-            NodesList_ID[i*Node_row_ + j] = i*Node_row_ + j;
-        }
-    }
-}
-
-void Mesh2D::define_NodesList_pos(){
-
-    NodesList_pos.resize(dimen_, vector<double> (Num_Nodes_, 0.0));
-    
     for (int i = 0; i < Node_col_; i++){
         for (int j = 0; j< Node_row_; j++){
-            NodesList_pos[0][i*Node_row_ + j] = -1.0 + i / double(Elem_col_); // x
-            NodesList_pos[1][i*Node_row_ + j] = 1.0 - j / double(Elem_row_) ; // y
+
+            temp_node.node_number = i*Node_row_ + j;
+
+            temp_node.position[0] = x0_ + dx * i;
+            temp_node.position[1] = y1_ - dy * j;
+
+            node_vect.push_back(temp_node);
         }
-    }
-}
-
-void Mesh2D::PBE_NodesList_pos(){
-
-    for (int j = 0; j< Node_row_; j++){ // let all x=1 -> x=-1
-        NodesList_pos[0][(Node_col_-1)*Node_row_ + j] = NodesList_pos[0][0*Node_row_ + j];
-    }
-    for (int i = 0; i < Node_col_; i++){ // let all y=1 -> y=-1
-        NodesList_pos[1][i*Node_row_ + 0] = NodesList_pos[1][i*Node_row_ + (Node_row_-1)];
     }
 }
 
@@ -113,23 +68,18 @@ int main(){
 
     /* Some Tests */
 
-    Mesh2D* mesh2d = new Mesh2D(4,3);
+    Mesh2D* mesh2d = new Mesh2D(3,2,-2,2,-1,1);
 
-    vector<int> edgesList_ID = mesh2d->get_EdgesList_ID();
-    vector<int> nodesList_ID = mesh2d->get_NodesList_ID();
-    vector< vector<double> > nodesList_pos = mesh2d->get_NodesList_pos();
+    std::vector<Node> nodeVector = mesh2d->get_NodeVector();
 
-    std::cout << "NodesList_ID size = " << nodesList_ID.size() << std::endl;
-
-    std::cout << "----- NodesList_pos -----" << std::endl;
-    for(int i = 0; i < nodesList_pos.size(); i++){
-        for (int j = 0; j < nodesList_pos[i].size(); j++)
-            std::cout << i << "," << j<< " = " << nodesList_pos[i][j] << std::endl;
+    for(int i = 0; i < nodeVector.size(); i++){
+        // std::cout << i << " = " << nodeVector[i].node_number << std::endl;
+        std::cout << i << " = " << nodeVector[i].position[0] << std::endl;
+        // std::cout << i << " = " << nodeVector[i].position[1] << std::endl;
+    }
+    for(int i = 0; i < nodeVector.size(); i++){
+        std::cout << i << " = " << nodeVector[i].position[1] << std::endl;
     }
 
-    std::cout << "----- EdgesList_ID -----" << std::endl;
-    for(int i = 0; i < edgesList_ID.size(); i++){
-        std::cout << i << " = " << edgesList_ID[i] << std::endl;
-    }
 
 }
