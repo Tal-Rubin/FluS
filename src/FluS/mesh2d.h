@@ -1,12 +1,11 @@
+// Meshing for 2D
 #ifndef MESH2D_H_
 #define MESH2D_H_
-
 #include <iostream>
-#include <valarray>
 #include <array>
-#include <vector>
 #include <utility>
-// using std::vector;
+#include <valarray>
+#include <vector>
 
 #include "mesh.h"
 
@@ -17,47 +16,48 @@ struct Node;
 class Mesh2D : public Mesh {
 
 public:
-    Mesh2D(int n_row, int n_col, double x0, double x1, double y0, double y1);  // Constructor
-    ~Mesh2D();                     // Destructor      
+    Mesh2D(int n_row, int n_col, double x0, double x1, double y0, double y1); 
+    ~Mesh2D();                     
 
     int dim();
-
     int n_elements();
-
     int n_interfaces(); 
-
     // double el_volume(int element);  // TO DO
 
     std::vector<Node> get_NodeVector();
-
 
 private:
 
     static const int dimen_ = 2; // Space dimension
 
-    int Elem_row_;  // The number of rows and columns for Elements
+    // The number of rows and columns for Elements.
+    int Elem_row_;   
     int Elem_col_;  
 
-    int Node_row_;  // The number of rows and columns for Nodes
-    int Node_col_;  
-
-    int Num_Elems_;  // The number of Elements, Nodes and Edges.
+    // The number of Nodes, including nodes for ghost and corner cells.
+    int Node_row_;   
+    int Node_col_; 
     int Num_Nodes_;  
-    int Num_Edges_;  
 
+    // The number of Elements and Edges.
+    int Num_Elems_;  
+    int Num_Edges_; 
+
+    /* ----------------------------- The domain ----------------------------- */
     double x0_;
     double x1_;
     double y0_;
     double y1_;
 
-    std::valarray<double> element_volume;
-
-    std::vector<Edge> edge_vect;
-    std::vector<Elem> elem_vect;
+    /* --------------------------- Useful vectors --------------------------- */
     std::vector<Node> node_vect;
+    std::vector<Elem> elem_vect;
+    std::vector<Edge> edge_vect;
 
+    std::valarray<double> element_volume;
     std::vector<unsigned int> ghost_elements;
 
+    /* ---- Functions to construct node_vect, elem_vect and edge_vect. ---- */
     void define_NodeVector();
 
 };

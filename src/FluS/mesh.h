@@ -1,6 +1,6 @@
 /**
  * @file mesh.h
- * @author bingjia (you@domain.com)
+ * @author your name (you@domain.com)
  * @brief 
  * @version 0.1
  * @date 2021-11-23

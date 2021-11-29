@@ -1,8 +1,5 @@
-// g++ -o *.exe *.cpp
-
+// Meshing for 2D
 #include <iostream>
-#include <vector>
-using std::vector;
 
 #include "mesh2d.h"
 
@@ -14,14 +11,14 @@ struct Edge {
 
 struct Elem {
     unsigned int elem_number;
-    std::array<unsigned int,2> nodes;
+    std::array<unsigned int,4> nodes; // 4 nodes in each element
     double volume;
     bool ghost;
 };
 
 struct Node {
     unsigned int node_number;
-    std::array<double,2> position;
+    std::array<double,2> position; // 2D
 };
 
 Mesh2D::Mesh2D(int elem_row, int elem_col, double x0, double x1, double y0, double y1)
@@ -88,6 +85,10 @@ int main(){
 
     Mesh2D* mesh2d = new Mesh2D(4,5,-1,1,-1,1);
 
+    std::cout << mesh2d->n_elements() << std::endl;
+    std::cout << mesh2d->n_interfaces() << std::endl;
+
+
     std::vector<Node> nodeVector = mesh2d->get_NodeVector();
 
     for(int i = 0; i < nodeVector.size(); i++){
@@ -98,6 +99,4 @@ int main(){
     for(int i = 0; i < nodeVector.size(); i++){
         std::cout << i << " = " << nodeVector[i].position[1] << std::endl;
     }
-
-
 }
