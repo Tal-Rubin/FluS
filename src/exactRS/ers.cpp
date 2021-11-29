@@ -21,7 +21,7 @@ Ers::Ers(std::array<double, 5> left, std::array<double, 5> right, double gamma):
     std::cerr<<"Vacumm solution"<<std::endl;
     return;
   }
-  p_star_ = extaMath::halley(std::bind(&Ers::functor_p_star, this, std::placeholders::_1), guess_p_star(), -1.,100*(state_[0][4]+state_[1][4]), 1e-12, 20);
+  p_star_ = ExtaMath::halley(std::bind(&Ers::functor_p_star, this, std::placeholders::_1), guess_p_star(), -1.,100*(state_[0][4]+state_[1][4]), 1e-12, 20);
   
   density_speed();
 }

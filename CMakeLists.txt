@@ -13,7 +13,7 @@ add_compile_options(-Wall -Werror -pedantic -Wextra -O3)
 
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/exactRS)
-add_subdirectory(${PROJECT_SOURCE_DIR}/src/tests)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/test)
 
 # add the executable
 #set(SOURCE_FILES src/exactRS/testErs.cpp src/exactRS/ers.h src/exactRS/ers.cpp src/extFunc/externalMath.hpp)

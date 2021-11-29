@@ -17,8 +17,8 @@ class functor {
 
 
 int main() {
-  double newton_sol = extaMath::newton(functor::f0, -1., -200.,200., 1e-5, 10);
-  double halley_sol = extaMath::halley(functor::f0, -1., -200.,200., 1e-5, 10);
+  double newton_sol = ExtaMath::newton(functor::f0, -1., -200.,200., 1e-5, 10);
+  double halley_sol = ExtaMath::halley(functor::f0, -1., -200.,200., 1e-5, 10);
   std::cout.setf(std::ios::fixed, std::ios::floatfield);
   std::cout.precision(16);
   std::cout<<"Solving for x^3 + 2 x + 5 = 0:"<< std::endl;

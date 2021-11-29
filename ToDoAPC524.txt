@@ -32,4 +32,4 @@ Change all classes to have private attributes, and access through an access func
 dynamic variable should be initilized as :
 Dynamic_Variable state (mesh.get_num_elements(ghost = true), model.get_state_size()); 
 
-
+Pre-processor abstract class, 1d, 2d implementations
