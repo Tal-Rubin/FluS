@@ -25,9 +25,6 @@ public:
     // double el_volume(int element);  // TO DO
 
     std::vector<Node> get_NodeVector();
-    std::vector<Elem> get_ElemVector();
-    std::vector<Edge> get_HoriEdgeVector();
-    std::vector<Edge> get_VertEdgeVector();
 
 private:
 
@@ -51,24 +48,17 @@ private:
     double x1_;
     double y0_;
     double y1_;
-    double dx_;
-    double dy_;
 
     /* --------------------------- Useful vectors --------------------------- */
     std::vector<Node> node_vect;
     std::vector<Elem> elem_vect;
-    std::vector<Edge> hori_edge_vect;
-    std::vector<Edge> vert_edge_vect;
+    std::vector<Edge> edge_vect;
 
     std::valarray<double> element_volume;
     std::vector<unsigned int> ghost_elements;
-    std::vector<unsigned int> mega_ghost_elements;
-    
+
     /* ---- Functions to construct node_vect, elem_vect and edge_vect. ---- */
     void define_NodeVector();
-    void define_ElemVector();
-    void define_HoriEdgeVector();
-    void define_VertEdgeVector();
 
 };
 
