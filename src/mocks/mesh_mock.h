@@ -23,18 +23,18 @@ struct Edge {
   std::pair<unsigned int, unsigned int> neighbor_elements;
   std::valarray<double> unit_vector;
 };
-
-struct Elem {
-  unsigned int elem_number;
-  std::array<unsigned int,2> nodes;
-  double volume;
-  bool ghost;
-};
-
 struct Node {
   unsigned int node_number;
   std::array<double,1> position;
 };
+
+struct Elem {
+  unsigned int elem_number;
+  std::array<Node *,2> nodes;
+  double volume;
+  bool ghost;
+};
+
 
 /*
 struct EdgeCmp {
@@ -88,7 +88,7 @@ class Mesh_1d_mock {
       temp_elem.elem_number = ele_number++;
       temp_elem.volume = dx;
       temp_elem.ghost = false;
-      temp_elem.nodes = {i, i+1};
+      temp_elem.nodes = {&node_vect[i], &node_vect[i+1]};
 
       if (i==0 ||i == num_ele+1){
         temp_elem.ghost = true;

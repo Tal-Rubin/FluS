@@ -9,13 +9,14 @@
 
 int main() { 
 
-  std::size_t num_ele = 5;
+  std::size_t num_ele = 20;
 
   const Mesh_1d_mock mesh(num_ele, 0., 1.);
-
-  Dynamic_Variable u (num_ele+2, 1,2); 
-  Advection_1D advect (0.1, mesh);
   
+  Advection_1D_Upwind advect (0.1, mesh);
+  
+  Dynamic_Variable u (num_ele+2, advect.fields(),advect.parameters()); 
+
   Preprocessor::initial_conditions(" ", u, 0, mesh);
 
 

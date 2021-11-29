@@ -13,8 +13,8 @@ int main() {
   std::cout<<"Elements: "<<std::endl;
 
   for (auto& elem :mesh.elem_vect) {
-    std::cout<<"#"<<elem.elem_number<<" Volume: "<<elem.volume<<" Node 1: "<<elem.nodes[0]<<" Node 2: "<<elem.nodes[1]<<" Ghost\?: "<<elem.ghost<<std::endl;
-    std::cout<<"Position node 1: "<<mesh.node_vect[elem.nodes[0]].position[0]<<" Position node 2: "<<mesh.node_vect[elem.nodes[1]].position[0]<<std::endl;
+    std::cout<<"#"<<elem.elem_number<<" Volume: "<<elem.volume<<" Node 1: "<<elem.nodes[0]->node_number<<" Node 2: "<<elem.nodes[1]->node_number<<" Ghost\?: "<<elem.ghost<<std::endl;
+    std::cout<<"Position node 1: "<<elem.nodes[0]->position[0]<<" Position node 2: "<<elem.nodes[0]->position[0]<<std::endl;
 
   }
   std::cout<<"Nodes: "<<std::endl;

@@ -21,12 +21,12 @@
 
 #include "../../mocks/mesh_mock.h"
 
-class Advection_1D : public Model {
+class Advection_1D_Upwind : public Model {
 
   public:
 
-  Advection_1D(double advection_velocity, const Mesh_1d_mock& mesh): advection_velocity_(advection_velocity), mesh_(mesh) {};
-  ~Advection_1D() {};
+  Advection_1D_Upwind(double advection_velocity, const Mesh_1d_mock& mesh): advection_velocity_(advection_velocity), mesh_(mesh) {};
+  ~Advection_1D_Upwind() {};
 
   int dimen() const {
     return dimen_;
@@ -34,6 +34,10 @@ class Advection_1D : public Model {
 
   int fields() const {
     return fields_;
+  }
+
+  int parameters() const {
+    return params_;
   }
 
   bool local_model() const {
@@ -65,6 +69,8 @@ class Advection_1D : public Model {
   static const int dimen_ = 1;
   // density only
   static const int fields_ = 1;
+  // finite volume
+  static const int params_ = 1;
   // Local flux, source
   static const bool local_ = true;
 
