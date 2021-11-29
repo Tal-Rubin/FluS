@@ -2,10 +2,10 @@
 #ifndef MESH1D_H_
 #define MESH1D_H_
 #include <iostream>
-#include <valarray>
 #include <array>
-#include <vector>
 #include <utility>
+#include <valarray>
+#include <vector>
 
 #include "mesh.h"
 
@@ -20,32 +20,37 @@ public:
     ~Mesh1D();              // Destructor
 
     int dim();
-
     int n_elements();
-
-    int n_interfaces(); // in 1D, is the number of points on element edges, in 2D is the number of elements edges, in 3D is the number of faces, etc.
-
+    int n_interfaces();
     // double el_volume(int element);  // TO DO
-
-    /* ----- Some useful functions ----- */
-    vector<int> get_NodesList_ID();                // Get the Nodes ID
-    vector< vector<double> > get_NodesList_pos();  // Get the global Nodes position
-    /* --------------------------------- */
+    
+    std::vector<Node> get_NodeVector();
+    std::vector<Edge> get_EdgeVector();
+    std::vector<Elem> get_ElemVector();
 
 private:
 
-    static const int dimen_ = 1; // Space dimension
-
-    int Num_Elems_;  // The number of Elements, Nodes and Edges.
+    static const int dimen_ = 1; // Space dimension    int Num_Nodes_; 
     int Num_Nodes_; 
+    int Num_Elems_;  
     int Num_Edges_;
+    /* ----------------------------- The domain ----------------------------- */
+    double x0_;
+    double x1_;
+    double dx_;
+    /* --------------------------- Useful vectors --------------------------- */
+    std::vector<Node> node_vect;
+    std::vector<Elem> elem_vect;
+    std::vector<Edge> edge_vect;
 
-    vector<int> NodesList_ID;               // ID of Nodes, dim=(Num_Nodes). 
-    vector< vector<double> > NodesList_pos; // coordinates of Nodes, dim=(1, Num_Nodes). 
+    std::valarray<double> element_volume;
+    std::vector<unsigned int> ghost_elements;
 
-    void define_NodesList_ID();
-    void define_NodesList_pos();
-    void PBE_NodesList_pos();
+    /* ---- Functions to construct node_vect, elem_vect and edge_vect. ---- */
+    void define_NodeVector();
+    void define_ElemVector();
+    void define_EdgeVector();
+
     
 };
 
