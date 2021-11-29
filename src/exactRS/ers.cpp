@@ -21,27 +21,26 @@ Ers::Ers(std::array<double, 5> left, std::array<double, 5> right, double gamma):
     std::cerr<<"Vacumm solution"<<std::endl;
     return;
   }
-  p_star_ = extaMath::halley(std::bind(&Ers::functor_p_star, this, std::placeholders::_1), guess_p_star(), -1.,100*(state_[0][4]+state_[1][4]), 1e-12, 20);
+  p_star_ = ExtaMath::halley(std::bind(&Ers::functor_p_star, this, std::placeholders::_1), guess_p_star(), -1.,100*(state_[0][4]+state_[1][4]), 1e-12, 20);
   
   density_speed();
-
-  
-  
-  
-  
-  /*
-  std::cout<< std::setw(10) <<p_star_<<" "<< std::setw(10) <<u_star_<<" "<< std::setw(10) <<rho_star_[0]<<" "<< std::setw(10) <<rho_star_[1]<<std::endl;
-  std::cout<< std::setw(10) <<S_[0][0]<<" "<< std::setw(10) <<S_[0][1]<<" "<< std::setw(10) <<S_[1][0]<<" "<< std::setw(10) <<S_[1][1]<<std::endl<<std::endl;
-*/
-
 }
 
 Ers::~Ers(){
   
 }
+std::array<double,5> Ers::U(double t, double x) {
+  std::array<double,5> res = W(t,x);
+
+  res[4] = res[4]/(gamma_-1)+0.5*res[0]*(res[1]*res[1]+res[2]*res[2]+res[3]*res[3]);
+  res[1] = res[0]*res[1];
+  res[2] = res[0]*res[2];
+  res[3] = res[0]*res[3];
+  return res;
+}
 
 
-std::array<double,5> Ers::sample(double t, double x) {
+std::array<double,5> Ers::W(double t, double x) {
   if (t == 0. && x > 0) return state_[1];
   if (t == 0. && x < 0) return state_[0];
   if (t == 0. && x == 0) return std::array<double,5> {0.5*(state_[0][0]+state_[1][0]),
@@ -57,7 +56,7 @@ std::array<double,5> Ers::sample(double t, double x) {
   // Left state
   if (speed < S_[0][0]) return state_[0]; 
   // Right state
-  if (speed > S_[1][0]) return state_[1];
+  else if (speed > S_[1][0]) return state_[1];
   std::array<double,5> res = {0};
   // Right rarefaction
   if ((speed <= S_[1][0]) && (speed >= S_[1][1])) {
@@ -66,60 +65,43 @@ std::array<double,5> Ers::sample(double t, double x) {
     res[2] = state_[1][2];
     res[3] = state_[1][3];
     res[4] = state_[1][4] * std::pow(G2_*(1-(state_[1][1]-speed)/(a_[1]*G1_)),gamma_ * G1_);
-  }
-  // Right star region
-  if (speed < S_[1][1] && speed > u_star_) {
+  } else if (speed < S_[1][1] && speed > u_star_) {  // Right star region
     res[0] = rho_star_[1];
     res[1] = u_star_;
     res[2] = state_[1][2];
     res[3] = state_[1][3];
     res[4] = p_star_;
-  }
-  // Right star region
-  if (speed == u_star_) {
+  } else if (speed == u_star_) {  // Right star region
     res[0] = 0.5*(rho_star_[1]+rho_star_[0]);
     res[1] = u_star_;
     res[2] = 0.5*(state_[1][2]+state_[0][2]);
     res[3] = 0.5*(state_[1][3]+state_[0][3]);
     res[4] = p_star_;
-  }
-
-
-  // Left star region
-  if (speed > S_[0][1] && speed < u_star_) {
+  } else if (speed > S_[0][1] && speed < u_star_) { // Left star region
     res[0] = rho_star_[0];
     res[1] = u_star_;
     res[2] = state_[0][2];
     res[3] = state_[0][3];
     res[4] = p_star_;
-  }
-  // Left rarefaction
-  if ((speed <= S_[0][1]) && (speed >= S_[0][0])) {
+  } else if ((speed <= S_[0][1]) && (speed >= S_[0][0])) {  // Left rarefaction
     res[0] = state_[0][0] * std::pow(G2_ * (1 + (state_[0][1]-speed)/(G1_ * a_[0])) ,G1_);
     res[1] = G2_ * (speed + state_[0][1]/G1_ + a_[0]);
     res[2] = state_[0][2];
     res[3] = state_[0][3];
     res[4] = state_[0][4] * std::pow(G2_ * (1 + (state_[0][1]-speed)/(G1_ * a_[0])),gamma_ * G1_);
-  }
-  // Left Shock
-  if ((speed == S_[0][1]) && SR_[0]) {
+  }  else if ((speed == S_[0][1]) && SR_[0]) { // Left Shock
     res[0] = 0.5*(rho_star_[0] + state_[0][0]);
     res[1] = 0.5*(u_star_ + state_[0][1]);
     res[2] = state_[0][2];
     res[3] = state_[0][3];
     res[4] = 0.5*(p_star_ + state_[0][4]);
-  }
-
-  // Right Shock
-  if ((speed == S_[1][0]) && SR_[1]) {
+  } else if ((speed == S_[1][0]) && SR_[1]) {  // Right Shock
     res[0] = 0.5*(rho_star_[1] + state_[1][0]);
     res[1] = 0.5*(u_star_ + state_[1][1]);
     res[2] = state_[1][2];
     res[3] = state_[1][3];
     res[4] = 0.5*(p_star_ + state_[1][4]);
   }
-
-
   return res;
 }
 

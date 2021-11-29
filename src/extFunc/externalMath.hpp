@@ -1,5 +1,5 @@
 /**
- * @file 
+ * @file externalMath.hpp
  * External useful math functions
  * 
  * \copyright Copyright (c) 2021 Tal Rubin Distributed under MIT License.
@@ -13,8 +13,10 @@
 #include <stdexcept>
 #include <iostream>
 
-
-namespace extaMath{
+/**
+ * @brief Namespace for math functions that don't belong in any specific project. 
+ */
+namespace ExtaMath{
   /**
    * @brief Newton-Rhapson root-finding iterator for function f
    * 
@@ -44,7 +46,6 @@ namespace extaMath{
 
       if (val < min || val > max) throw std::out_of_range( "iteration left range" );
       if (std::abs(delta) <tol) {
- //       std::cout<<i<<std::endl; //number of iterations
         return val;      
       }
       f_ = f(val);

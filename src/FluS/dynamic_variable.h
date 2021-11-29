@@ -16,6 +16,11 @@
 #include <array>
 #include <cstddef>
 
+/**
+ * @brief Class representing the dynamic variable.
+ * 
+ * Example dynamic variables are the state vector of the system, and its time derivative. 
+ */
 class Dynamic_Variable {
   public:
   /**
@@ -85,6 +90,18 @@ class Dynamic_Variable {
   inline std::valarray<double> get_field_coeff (std::size_t field_number, std::size_t coeff_number) const {
     return data_[std::slice(field_number * dim_[2] + coeff_number, dim_[0], element_size_)];
   } ;
+
+  /**
+   * @brief 
+   * 
+   * @param element 
+   * @param field_number 
+   * @param coeff_number 
+   * @return std::slice_array<double> 
+   */
+  inline double & elem_field_coeff (std::size_t ele_number, std::size_t field_number, std::size_t coeff_number) { 
+    return data_[ele_number * element_size_ + field_number * dim_[2] + coeff_number];
+  };
 
   /// Getter funciton for the dim_ array
   std::array<std::size_t, 3> dim() const;
