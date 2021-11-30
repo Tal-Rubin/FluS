@@ -9,6 +9,7 @@
 #ifndef ERS_
 #define ERS_
 
+#include <valarray>
 #include <array>
 /*! \class Ers
  * \brief Class for exact solution of Euler equations in 1 dimension:
@@ -25,16 +26,19 @@ class Ers {
      * @param right State std::array for the primitive quantities for the positive half-line
      * @param gamma Isentropic espansion ratio / ratio of specific heats
      */
-    Ers(std::array<double, 5> left, std::array<double, 5> right, double gamma);
+    Ers(std::valarray<double> left, std::valarray<double> right, double gamma);
     //! ERS destructor
     ~Ers();
     //! Exact solution for the Euler equations at (x,t)
-    std::array<double,5> W(double t, double x);
-    std::array<double,5> U(double t, double x);
+    std::valarray<double> W(double t, double x);
+    std::valarray<double> U(double t, double x);
+    //! Exact solution using speed =  x/t
+    std::valarray<double> W(double speed);
 
+    double max_speed();
   protected:
     //! State std::array containing \f$(\rho, u, v, w, p)\f$ for the left initial state 
-    std::array<std::array<double, 5>,2> state_;
+    std::array<std::valarray<double>,2> state_;
     /**
      * @brief Ratio of specific heats
      * 

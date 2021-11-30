@@ -1,3 +1,16 @@
+/**
+ * @file test_dynamic_variable.cpp
+ * @author Tal Rubin (trubin@princeton.edu)
+ * @brief 
+ * @version 0.1
+ * @date 2021-11-30
+ * 
+ * @test Dynamic_Variable
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
+
 #include "../FluS/dynamic_variable.h"
 
 #include "catch.hpp"

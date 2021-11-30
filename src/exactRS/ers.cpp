@@ -8,7 +8,9 @@
 #include "ers.h"
 #include "../extFunc/externalMath.hpp"
 
-Ers::Ers(std::array<double, 5> left, std::array<double, 5> right, double gamma): gamma_(gamma){
+Ers::Ers(std::valarray<double> left, std::valarray<double> right, double gamma): gamma_(gamma){
+  if (left.size()!=5 ||right.size()!=5) throw std::invalid_argument("wrong size of state vectors");  
+  
   state_[0] = left;
   state_[1] = right;
   G1_ = 2/(gamma_ - 1);
@@ -29,8 +31,14 @@ Ers::Ers(std::array<double, 5> left, std::array<double, 5> right, double gamma):
 Ers::~Ers(){
   
 }
-std::array<double,5> Ers::U(double t, double x) {
-  std::array<double,5> res = W(t,x);
+
+
+double Ers::max_speed(){
+  return std::max(std::abs(S_[0][0]),std::abs(S_[1][0]));
+}
+
+std::valarray<double> Ers::U(double t, double x) {
+  std::valarray<double> res = W(t,x);
 
   res[4] = res[4]/(gamma_-1)+0.5*res[0]*(res[1]*res[1]+res[2]*res[2]+res[3]*res[3]);
   res[1] = res[0]*res[1];
@@ -39,25 +47,12 @@ std::array<double,5> Ers::U(double t, double x) {
   return res;
 }
 
-
-std::array<double,5> Ers::W(double t, double x) {
-  if (t == 0. && x > 0) return state_[1];
-  if (t == 0. && x < 0) return state_[0];
-  if (t == 0. && x == 0) return std::array<double,5> {0.5*(state_[0][0]+state_[1][0]),
-                                                      0.5*(state_[0][1]+state_[1][1]),
-                                                      0.5*(state_[0][2]+state_[1][2]),
-                                                      0.5*(state_[0][3]+state_[1][3]),
-                                                      0.5*(state_[0][4]+state_[1][4])};
-
-
-  if (t < 0.) throw std::out_of_range("t out of range");
-
-  double speed = x/t;
+std::valarray<double> Ers::W(double speed) {
   // Left state
   if (speed < S_[0][0]) return state_[0]; 
   // Right state
   else if (speed > S_[1][0]) return state_[1];
-  std::array<double,5> res = {0};
+  std::valarray<double> res (5);
   // Right rarefaction
   if ((speed <= S_[1][0]) && (speed >= S_[1][1])) {
     res[0] = state_[1][0] * std::pow(G2_* (1 - (state_[1][1]-speed)/(G1_ * a_[1])) ,G1_);
@@ -103,6 +98,24 @@ std::array<double,5> Ers::W(double t, double x) {
     res[4] = 0.5*(p_star_ + state_[1][4]);
   }
   return res;
+}
+
+
+
+std::valarray<double> Ers::W(double t, double x) {
+  if (t == 0. && x > 0) return state_[1];
+  if (t == 0. && x < 0) return state_[0];
+  if (t == 0. && x == 0) return std::valarray<double> {0.5*(state_[0][0]+state_[1][0]),
+                                                      0.5*(state_[0][1]+state_[1][1]),
+                                                      0.5*(state_[0][2]+state_[1][2]),
+                                                      0.5*(state_[0][3]+state_[1][3]),
+                                                      0.5*(state_[0][4]+state_[1][4])};
+
+
+  if (t < 0.) throw std::out_of_range("t out of range");
+
+  double speed = x/t;
+  return W(speed);
 }
 
 
