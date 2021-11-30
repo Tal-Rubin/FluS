@@ -3,23 +3,23 @@
 
 #include "mesh2d.h"
 
-struct Edge {
-    unsigned int edge_number;
-    std::pair<unsigned int, unsigned int> neighbor_elements;
-    std::valarray<double> unit_vector;
+struct Node {
+    unsigned int node_number;
+    std::array<double,2> position; // 2D
 };
 
 struct Elem {
     unsigned int elem_number;
-    std::array<unsigned int,4> nodes; // 4 nodes in each element
+    std::array<Node *,4> nodes; // 4 nodes in each element
     double volume;
     bool mega_ghost;
     bool ghost;
 };
 
-struct Node {
-    unsigned int node_number;
-    std::array<double,2> position; // 2D
+struct Edge {
+    unsigned int edge_number;
+    std::pair<Elem *, Elem *> neighbor_elements;
+    std::valarray<double> unit_vector;
 };
 
 Mesh2D::Mesh2D(int elem_row, int elem_col, double x0, double x1, double y0, double y1)
@@ -113,10 +113,10 @@ void Mesh2D::define_ElemVector(){
 
             temp_elem.elem_number = i * ( Elem_row_ + 2 ) + j;
 
-            temp_elem.nodes[0] = j + i * ( Elem_row_ + 3 );    // node 1 #
-            temp_elem.nodes[1] = j + i * ( Elem_row_ + 3 ) + 1;    // node 2 #
-            temp_elem.nodes[2] = j + ( i + 1 ) * ( Elem_row_ + 3 ) + 1;    // node 3 #
-            temp_elem.nodes[3] = j + ( i + 1 ) * ( Elem_row_ + 3 );    // node 4 #
+            temp_elem.nodes[0] = &node_vect[ j + i * ( Elem_row_ + 3 ) ];    // node 1 #
+            temp_elem.nodes[1] = &node_vect[ j + i * ( Elem_row_ + 3 ) + 1 ];    // node 2 #
+            temp_elem.nodes[2] = &node_vect[ j + ( i + 1 ) * ( Elem_row_ + 3 ) + 1 ];    // node 3 #
+            temp_elem.nodes[3] = &node_vect[ j + ( i + 1 ) * ( Elem_row_ + 3 ) ];    // node 4 #
             
             temp_elem.volume = dx_ * dy_;
             
@@ -148,8 +148,8 @@ void Mesh2D::define_HoriEdgeVector(){
             
             temp_edge_hor.edge_number = i * ( Elem_row_ + 1 ) + j;
             
-            temp_edge_hor.neighbor_elements.first = ( i + 1 ) * ( Elem_row_ + 2 ) + j;
-            temp_edge_hor.neighbor_elements.second = ( i + 1 ) * ( Elem_row_ + 2 ) + j + 1;
+            temp_edge_hor.neighbor_elements.first = &elem_vect[ ( i + 1 ) * ( Elem_row_ + 2 ) + j ];
+            temp_edge_hor.neighbor_elements.second = &elem_vect[ ( i + 1 ) * ( Elem_row_ + 2 ) + j + 1 ];
             
             temp_edge_hor.unit_vector = {0, -1};
             
@@ -168,8 +168,8 @@ void Mesh2D::define_VertEdgeVector(){
             
             temp_edge_ver.edge_number = j * ( Elem_col_ + 1 ) + i;
             
-            temp_edge_ver.neighbor_elements.first = i * ( Elem_row_ + 2 ) + j + 1;
-            temp_edge_ver.neighbor_elements.second = ( i + 1 ) * ( Elem_row_ + 2 ) + j + 1;
+            temp_edge_ver.neighbor_elements.first = &elem_vect[ i * ( Elem_row_ + 2 ) + j + 1 ];
+            temp_edge_ver.neighbor_elements.second = &elem_vect[ ( i + 1 ) * ( Elem_row_ + 2 ) + j + 1 ];
             
             temp_edge_ver.unit_vector = {1, 0};
             

@@ -3,22 +3,22 @@
 
 #include "mesh1d.h"
 
-struct Edge {
-    unsigned int edge_number;
-    std::pair<unsigned int, unsigned int> neighbor_elements;
-    std::valarray<double> unit_vector;
+struct Node {
+    unsigned int node_number;
+    std::array<double,1> position;  // 1D
 };
 
 struct Elem {
     unsigned int elem_number;
-    std::array<unsigned int,2> nodes; // 2 nodes in each element
+    std::array<Node *,2> nodes; // 2 nodes in each element
     double volume;
     bool ghost;
 };
 
-struct Node {
-    unsigned int node_number;
-    std::array<double,1> position;  // 1D
+struct Edge {
+    unsigned int edge_number;
+    std::pair<Elem *, Elem *> neighbor_elements;
+    std::valarray<double> unit_vector;
 };
 
 Mesh1D::Mesh1D(int num_Elems, double x0, double x1)
@@ -93,8 +93,8 @@ void Mesh1D::define_ElemVector(){
         temp_elem.elem_number = i;
         temp_elem.volume = dx_;
         temp_elem.ghost = false;
-        temp_elem.nodes[0] = i;
-        temp_elem.nodes[1] = i + 1;
+        temp_elem.nodes[0] = &node_vect[ i ];
+        temp_elem.nodes[1] = &node_vect[ i + 1 ];
 
         if (i==0 || i == Num_Elems_+1){
             temp_elem.ghost = true;
@@ -109,12 +109,11 @@ void Mesh1D::define_EdgeVector(){
 
     for (int i = 0; i < Num_Edges_; i++){
         temp_edge.edge_number = i;
-        temp_edge.neighbor_elements.first = i;
-        temp_edge.neighbor_elements.second = i+1;
+        temp_edge.neighbor_elements.first = &elem_vect[ i ];
+        temp_edge.neighbor_elements.second = &elem_vect[ i + 1 ];
         temp_edge.unit_vector = {1};
 
         edge_vect.push_back(temp_edge);
     }
 
 }
-
