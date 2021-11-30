@@ -52,10 +52,12 @@ int Mesh2D::n_interfaces(){
     return Num_Edges_;
 }
 
-// double el_volume(int element){
-//     double tol_volume = 2**dimen_;
-//     return tol_volume/double(Num_Elems_);
-// }  
+double Mesh2D::el_volume(int element){
+
+    define_ElemVector();
+
+    return elem_vect[element].volume;
+}  
 
 std::vector<Node> Mesh2D::get_NodeVector(){
 
@@ -185,19 +187,22 @@ int main(){
 
     std::cout << mesh2d->n_elements() << std::endl;
     std::cout << mesh2d->n_interfaces() << std::endl;
+    std::cout << mesh2d->el_volume(1) << std::endl;
+    std::cout << mesh2d->el_volume(5) << std::endl;
+    std::cout << mesh2d->el_volume(10) << std::endl;
     
 
-    // Test node vector
-    std::vector<Node> nodeVector = mesh2d->get_NodeVector();
+    // // Test node vector
+    // std::vector<Node> nodeVector = mesh2d->get_NodeVector();
 
-    for(int i = 0; i < nodeVector.size(); i++){
-        // std::cout << i << " = " << nodeVector[i].node_number << std::endl;
-        std::cout << i << " = " << nodeVector[i].position[0] << std::endl;
-        // std::cout << i << " = " << nodeVector[i].position[1] << std::endl;
-    }
-    for(int i = 0; i < nodeVector.size(); i++){
-        std::cout << i << " = " << nodeVector[i].position[1] << std::endl;
-    }
+    // for(int i = 0; i < nodeVector.size(); i++){
+    //     // std::cout << i << " = " << nodeVector[i].node_number << std::endl;
+    //     std::cout << i << " = " << nodeVector[i].position[0] << std::endl;
+    //     // std::cout << i << " = " << nodeVector[i].position[1] << std::endl;
+    // }
+    // for(int i = 0; i < nodeVector.size(); i++){
+    //     std::cout << i << " = " << nodeVector[i].position[1] << std::endl;
+    // }
     
 
     // // Test element vector

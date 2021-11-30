@@ -9,21 +9,20 @@
 
 #include "mesh.h"
 
-struct Edge;
-struct Elem;
-struct Node;
-
 class Mesh2D : public Mesh {
 
 public:
+    /* ------------------- Constructor and Deconstructor ------------------- */
     Mesh2D(int n_row, int n_col, double x0, double x1, double y0, double y1); 
     ~Mesh2D();                     
 
+    /* ---------------- Functions to get useful properties ---------------- */
     int dim();
     int n_elements();
     int n_interfaces(); 
-    // double el_volume(int element);  // TO DO
+    double el_volume(int element); 
 
+    /* ------- Functions to get node_vect, elem_vect and edge_vect. ------- */
     std::vector<Node> get_NodeVector();
     std::vector<Elem> get_ElemVector();
     std::vector<Edge> get_HoriEdgeVector();
@@ -37,14 +36,14 @@ private:
     int Elem_row_;   
     int Elem_col_;  
 
-    // The number of Nodes, including nodes for ghost and corner cells.
-    int Node_row_;   
-    int Node_col_; 
-    int Num_Nodes_;  
-
     // The number of Elements and Edges.
     int Num_Elems_;  
     int Num_Edges_; 
+
+    // The number of Nodes, including those in ghost and corner cells.
+    int Node_row_;   
+    int Node_col_; 
+    int Num_Nodes_;  
 
     /* ----------------------------- The domain ----------------------------- */
     double x0_;
@@ -59,8 +58,7 @@ private:
     std::vector<Elem> elem_vect;
     std::vector<Edge> hori_edge_vect;
     std::vector<Edge> vert_edge_vect;
-
-    std::valarray<double> element_volume;
+    // std::valarray<double> element_volume;
     std::vector<unsigned int> ghost_elements;
     std::vector<unsigned int> mega_ghost_elements;
     

@@ -45,6 +45,13 @@ int Mesh1D::n_interfaces(){
     return Num_Edges_;
 }
 
+double Mesh1D::el_volume(int element){
+
+    define_ElemVector();
+
+    return elem_vect[element].volume;
+} 
+
 std::vector<Node> Mesh1D::get_NodeVector(){
 
     define_NodeVector();
@@ -115,10 +122,12 @@ int main(){
 
     /* Some Tests */
 
-    Mesh1D* mesh1d = new Mesh1D(3,-1,1);
+    Mesh1D* mesh1d = new Mesh1D(10,-1,1);
 
     std::cout << mesh1d->n_elements() << std::endl;
     std::cout << mesh1d->n_interfaces() << std::endl;
+    std::cout << mesh1d->el_volume(1) << std::endl;
+    std::cout << mesh1d->el_volume(5) << std::endl;
     
     /*
     // Test node vector
@@ -142,13 +151,13 @@ int main(){
     }
      */
     
-    // Test edge vector
-    std::vector<Edge> edgeVector = mesh1d->get_EdgeVector();
+    // // Test edge vector
+    // std::vector<Edge> edgeVector = mesh1d->get_EdgeVector();
     
-    for(int i = 0; i < edgeVector.size(); i++){
-        std::cout << " edge ID = " << edgeVector[i].edge_number << std::endl;
-        std::cout << " neigh-elem 1 = " << edgeVector[i].neighbor_elements.first << std::endl;
-        std::cout << " neigh-elem 2 = " << edgeVector[i].neighbor_elements.second << std::endl;
-        std::cout << " unit vector = " << edgeVector[i].unit_vector[0] << std::endl;
-    }
+    // for(int i = 0; i < edgeVector.size(); i++){
+    //     std::cout << " edge ID = " << edgeVector[i].edge_number << std::endl;
+    //     std::cout << " neigh-elem 1 = " << edgeVector[i].neighbor_elements.first << std::endl;
+    //     std::cout << " neigh-elem 2 = " << edgeVector[i].neighbor_elements.second << std::endl;
+    //     std::cout << " unit vector = " << edgeVector[i].unit_vector[0] << std::endl;
+    // }
 }
