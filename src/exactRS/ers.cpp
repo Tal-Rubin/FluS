@@ -32,6 +32,7 @@ Ers::~Ers(){
   
 }
 
+
 double Ers::max_speed(){
   return std::max(std::abs(S_[0][0]),std::abs(S_[1][0]));
 }
