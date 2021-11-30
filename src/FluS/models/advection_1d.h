@@ -17,13 +17,16 @@
 #include <vector>
 
 #include "../model.h"
+#include "../dynamic_variable.h"
 
-class Advection_1D : public Model {
+#include "../../mocks/mesh_mock.h"
+
+class Advection_1D_Upwind : public Model {
 
   public:
 
-  Advection_1D(double advection_velocity): advection_velocity_(advection_velocity) {};
-  ~Advection_1D();
+  Advection_1D_Upwind(double advection_velocity, const Mesh_1d_mock& mesh): advection_velocity_(advection_velocity), mesh_(mesh) {};
+  ~Advection_1D_Upwind() {};
 
   int dimen() const {
     return dimen_;
@@ -33,16 +36,32 @@ class Advection_1D : public Model {
     return fields_;
   }
 
+  int parameters() const {
+    return params_;
+  }
+
   bool local_model() const {
     return local_;
   }
 
-  std::vector<std::valarray<double>> flux(double t, std::valarray<double> state) const {
-    return std::vector<std::valarray<double>> (dimen_, advection_velocity_ * state );             
+  double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt)const {
+    (void) t;
+
+    for (auto ed: mesh_.edge_vect)  {
+      std::valarray<double> el_flux (state.element_size());
+      el_flux = std::signbit(advection_velocity_ * ed.unit_vector[0])*advection_velocity_ * state.get_element(ed.neighbor_elements.second) + \
+                  (1-std::signbit(advection_velocity_ * ed.unit_vector[0]))*advection_velocity_ * state.get_element(ed.neighbor_elements.first);
+      ddt.element(ed.neighbor_elements.first) -=el_flux;
+      ddt.element(ed.neighbor_elements.second) +=el_flux;
+    }
+
+    ddt.data_ /= mesh_.element_volume;
+    return mesh_.min_elem_vol/std::abs(advection_velocity_);
   }
-  std::valarray<double> source(double t, std::valarray<double> state) const {
-    return std::valarray<double> (dimen_);                        
-  }
+/*  Dynamic_Variable source(const double t, const Dynamic_Variable& state) const {
+    (void) t;
+    return (state.dim_);
+  }*/
 
 
   private:
@@ -50,10 +69,15 @@ class Advection_1D : public Model {
   static const int dimen_ = 1;
   // density only
   static const int fields_ = 1;
+  // finite volume
+  static const int params_ = 1;
   // Local flux, source
   static const bool local_ = true;
 
   const double advection_velocity_;
+
+  const Mesh_1d_mock& mesh_;
+
 };
 
 

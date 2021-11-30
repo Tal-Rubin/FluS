@@ -13,8 +13,7 @@
 #ifndef FLUS_MODEL_H_
 #define FLUS_MODEL_H_
 
-#include <valarray>
-#include <vector>
+#include "dynamic_variable.h"
 
 class Model
 {
@@ -25,8 +24,8 @@ public:
   // variables `x` at `t` (using f(t,x) ), returns result in `fx[]`.
   //
   // Should return 0 if successful, nonzero if error.
-  virtual std::vector<std::valarray<double>> flux(double t, std::valarray<double> state) const = 0;
-  virtual std::valarray<double> source(double t, std::valarray<double> state) const = 0;
+  virtual double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt) const = 0 ;
+ // virtual Dynamic_Variable source(double t, const Dynamic_Variable& state) const = 0;
 
 
   virtual int dimen() const = 0;
@@ -43,7 +42,7 @@ public:
    */
 
 
-  virtual bool local_model() const = 0;
+   virtual bool local_model() const = 0;
 
 };
 
