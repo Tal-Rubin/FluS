@@ -9,29 +9,25 @@
  * 
  */
 
-
 #ifndef FLUS_MESH_H_
 #define FLUS_MESH_H_
 
-
-
-
-
+struct Edge;
+struct Elem;
+struct Node;
 
 class Mesh {
-  public:
+public:
 
-  Mesh();
+    virtual ~Mesh(){}
 
-  ~Mesh();
+    virtual int dim() =0;
 
-  int dim();
+    virtual int n_elements() =0;
 
-  int n_elements();
+    virtual int n_interfaces() =0; // in 1D, is the number of points on element edges, in 2D is the number of elements edges, in 3D is the number of faces, etc.
 
-  int n_interfaces(); // in 1D, is the number of points on element edges, in 2D is the number of elements edges, in 3D is the number of faces, etc.
-
-  double el_volume(int element);
+    virtual double el_volume(int element)=0;  // TO DO
 
 };
 
