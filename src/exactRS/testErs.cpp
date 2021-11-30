@@ -7,7 +7,6 @@
 
 
 #include <cstdio>
-#include <array>
 #include <stdexcept>
 
 #include "ers.h"
@@ -23,18 +22,18 @@
  */
 
 
-void test(std::array<double,5> ,std::array<double,5>, double);
+void test(std::valarray<double> ,std::valarray<double>, double);
 
 int main(int argc, char **argv) {
   if (argc ==2) {
     //! State std::arrays containing \f$\rho, u, v, w, p\f$ 
-    std::array<std::array<double, 5>,5> left_state = {{{1., 0., 0., 0., 1.},
+    std::array<std::valarray<double>,5> left_state = {{{1., 0., 0., 0., 1.},
                                                       {1., -2., 0., 0., .4},
                                                       {1., 0., 0., 0., 1000.},
                                                       {1., 0., 0., 0., .01},
                                                       {5.99924, 19.5975, 0., 0., 460.894}}}; 
     //! State std::arrays containing \f$\rho, u, v, w, p\f$ 
-    std::array<std::array<double, 5>,5> right_state = {{{.125, 0., 0., 0., .1},
+    std::array<std::valarray<double>,5> right_state = {{{.125, 0., 0., 0., .1},
                                                       {1., 2., 0., 0., .4},
                                                       {1., 0., 0., 0., .01},
                                                       {1., 0., 0., 0., 100.},
@@ -45,8 +44,8 @@ int main(int argc, char **argv) {
     int i = atoi(argv[1]);
     test(left_state[i],right_state[i],times[i]);
   } else if (argc == 12) {
-    std::array<double, 5> left_state;
-    std::array<double, 5> right_state;
+    std::valarray<double> left_state(5);
+    std::valarray<double> right_state(5);
     double time = atof(argv[11]);
     for (int i = 0; i < 5; i++){
       left_state[i] = atof(argv[i+1]);
@@ -61,13 +60,13 @@ int main(int argc, char **argv) {
 }
 
 
-void test(std::array<double,5> left,std::array<double,5> right, double time) {
+void test(std::valarray<double> left,std::valarray<double> right, double time) {
   double gamma = 7./5;
   Ers ers(left, right, gamma);
   printf("%15.8f\n", gamma);
   double x;
   double dx = 1./100;
-  std::array<double,5> res;
+  std::valarray<double> res;
   for (int i =0; i <101; i++){
     x = -0.5+i*dx;
     res = ers.W(time, x);
