@@ -1,4 +1,5 @@
 // Meshing for 2D
+
 #ifndef MESH2D_H_
 #define MESH2D_H_
 #include <iostream>
@@ -9,12 +10,24 @@
 
 #include "mesh.h"
 
+/// @brief Class handling the meshing in two-dimension space.
+///
+/// This method is a 2D mesher.
 class Mesh2D : public Mesh {
 
 public:
-    /* ------------------- Constructor and Deconstructor ------------------- */
+    /* ---------------------------- Constructor --------------------------- */
+
+    /// @brief Construct a new Mesh2D object
+    /// 
+    /// Construct a n_row x n_col grid in the specified rectangle [x0, x1] x [y0, y1]. The ghost and corner elements are created outside of the rectangle. 
+    /// @param n_row Number of rows of elements / finite volume data 
+    /// @param n_col Number of columns of elements / finite volume data 
+    /// @param x0 lower x-bound for the meshing region
+    /// @param x1 upper x-bound for the meshing region
+    /// @param y0 lower y-bound for the meshing region
+    /// @param y1 upper y-bound for the meshing region
     Mesh2D(int n_row, int n_col, double x0, double x1, double y0, double y1); 
-    ~Mesh2D();                     
 
     /* ---------------- Functions to get useful properties ---------------- */
     int dim();

@@ -1,4 +1,5 @@
 // Based on https://github.com/Tal-Rubin/FluS/blob/Tal/src/mocks/mesh_mock.h
+
 #ifndef MESH1D_H_
 #define MESH1D_H_
 #include <iostream>
@@ -9,12 +10,21 @@
 
 #include "mesh.h"
 
+/// @brief Class handling the meshing in one-dimension space.
+///
+/// This method is a 1D mesher.
 class Mesh1D : public Mesh {
 
 public:
-    /* ------------------- Constructor and Deconstructor ------------------- */
+    /* ---------------------------- Constructor --------------------------- */
+
+    /// @brief Construct a new Mesh1D object
+    /// 
+    /// Construct a num_Elems grid in the specified region [x0, x1]. The ghost elements are created outside of the region.
+    /// @param num_Elems Number of elements / finite volume data 
+    /// @param x0 lower x-bound for the meshing region
+    /// @param x1 upper x-bound for the meshing region
     Mesh1D(int num_Elems, double x0, double x1); 
-    ~Mesh1D();          
 
     /* ---------------- Functions to get useful properties ---------------- */
     int dim();
