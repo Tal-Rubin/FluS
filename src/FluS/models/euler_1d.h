@@ -23,12 +23,12 @@
 #include "../../exactRS/ers.h"
 
 
-class Euler_1d : public Model {
+class Euler_1d_Godunov : public Model {
 
   public:
 
-  Euler_1d(double gamma, const Mesh_1d_mock& mesh): gamma_(gamma), mesh_(mesh) {};
-  ~Euler_1d() {};
+  Euler_1d_Godunov(double gamma, const Mesh_1d_mock& mesh): gamma_(gamma), mesh_(mesh) {};
+  ~Euler_1d_Godunov() {};
 
   int dimen() const {
     return dimen_;
@@ -48,7 +48,7 @@ class Euler_1d : public Model {
 
   double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt)const {
     (void) t;
-    double max_eigenvalue = 0;
+    double min_timestep = 10000.;
     for (auto ed:mesh_.edge_vect){
       std::valarray<double> left = state.get_element(ed.neighbor_elements.first);
       std::valarray<double> right = state.get_element(ed.neighbor_elements.second);
@@ -77,10 +77,10 @@ class Euler_1d : public Model {
       ddt.element(ed.neighbor_elements.first) -=el_flux;
       ddt.element(ed.neighbor_elements.second) +=el_flux;
 
-      max_eigenvalue = std::max(max_eigenvalue, ers.max_speed());
+      min_timestep = std::min(min_timestep, std::min(mesh_.elem_vect[ed.neighbor_elements.first].volume,mesh_.elem_vect[ed.neighbor_elements.second].volume)/ers.max_speed());
     }
     
-    return mesh_.min_elem_vol/max_eigenvalue;
+    return min_timestep;
   }
 /*  Dynamic_Variable source(const double t, const Dynamic_Variable& state) const {
     (void) t;

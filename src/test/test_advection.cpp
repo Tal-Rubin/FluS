@@ -13,7 +13,7 @@ int main() {
 
   const Mesh_1d_mock mesh(num_ele, 0., 1.);
   
-  Advection_1D_Upwind advect (0.1, mesh);
+  Advection_1d_Upwind advect (0.1, mesh);
   
   Dynamic_Variable u (num_ele+2, advect.fields(),advect.parameters()); 
 

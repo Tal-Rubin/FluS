@@ -13,7 +13,7 @@ int main() {
 
   const Mesh_1d_mock mesh(num_ele, 0., 1.);
   
-  Euler_1d advect (1.4  , mesh);
+  Euler_1d_Godunov advect (1.4  , mesh);
   
   Dynamic_Variable u (num_ele+2, advect.fields(),advect.parameters()); 
 

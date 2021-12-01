@@ -21,12 +21,12 @@
 
 #include "../../mocks/mesh_mock.h"
 
-class Advection_1D_Upwind : public Model {
+class Advection_1d_Upwind : public Model {
 
   public:
 
-  Advection_1D_Upwind(double advection_velocity, const Mesh_1d_mock& mesh): advection_velocity_(advection_velocity), mesh_(mesh) {};
-  ~Advection_1D_Upwind() {};
+  Advection_1d_Upwind(double advection_velocity, const Mesh_1d_mock& mesh): advection_velocity_(advection_velocity), mesh_(mesh) {};
+  ~Advection_1d_Upwind() {};
 
   int dimen() const {
     return dimen_;
