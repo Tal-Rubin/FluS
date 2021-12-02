@@ -5,6 +5,10 @@
 #include "mesh1d.h"
 
 struct Node {
+    /** @verbatim
+     The node numbering example (1D): 
+     1 → 2 → 3 → 4 → 5 → 6 @endverbatim 
+     */
     unsigned int node_number;
 
     /// @brief In 1D, the position of a node is represented by x coordinate
@@ -12,9 +16,18 @@ struct Node {
 };
 
 struct Elem {
+    /** @verbatim
+     The element numbering example (1D): 
+     1→|__| 2→|__| 3→|__|  @endverbatim 
+     */
     unsigned int elem_number;
 
-    /// @brief In 2D, there are 2 nodes in each element
+    /// @brief In 1D, there are 2 nodes(left node and right node) in each element
+    /** @verbatim
+     The node numbering in each element (1D): 
+        |___|
+       0     1 @endverbatim 
+     */
     std::array<Node *,2> nodes; 
 
     double volume;

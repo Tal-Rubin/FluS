@@ -7,6 +7,13 @@
 /// @brief The type used to identify a node
 struct Node {
     /// @brief The ID of the node
+    ///
+    /** @verbatim
+     The node numbering example (2D): 
+     1↓  4↴  7↴
+     2↓  5↓  8↓ 
+     3↓  6↓  9↓ @endverbatim 
+     */
     unsigned int node_number;
 
     /// @brief In 2D, the position of a node is represented by x and y coordinates
@@ -16,9 +23,23 @@ struct Node {
 /// @brief The type used to identify an element
 struct Elem {
     /// @brief The ID of the element
+    /// 
+    /** @verbatim
+     The element numbering example (2D): 
+        __     __
+     1↓|__| 3↴|__| 
+     2↓|__| 4↓|__| @endverbatim 
+     */
     unsigned int elem_number;
 
     /// @brief In 2D, there are 4 nodes in each element
+    /** @verbatim
+     The node numbering in each element (2D): 
+      0 ____ 3
+       |    | 
+       |____|
+      1      2  @endverbatim 
+     */
     std::array<Node *,4> nodes; 
 
     /// @brief The volume of each element
