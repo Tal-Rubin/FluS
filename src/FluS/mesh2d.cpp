@@ -1,24 +1,45 @@
 // Meshing for 2D
+
 #include <iostream>
 
 #include "mesh2d.h"
 
+/// @brief The type used to identify a node
 struct Node {
+    /// @brief The ID of the node
     unsigned int node_number;
-    std::array<double,2> position; // 2D
+
+    /// @brief In 2D, the position of a node is represented by x and y coordinates
+    std::array<double,2> position;
 };
 
+/// @brief The type used to identify an element
 struct Elem {
+    /// @brief The ID of the element
     unsigned int elem_number;
-    std::array<Node *,4> nodes; // 4 nodes in each element
+
+    /// @brief In 2D, there are 4 nodes in each element
+    std::array<Node *,4> nodes; 
+
+    /// @brief The volume of each element
     double volume;
+
+    /// @brief Return true if it is a corner element (2D only)
     bool mega_ghost;
+
+    /// @brief Return true if it is a ghost element
     bool ghost;
 };
 
+/// @brief The type used to identify an edge
 struct Edge {
+    /// @brief The ID of the edge
     unsigned int edge_number;
+
+    /// @brief The pair of pointers represents neighbor elements of the edge
     std::pair<Elem *, Elem *> neighbor_elements;
+
+    /// @brief The orientation of the edge
     std::valarray<double> unit_vector;
 };
 
@@ -34,10 +55,6 @@ Mesh2D::Mesh2D(int elem_row, int elem_col, double x0, double x1, double y0, doub
     
     dx_ = ( x1_ - x0_ ) / double(Elem_col_);
     dy_ = ( y1_ - y0_ ) / double(Elem_row_);
-}
-
-Mesh2D::~Mesh2D(){
-    // TO DO
 }
 
 int Mesh2D::dim(){

@@ -10,6 +10,10 @@
 
 #include "mesh.h"
 
+struct Node;
+struct Elem;
+struct Edge;
+
 /// @brief Class handling the meshing in one-dimension space.
 ///
 /// This method is a 1D mesher.
@@ -33,20 +37,22 @@ public:
     double el_volume(int element); 
     
     /* ------- Functions to get node_vect, elem_vect and edge_vect. ------- */
+
+    /// @brief Get the node_vect, which containing Node objects.
+    /// @return std::vector<Node> The node_vect.
     std::vector<Node> get_NodeVector();
-    std::vector<Edge> get_EdgeVector();
+
+    /// @brief Get the elem_vect, which containing Elem objects.
+    /// @return std::vector<Elem> The elem_vect. 
     std::vector<Elem> get_ElemVector();
+
+    /// @brief Get the edge_vect, which containing Edge objects.
+    /// @return std::vector<Edge> The edge_vect. 
+    std::vector<Edge> get_EdgeVector();
 
 private:
 
     static const int dimen_ = 1; // Space dimension 
-
-    // The number of Elements and Edges.
-    int Num_Elems_;  
-    int Num_Edges_;
-
-    // The number of Nodes, including those in ghost cells.
-    int Num_Nodes_; 
 
     /* ----------------------------- The domain ----------------------------- */
     double x0_;

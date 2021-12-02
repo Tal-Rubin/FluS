@@ -1,16 +1,22 @@
 // Based on https://github.com/Tal-Rubin/FluS/blob/Tal/src/mocks/mesh_mock.h
+
 #include <iostream>
 
 #include "mesh1d.h"
 
 struct Node {
     unsigned int node_number;
-    std::array<double,1> position;  // 1D
+
+    /// @brief In 1D, the position of a node is represented by x coordinate
+    std::array<double,1> position;
 };
 
 struct Elem {
     unsigned int elem_number;
-    std::array<Node *,2> nodes; // 2 nodes in each element
+
+    /// @brief In 2D, there are 2 nodes in each element
+    std::array<Node *,2> nodes; 
+
     double volume;
     bool ghost;
 };
@@ -22,15 +28,12 @@ struct Edge {
 };
 
 Mesh1D::Mesh1D(int num_Elems, double x0, double x1)
-    :Num_Elems_(num_Elems), x0_(x0), x1_(x1)
+    :x0_(x0), x1_(x1)
 {
+    Num_Elems_ = num_Elems;
     Num_Nodes_ = num_Elems + 3;
     Num_Edges_ = num_Elems + 1;
     dx_ = (x1_-x0_)/double(Num_Elems_);
-}
-
-Mesh1D::~Mesh1D(){
-    // TO DO
 }
 
 int Mesh1D::dim(){
