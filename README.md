@@ -13,12 +13,8 @@ python ../src/exactRS/ersWrap.py
 
 
 in Flus:
-
-
 doxygen
-
 cd documentation/latex
-
 make
 
 refman.pdf
