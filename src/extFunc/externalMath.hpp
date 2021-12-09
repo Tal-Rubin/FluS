@@ -22,7 +22,7 @@ namespace ExtaMath{
    * 
    * @tparam F type of f
    * @tparam T data type. double was tested
-   * @param f returns an array / vecotr / pair / tuple of {f(x), f'(x)}
+   * @param f returns an array / vector / pair / tuple of {f(x), f'(x)}
    * @param guess initial guess
    * @param min range minimum
    * @param max range maximum
@@ -58,7 +58,7 @@ namespace ExtaMath{
    * 
    * @tparam F type of f
    * @tparam T data type. double was tested
-   * @param f returns an array / vecotr / pair / tuple of {f(x), f'(x), f''(x)}
+   * @param f returns an array / vector / tuple of {f(x), f'(x), f''(x)}
    * @param guess initial guess
    * @param min range minimum
    * @param max range maximum
