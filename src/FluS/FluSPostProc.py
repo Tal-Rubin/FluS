@@ -8,7 +8,7 @@
 #  @copyright Copyright (c) 2021
 
 
-
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.core.numeric import empty_like
@@ -95,10 +95,22 @@ def split_quad_to_tri(elem):
 # @return numpy array of data to be plotted.
 #
 def split_data(data):
-  return data.repeat(2, axis = 2)
+  return data.repeat(2, axis = 3)
 
-
-def plot_frame(dim, nodes, elem, data, time, x_plot_grid, y_plot_grid,filename):
+##
+# @brief Plots time-slice, cell-average data, and saves the image.
+#
+# @param dim 1 or 2 dimensional domain: line plot or contour plot
+# @param nodes Location of element vertices
+# @param elem Indices of nodes associated with each element 
+# @param data Data to be plotted
+# @param time Time label of the frame
+# @param x_plot_grid Display shape, number of horizontal frames in a figure
+# @param y_plot_grid Display shape, number of vertical frames in a figure
+# @param filename Filename for the figure to be saved as
+# 
+# This function plots cell averages (Finite-Volumes)
+def plot_frame(dim, nodes, elem, data, time, x_plot_grid, y_plot_grid, filename):
   fig = plt.figure(figsize=[10, 8])
   fig.suptitle("t = {}".format(time))
 
@@ -128,7 +140,12 @@ def plot_frame(dim, nodes, elem, data, time, x_plot_grid, y_plot_grid,filename):
   plt.tight_layout()
   plt.savefig(filename)
 
-
+##
+# @brief Reads the FluS solution from the saved file
+#
+# @param filename The data file path to be read.
+# @return Numpy array of time labels, and numpy array of the read data.
+#
 def read_data(filename = "data.txt"):
   fields, params = np.genfromtxt(filename, dtype = int, delimiter=' ',max_rows=1)
   file_data = np.genfromtxt(filename, dtype = float, delimiter=' ',skip_header=1, skip_footer = 1)
@@ -136,33 +153,26 @@ def read_data(filename = "data.txt"):
 
   num_ele = int( (file_data.shape[1]-1) / (fields * params))
 
-  data = np.zeros((len(time),fields, num_ele))  
+  data = np.zeros((len(time),fields,params,num_ele))  
 
   for i in range(fields):
     for j in range(params):  
-      data[:,i+j] = file_data[:,1+(i+j)*num_ele:1+(i+j+1)*num_ele]
+      data[:,i,j] = file_data[:,1+(i+j)*num_ele:1+(i+j+1)*num_ele]
 
   return time, data
 
 
-def plotFluS(geomfile, datafile):
-  time, data = read_data(datafile)
-  dim, nodes, elem = read_geometry(geomfile)
-
-  i=0
-  plot_frame(dim, nodes, elem, data[i], time[i],1,1)
 
 
 if __name__ == '__main__':
-  splitted = False
-  dim, nodes, elem = read_geometry("src/test/mesh.txt")
+  if not os.path.isdir('src/FluS/save'):
+    os.makedirs('src/FluS/save')
+  dim, nodes, elem = read_geometry("src/test/mesh.txt")  
+  time, data = read_data("src/test/data.txt")
+
   if elem.shape[1]==4:
     elem = split_quad_to_tri(elem)
-    splitted = True
-  time, data = read_data("src/test/data.txt")
-  if splitted:
     data = split_data(data)
-
   for i in range(len(time)):
-    plot_frame(dim, nodes, elem, data[i,:,:], time[i],1,data.shape[1],"src/FluS/save/fig"+str(i)+".png")
-
+    plot_frame(dim, nodes, elem, data[i,:,0,:], time[i],1,data.shape[1],"src/FluS/save/fig{:0>5d}.png".format(i))
+  os.system('convert -delay 20 -loop 0 src/FluS/save/*.png src/FluS/save/plot.gif')

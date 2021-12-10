@@ -2,7 +2,7 @@ documentation/*
 .vscode/*
 __pycache__
 build/*
-
+src/FluS/save/*
 # Prerequisites
 *.d
 
