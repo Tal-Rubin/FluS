@@ -230,7 +230,33 @@ std::ostream& operator<<(std::ostream& os, Mesh2D& mesh2d){
 
 
     os << "ELEMENTS" << std::endl;
-    // ******** TO DO ******** 
+
+    std::vector<Elem> elemVector = mesh2d.get_ElemVector();
+
+    for(int i = 0; i < elemVector.size(); i++){
+
+        // Node number should be reported clockwise. 
+        // Our node numbering in each element:
+        //  0 ____ 3
+        //   |    | 
+        //   |____|
+        //  1      2 
+        // So the ordering here should be 0 3 2 1
+
+        os << elemVector[i].nodes[0]->node_number << " ";
+        os << elemVector[i].nodes[3]->node_number << " ";
+        os << elemVector[i].nodes[2]->node_number << " ";
+        os << elemVector[i].nodes[1]->node_number << " ";
+        if (elemVector[i].ghost){
+            os << " (ghost) " << std::endl;
+        }
+        else if (elemVector[i].mega_ghost) {
+            os << " (mega_ghost/corner) " << std::endl;
+        }
+        else {
+            os << std::endl;
+        }
+    }
     os << "END_ELEMENTS" << std::endl;
 
     return os;
@@ -240,7 +266,7 @@ int main(){
 
     /* Output Tests */
 
-    Mesh2D mesh2d = Mesh2D(4,5,-1,1,-1,1);
+    Mesh2D mesh2d = Mesh2D(2,2,-1,1,-1,1);
     operator<<(std::cout, mesh2d);
 
 }

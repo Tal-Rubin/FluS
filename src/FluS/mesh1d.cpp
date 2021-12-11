@@ -144,9 +144,20 @@ std::ostream& operator<<(std::ostream& os, Mesh1D& mesh1d){
     }
     os << "END_NODES" << std::endl;
 
+    std::vector<Elem> elemVector = mesh1d.get_ElemVector();
 
     os << "ELEMENTS" << std::endl;
-    // ******** TO DO ******** 
+    for(int i = 0; i < elemVector.size(); i++){
+        os <<  elemVector[i].nodes[0]->node_number << " ";
+        os <<  elemVector[i].nodes[1]->node_number << " ";
+        if (elemVector[i].ghost){
+            os << " (ghost) " << std::endl;
+        }
+        else {
+            os << std::endl;
+        }
+
+    }
     os << "END_ELEMENTS" << std::endl;
 
     return os;
