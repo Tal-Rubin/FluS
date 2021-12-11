@@ -149,13 +149,13 @@ std::ostream& operator<<(std::ostream& os, Mesh1D& mesh1d){
     os << "ELEMENTS" << std::endl;
     for(int i = 0; i < elemVector.size(); i++){
         os <<  elemVector[i].nodes[0]->node_number << " ";
-        os <<  elemVector[i].nodes[1]->node_number << " ";
-        if (elemVector[i].ghost){
-            os << " (ghost) " << std::endl;
-        }
-        else {
-            os << std::endl;
-        }
+        os <<  elemVector[i].nodes[1]->node_number << std::endl;
+        // if (elemVector[i].ghost){
+        //     os << " (ghost) " << std::endl;
+        // }
+        // else {
+        //     os << std::endl;
+        // }
 
     }
     os << "END_ELEMENTS" << std::endl;
@@ -163,11 +163,11 @@ std::ostream& operator<<(std::ostream& os, Mesh1D& mesh1d){
     return os;
 }
 
-int main(){
+// int main(){
 
-    /* Output Tests */
+//     /* Output Tests */
 
-    Mesh1D mesh1d = Mesh1D(10,-1,1);
+//     Mesh1D mesh1d = Mesh1D(10,-1,1);
 
-    operator<<(std::cout, mesh1d);
-}
+//     operator<<(std::cout, mesh1d);
+// }

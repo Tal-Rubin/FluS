@@ -246,27 +246,27 @@ std::ostream& operator<<(std::ostream& os, Mesh2D& mesh2d){
         os << elemVector[i].nodes[0]->node_number << " ";
         os << elemVector[i].nodes[3]->node_number << " ";
         os << elemVector[i].nodes[2]->node_number << " ";
-        os << elemVector[i].nodes[1]->node_number << " ";
-        if (elemVector[i].ghost){
-            os << " (ghost) " << std::endl;
-        }
-        else if (elemVector[i].mega_ghost) {
-            os << " (mega_ghost/corner) " << std::endl;
-        }
-        else {
-            os << std::endl;
-        }
+        os << elemVector[i].nodes[1]->node_number << std::endl;
+        // if (elemVector[i].ghost){
+        //     os << " (ghost) " << std::endl;
+        // }
+        // else if (elemVector[i].mega_ghost) {
+        //     os << " (mega_ghost/corner) " << std::endl;
+        // }
+        // else {
+        //     os << std::endl;
+        // }
     }
     os << "END_ELEMENTS" << std::endl;
 
     return os;
 }
 
-int main(){
+// int main(){
 
-    /* Output Tests */
+//     /* Output Tests */
 
-    Mesh2D mesh2d = Mesh2D(2,2,-1,1,-1,1);
-    operator<<(std::cout, mesh2d);
+//     Mesh2D mesh2d = Mesh2D(2,2,-1,1,-1,1);
+//     operator<<(std::cout, mesh2d);
 
-}
+// }
