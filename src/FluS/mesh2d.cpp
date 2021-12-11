@@ -216,3 +216,31 @@ void Mesh2D::define_VertEdgeVector(){
         }
     }
 }
+
+std::ostream& operator<<(std::ostream& os, Mesh2D& mesh2d){
+
+    std::vector<Node> nodeVector = mesh2d.get_NodeVector();
+
+    os << "NODES" << std::endl;
+    for(int i = 0; i < nodeVector.size(); i++){
+        os <<  nodeVector[i].position[0] << " ";
+        os <<  nodeVector[i].position[1] << std::endl;
+    }
+    os << "END_NODES" << std::endl;
+
+
+    os << "ELEMENTS" << std::endl;
+    // ******** TO DO ******** 
+    os << "END_ELEMENTS" << std::endl;
+
+    return os;
+}
+
+int main(){
+
+    /* Output Tests */
+
+    Mesh2D mesh2d = Mesh2D(4,5,-1,1,-1,1);
+    operator<<(std::cout, mesh2d);
+
+}

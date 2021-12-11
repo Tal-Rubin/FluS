@@ -57,6 +57,9 @@ public:
     /// @return std::vector<Edge> The vert_edge_vect. 
     std::vector<Edge> get_VertEdgeVector();
 
+    /// @brief Output operator overload.
+    friend std::ostream& operator<<(std::ostream& os, Mesh2D& mesh2d);
+
 private:
 
     static const int dimen_ = 2; // Space dimension

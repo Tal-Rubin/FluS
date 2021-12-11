@@ -133,3 +133,30 @@ void Mesh1D::define_EdgeVector(){
     }
 
 }
+
+std::ostream& operator<<(std::ostream& os, Mesh1D& mesh1d){
+
+    std::vector<Node> nodeVector = mesh1d.get_NodeVector();
+
+    os << "NODES" << std::endl;
+    for(int i = 0; i < nodeVector.size(); i++){
+        os <<  nodeVector[i].position[0] << std::endl;
+    }
+    os << "END_NODES" << std::endl;
+
+
+    os << "ELEMENTS" << std::endl;
+    // ******** TO DO ******** 
+    os << "END_ELEMENTS" << std::endl;
+
+    return os;
+}
+
+int main(){
+
+    /* Output Tests */
+
+    Mesh1D mesh1d = Mesh1D(10,-1,1);
+
+    operator<<(std::cout, mesh1d);
+}

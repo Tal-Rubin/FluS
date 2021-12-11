@@ -50,6 +50,9 @@ public:
     /// @return std::vector<Edge> The edge_vect. 
     std::vector<Edge> get_EdgeVector();
 
+    /// @brief Output operator overload.
+    friend std::ostream& operator<<(std::ostream& os, Mesh1D& mesh1d);
+
 private:
 
     static const int dimen_ = 1; // Space dimension 
