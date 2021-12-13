@@ -15,6 +15,7 @@
 #include <valarray>
 #include <array>
 #include <cstddef>
+#include <iostream>
 
 /**
  * @brief Class representing the dynamic variable.
@@ -81,7 +82,8 @@ class Dynamic_Variable {
   };
 
   /**
-   * @brief Get a (read only) iterable field parameter data
+   * @brief Get a (read only) iterable field param  //! Getter funciton for number of coefficinets
+eter data
    * 
    * @param field_number Field number (counting starts at 0).
    * @param coeff_number Parameter number (counting starts at 0).
@@ -103,20 +105,26 @@ class Dynamic_Variable {
     return data_[ele_number * element_size_ + field_number * dim_[2] + coeff_number];
   };
 
-  /// Getter funciton for the dim_ array
-  std::array<std::size_t, 3> dim() const;
-  /// Getter funciton for the element size
-  std::size_t element_size() const;
-  /// Getter funciton for number of coefficinets
-  std::size_t coeff_num() const;
+  //! Output operator overload
+  friend std::ostream& operator<<(std::ostream& os, const Dynamic_Variable& dvar);
 
-  /// The dynamic variable data
+  //! Getter funciton for the dim_ array
+  std::array<std::size_t, 3> dim() const;
+  //! Getter funciton for the element size
+  std::size_t element_size() const;
+  //! Getter funciton for number of parameters for each field
+  std::size_t num_param() const;
+  //! Getter funciton for number of fields
+  std::size_t num_fields() const;
+
+
+  //! The dynamic variable data
   std::valarray<double> data_;
 
   private:
-  /// Array containing the division of the raw data to elements, fields and parameters
+  //! Array containing the division of the raw data to elements, fields and parameters
   std::array<std::size_t, 3> dim_;
-  /// The number of parameters in each element (# fields * # parameters per field)
+  //! The number of parameters in each element (# fields * # parameters per field)
   std::size_t element_size_;
 }; 
 
