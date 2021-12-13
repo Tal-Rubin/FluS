@@ -26,6 +26,7 @@ int main(){
   if (loadSolverParameters(t, grid) ==0){
     std::cout<<"success "<< t<< " "<< grid<< " \n";
   }
+  return 0;
 }
 
 int loadSolverParameters(double &t, int & grid) {
