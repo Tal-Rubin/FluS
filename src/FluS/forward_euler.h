@@ -13,7 +13,14 @@
 #define FLUS_FOR_EULER_H_
 
 #include "dynamic_variable.h"
-
+/**
+ * @brief Forward Euler time-stepper
+ * 
+ * @param dt The time-step
+ * @param state The state vector
+ * @param ddt The time derivative vector
+ * @return Dynamic_Variable State vector with values  /f$state + dt * ddt /f$ 
+ */
 Dynamic_Variable forward_euler(const double dt, const Dynamic_Variable &state, const Dynamic_Variable &ddt);
 
 

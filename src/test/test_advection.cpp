@@ -11,7 +11,7 @@ int main() {
 
   std::size_t num_ele = 20;
 
-  const Mesh_1d_mock mesh(num_ele, 0., 1.);
+  Mesh_1d_mock mesh(num_ele, 0., 1.);
   
   Advection_1d_Upwind advect (0.1, mesh);
   

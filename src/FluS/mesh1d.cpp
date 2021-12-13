@@ -1,16 +1,35 @@
 // Based on https://github.com/Tal-Rubin/FluS/blob/Tal/src/mocks/mesh_mock.h
+
 #include <iostream>
 
 #include "mesh1d.h"
 
 struct Node {
+    /** @verbatim
+     The node numbering example (1D): 
+     1 → 2 → 3 → 4 → 5 → 6 @endverbatim 
+     */
     unsigned int node_number;
-    std::array<double,1> position;  // 1D
+
+    /// @brief In 1D, the position of a node is represented by x coordinate
+    std::array<double,1> position;
 };
 
 struct Elem {
+    /** @verbatim
+     The element numbering example (1D): 
+     1→|__| 2→|__| 3→|__|  @endverbatim 
+     */
     unsigned int elem_number;
-    std::array<Node *,2> nodes; // 2 nodes in each element
+
+    /// @brief In 1D, there are 2 nodes(left node and right node) in each element
+    /** @verbatim
+     The node numbering in each element (1D): 
+        |___|
+       0     1 @endverbatim 
+     */
+    std::array<Node *,2> nodes; 
+
     double volume;
     bool ghost;
 };
@@ -22,15 +41,12 @@ struct Edge {
 };
 
 Mesh1D::Mesh1D(int num_Elems, double x0, double x1)
-    :Num_Elems_(num_Elems), x0_(x0), x1_(x1)
+    :x0_(x0), x1_(x1)
 {
+    Num_Elems_ = num_Elems;
     Num_Nodes_ = num_Elems + 3;
     Num_Edges_ = num_Elems + 1;
     dx_ = (x1_-x0_)/double(Num_Elems_);
-}
-
-Mesh1D::~Mesh1D(){
-    // TO DO
 }
 
 int Mesh1D::dim(){
@@ -117,3 +133,41 @@ void Mesh1D::define_EdgeVector(){
     }
 
 }
+
+std::ostream& operator<<(std::ostream& os, Mesh1D& mesh1d){
+
+    std::vector<Node> nodeVector = mesh1d.get_NodeVector();
+
+    os << "NODES" << std::endl;
+    for(int i = 0; i < nodeVector.size(); i++){
+        os <<  nodeVector[i].position[0] << std::endl;
+    }
+    os << "END_NODES" << std::endl;
+
+    std::vector<Elem> elemVector = mesh1d.get_ElemVector();
+
+    os << "ELEMENTS" << std::endl;
+    for(int i = 0; i < elemVector.size(); i++){
+        os <<  elemVector[i].nodes[0]->node_number << " ";
+        os <<  elemVector[i].nodes[1]->node_number << std::endl;
+        // if (elemVector[i].ghost){
+        //     os << " (ghost) " << std::endl;
+        // }
+        // else {
+        //     os << std::endl;
+        // }
+
+    }
+    os << "END_ELEMENTS" << std::endl;
+
+    return os;
+}
+
+// int main(){
+
+//     /* Output Tests */
+
+//     Mesh1D mesh1d = Mesh1D(10,-1,1);
+
+//     operator<<(std::cout, mesh1d);
+// }

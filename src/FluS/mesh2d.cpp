@@ -1,24 +1,66 @@
 // Meshing for 2D
+
 #include <iostream>
 
 #include "mesh2d.h"
 
+/// @brief The type used to identify a node
 struct Node {
+    /// @brief The ID of the node
+    ///
+    /** @verbatim
+     The node numbering example (2D): 
+     1↓  4↓  7↓
+     2↓  5↓  8↓ 
+     3↓  6↓  9↓ @endverbatim 
+     */
     unsigned int node_number;
-    std::array<double,2> position; // 2D
+
+    /// @brief In 2D, the position of a node is represented by x and y coordinates
+    std::array<double,2> position;
 };
 
+/// @brief The type used to identify an element
 struct Elem {
+    /// @brief The ID of the element
+    /// 
+    /** @verbatim
+     The element numbering example (2D): 
+        __     __
+     1↓|__| 3↓|__| 
+     2↓|__| 4↓|__| @endverbatim 
+     */
     unsigned int elem_number;
-    std::array<Node *,4> nodes; // 4 nodes in each element
+
+    /// @brief In 2D, there are 4 nodes in each element
+    /** @verbatim
+     The node numbering in each element (2D): 
+      0 ____ 3
+       |    | 
+       |____|
+      1      2  @endverbatim 
+     */
+    std::array<Node *,4> nodes; 
+
+    /// @brief The volume of each element
     double volume;
+
+    /// @brief Return true if it is a corner element (2D only)
     bool mega_ghost;
+
+    /// @brief Return true if it is a ghost element
     bool ghost;
 };
 
+/// @brief The type used to identify an edge
 struct Edge {
+    /// @brief The ID of the edge
     unsigned int edge_number;
+
+    /// @brief The pair of pointers represents neighbor elements of the edge
     std::pair<Elem *, Elem *> neighbor_elements;
+
+    /// @brief The orientation of the edge
     std::valarray<double> unit_vector;
 };
 
@@ -34,10 +76,6 @@ Mesh2D::Mesh2D(int elem_row, int elem_col, double x0, double x1, double y0, doub
     
     dx_ = ( x1_ - x0_ ) / double(Elem_col_);
     dy_ = ( y1_ - y0_ ) / double(Elem_row_);
-}
-
-Mesh2D::~Mesh2D(){
-    // TO DO
 }
 
 int Mesh2D::dim(){
@@ -178,3 +216,57 @@ void Mesh2D::define_VertEdgeVector(){
         }
     }
 }
+
+std::ostream& operator<<(std::ostream& os, Mesh2D& mesh2d){
+
+    std::vector<Node> nodeVector = mesh2d.get_NodeVector();
+
+    os << "NODES" << std::endl;
+    for(int i = 0; i < nodeVector.size(); i++){
+        os <<  nodeVector[i].position[0] << " ";
+        os <<  nodeVector[i].position[1] << std::endl;
+    }
+    os << "END_NODES" << std::endl;
+
+
+    os << "ELEMENTS" << std::endl;
+
+    std::vector<Elem> elemVector = mesh2d.get_ElemVector();
+
+    for(int i = 0; i < elemVector.size(); i++){
+
+        // Node number should be reported clockwise. 
+        // Our node numbering in each element:
+        //  0 ____ 3
+        //   |    | 
+        //   |____|
+        //  1      2 
+        // So the ordering here should be 0 3 2 1
+
+        os << elemVector[i].nodes[0]->node_number << " ";
+        os << elemVector[i].nodes[3]->node_number << " ";
+        os << elemVector[i].nodes[2]->node_number << " ";
+        os << elemVector[i].nodes[1]->node_number << std::endl;
+        // if (elemVector[i].ghost){
+        //     os << " (ghost) " << std::endl;
+        // }
+        // else if (elemVector[i].mega_ghost) {
+        //     os << " (mega_ghost/corner) " << std::endl;
+        // }
+        // else {
+        //     os << std::endl;
+        // }
+    }
+    os << "END_ELEMENTS" << std::endl;
+
+    return os;
+}
+
+// int main(){
+
+//     /* Output Tests */
+
+//     Mesh2D mesh2d = Mesh2D(2,2,-1,1,-1,1);
+//     operator<<(std::cout, mesh2d);
+
+// }

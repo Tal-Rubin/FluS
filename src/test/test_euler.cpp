@@ -11,7 +11,7 @@ int main() {
 
   std::size_t num_ele = 20;
 
-  const Mesh_1d_mock mesh(num_ele, 0., 1.);
+  Mesh_1d_mock mesh(num_ele, 0., 1.);
   
   Euler_1d_Godunov advect (1.4  , mesh);
   

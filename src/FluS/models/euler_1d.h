@@ -10,8 +10,8 @@
  */
 
 
-#ifndef ADVEC_1D_H_
-#define ADVEC_1D_H_
+#ifndef FLUS_EULER_1D_H_
+#define FLUS_EULER_1D_H_
 
 #include <valarray>
 #include <vector>
@@ -27,18 +27,18 @@ class Euler_1d_Godunov : public Model {
 
   public:
 
-  Euler_1d_Godunov(double gamma, const Mesh_1d_mock& mesh): gamma_(gamma), mesh_(mesh) {};
+  Euler_1d_Godunov(double gamma, Mesh_1d_mock& mesh): gamma_(gamma), mesh_(mesh) {};
   ~Euler_1d_Godunov() {};
 
   int dimen() const {
     return dimen_;
   }
 
-  int fields() const {
+  unsigned int fields() const {
     return fields_;
   }
 
-  int parameters() const {
+  unsigned int parameters() const {
     return params_;
   }
 
@@ -97,12 +97,12 @@ class Euler_1d_Godunov : public Model {
   static const int params_ = 1;
   // Local flux, source
   static const bool local_ = true;
-  const double gamma_;
-  const Mesh_1d_mock& mesh_;
+  double gamma_;
+  Mesh_1d_mock& mesh_;
 
 };
 
 
 
 
-#endif // ADVEC_1D_H_
+#endif // FLUS_EULER_1D_H_

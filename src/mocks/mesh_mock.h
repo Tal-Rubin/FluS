@@ -18,10 +18,13 @@
 #include <vector>
 #include <utility>
 
+//#include "../FluS/mesh.h"
+
 struct Edge {
   unsigned int edge_number;
   std::pair<unsigned int, unsigned int> neighbor_elements;
   std::valarray<double> unit_vector;
+  double edge_area;
 };
 struct Node {
   unsigned int node_number;
@@ -36,24 +39,7 @@ struct Elem {
 };
 
 
-/*
-struct EdgeCmp {
-  bool operator()(const Edge& lhs, const Edge& rhs) const { 
-    return lhs.edge_number < rhs.edge_number; 
-  }
-};
-struct ElemCmp {
-  bool operator()(const Elem& lhs, const Elem& rhs) const { 
-    return lhs.elem_number < rhs.elem_number; 
-  }
-};
-struct NodeCmp {
-  bool operator()(const Node& lhs, const Node& rhs) const { 
-    return lhs.node_number < rhs.node_number; 
-  }
-};
-*/
-class Mesh_1d_mock {
+class Mesh_1d_mock{
   public:
   Mesh_1d_mock(unsigned int num_ele, double x0, double x1): element_volume(num_ele+2){
     unsigned int node_number = 0;
@@ -81,6 +67,7 @@ class Mesh_1d_mock {
       temp_edge.edge_number = edge_number++;
       temp_edge.neighbor_elements = {i, i+1};
       temp_edge.unit_vector = {1};
+      temp_edge.edge_area = 1.;
       
       edge_vect.push_back(temp_edge);
     }
@@ -118,3 +105,24 @@ class Mesh_1d_mock {
 
 
 #endif  // FLUS_MOCK_MESH_H_
+
+
+
+
+/*
+struct EdgeCmp {
+  bool operator()(const Edge& lhs, const Edge& rhs) const { 
+    return lhs.edge_number < rhs.edge_number; 
+  }
+};
+struct ElemCmp {
+  bool operator()(const Elem& lhs, const Elem& rhs) const { 
+    return lhs.elem_number < rhs.elem_number; 
+  }
+};
+struct NodeCmp {
+  bool operator()(const Node& lhs, const Node& rhs) const { 
+    return lhs.node_number < rhs.node_number; 
+  }
+};
+*/

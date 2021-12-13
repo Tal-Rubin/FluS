@@ -32,11 +32,11 @@ class Advection_1d_Upwind : public Model {
     return dimen_;
   }
 
-  int fields() const {
+  unsigned int fields() const {
     return fields_;
   }
 
-  int parameters() const {
+  unsigned int parameters() const {
     return params_;
   }
 
