@@ -36,4 +36,4 @@ src/FluS/save/*
 *.out
 *.app
 
-*.DS_Store
+.DS_Store
