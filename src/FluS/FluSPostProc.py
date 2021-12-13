@@ -167,8 +167,8 @@ def read_data(filename = "data.txt"):
 if __name__ == '__main__':
   if not os.path.isdir('src/FluS/save'):
     os.makedirs('src/FluS/save')
-  dim, nodes, elem = read_geometry("src/test/mesh.txt")  
-  time, data = read_data("src/test/data.txt")
+  dim, nodes, elem = read_geometry("src/test/mesh2.txt")  
+  time, data = read_data("src/test/data2.txt")
 
   if elem.shape[1]==4:
     elem = split_quad_to_tri(elem)

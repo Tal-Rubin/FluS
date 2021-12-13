@@ -23,3 +23,7 @@ make
 
 refman.pdf
 
+
+## To run the post-processor
+python ../src/FluS/FluSPostProc.py
+
