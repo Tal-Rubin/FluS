@@ -1,5 +1,4 @@
 // Meshing for 2D
-
 #ifndef MESH2D_H_
 #define MESH2D_H_
 #include <iostream>
@@ -10,28 +9,12 @@
 
 #include "mesh.h"
 
-struct Node;
-struct Elem;
-struct Edge;
-
-/// @brief Class handling the meshing in two-dimension space.
-///
-/// This method is a 2D mesher.
 class Mesh2D : public Mesh {
 
 public:
-    /* ---------------------------- Constructor --------------------------- */
-
-    /// @brief Construct a new Mesh2D object
-    /// 
-    /// Construct a n_row x n_col grid in the specified rectangle [x0, x1] x [y0, y1]. The ghost and corner elements are created outside of the rectangle. 
-    /// @param n_row Number of rows of elements / finite volume data 
-    /// @param n_col Number of columns of elements / finite volume data 
-    /// @param x0 lower x-bound for the meshing region
-    /// @param x1 upper x-bound for the meshing region
-    /// @param y0 lower y-bound for the meshing region
-    /// @param y1 upper y-bound for the meshing region
+    /* ------------------- Constructor and Deconstructor ------------------- */
     Mesh2D(int n_row, int n_col, double x0, double x1, double y0, double y1); 
+    ~Mesh2D();                     
 
     /* ---------------- Functions to get useful properties ---------------- */
     int dim();
@@ -40,21 +23,9 @@ public:
     double el_volume(int element); 
 
     /* ------- Functions to get node_vect, elem_vect and edge_vect. ------- */
-
-    /// @brief Get the node_vect, which containing Node objects.
-    /// @return std::vector<Node> The node_vect.
     std::vector<Node> get_NodeVector();
-
-    /// @brief Get the elem_vect, which containing Elem objects.
-    /// @return std::vector<Elem> The elem_vect. 
     std::vector<Elem> get_ElemVector();
-
-    /// @brief Get the hori_edge_vect, which containing all the horizontal Edge objects.
-    /// @return std::vector<Edge> The hori_edge_vect. 
     std::vector<Edge> get_HoriEdgeVector();
-
-    /// @brief Get the vert_edge_vect, which containing all the vertical Edge objects.
-    /// @return std::vector<Edge> The vert_edge_vect. 
     std::vector<Edge> get_VertEdgeVector();
 
 private:
@@ -65,9 +36,14 @@ private:
     int Elem_row_;   
     int Elem_col_;  
 
+    // The number of Elements and Edges.
+    int Num_Elems_;  
+    int Num_Edges_; 
+
     // The number of Nodes, including those in ghost and corner cells.
     int Node_row_;   
     int Node_col_; 
+    int Num_Nodes_;  
 
     /* ----------------------------- The domain ----------------------------- */
     double x0_;
