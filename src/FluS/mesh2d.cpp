@@ -10,7 +10,11 @@ struct Node {
     ///
     /** @verbatim
      The node numbering example (2D): 
+<<<<<<< Updated upstream
      1↓  4↓  7↓
+=======
+     1↓  4↴  7↴
+>>>>>>> Stashed changes
      2↓  5↓  8↓ 
      3↓  6↓  9↓ @endverbatim 
      */
@@ -27,7 +31,11 @@ struct Elem {
     /** @verbatim
      The element numbering example (2D): 
         __     __
+<<<<<<< Updated upstream
      1↓|__| 3↓|__| 
+=======
+     1↓|__| 3↴|__| 
+>>>>>>> Stashed changes
      2↓|__| 4↓|__| @endverbatim 
      */
     unsigned int elem_number;
