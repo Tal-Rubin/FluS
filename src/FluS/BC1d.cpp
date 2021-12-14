@@ -25,12 +25,12 @@ int BC(int num_Elems, Dynamic_Variable& state, const double t,
     // Scan the elements, impose a field if they are ghost elements
     if (i == 0) {
       // Ghost cell on the left end
-      state.element(i) = f_pr[0];
+      state.element(i) = f_pr(t)[0];
     }
 
     if (i == num_Elems_ + 1) {
       // Ghost cell on the right end
-      state.element(i) = f_pr[1];   
+      state.element(i) = f_pr(t)[1];   
     }
   }
 
