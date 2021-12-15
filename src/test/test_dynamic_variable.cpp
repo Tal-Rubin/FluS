@@ -40,7 +40,7 @@ TEST_CASE( "Dynamic_Variable data access and manupulation", "[dynamic_variable]"
     std::size_t el = GENERATE (0,1,2,3,4);
     std::size_t field = GENERATE (0,1,2);
     std::size_t param = GENERATE(0,1);
-    REQUIRE (state.elem_field_coeff(el,field,param) == state.data_[param +field*state.coeff_num()+ el*state.element_size()]);
+    REQUIRE (state.elem_field_coeff(el,field,param) == state.data_[param +field*state.num_param()+ el*state.element_size()]);
   }    
   state.element(2) += ddt.element(2);
   SECTION( "Data manipulation" ) {

@@ -25,10 +25,15 @@ int main() {
   u.element(mesh.ghost_elements[1]) = u.element(mesh.ghost_elements[0]+1);
 
 
+<<<<<<< HEAD
   for (auto v: u.data_) {
     std::cout<<v<<" ";
   }
   std::cout<<std::endl;
+=======
+  std::cout<<u;
+
+>>>>>>> origin/dev
   for (int i = 0; i<100; i++) {
     
     Dynamic_Variable ddt (u.dim()); 
@@ -47,10 +52,15 @@ int main() {
 
 
 
+<<<<<<< HEAD
   for (auto v: u.data_) {
     std::cout<<v<<" ";
   }
   std::cout<<std::endl;
+=======
+  std::cout<<u;
+
+>>>>>>> origin/dev
 
 
 

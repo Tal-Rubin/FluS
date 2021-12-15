@@ -27,14 +27,24 @@ namespace Preprocessor{
                                           -std::erf(std::sqrt(5.)*(2*mesh.elem_vect[i].nodes[0]->position[0]-1)))/mesh.elem_vect[i].volume;
     }
     // 1sr Legendre polynomial
+<<<<<<< HEAD
     if (state.coeff_num() > 1) {
+=======
+    if (state.num_param() > 1) {
+>>>>>>> origin/dev
       for (std::size_t i = 0; i < mesh.elem_vect.size(); i++){
         state.elem_field_coeff(i, field, 1) =  (mesh.elem_vect[i].nodes[1]->position[0] + mesh.elem_vect[i].nodes[0]->position[0] -1)  \
                               *std::sqrt(5*M_PI)*(std::erf(std::sqrt(5.)*(2*mesh.elem_vect[i].nodes[0]->position[0]-1)) \
                               -std::erf(std::sqrt(5.)*(2*mesh.elem_vect[i].nodes[1]->position[0]-1)));
+<<<<<<< HEAD
         state.elem_field_coeff(i, field, 1) += std::exp(-5*std::pow(2*mesh.elem_vect[i].nodes[0]->position[0]-1,2))-std::exp(-5*std::pow(2*mesh.elem_vect[i].nodes[1]->position[0]-1, 2));
       }
       state.field_coeff(field, 1) *= 3./(20 * pow(mesh.element_volume, 2));
+=======
+        state.elem_field_coeff(i, field, 1) += std::exp(-5*std::pow(2*mesh.elem_vect[i].nodes[0]->position[0]-1,2.))-std::exp(-5*std::pow(2*mesh.elem_vect[i].nodes[1]->position[0]-1, 2.));
+      }
+      state.field_coeff(field, 1) *= 3./(20 * pow(mesh.element_volume, 2.));
+>>>>>>> origin/dev
     }
   }
 }

@@ -18,27 +18,28 @@
 
 #include "../model.h"
 #include "../dynamic_variable.h"
-
-#include "../../mocks/mesh_mock.h"
+#include "../mesh1d.h"
 
 class Burgers_1d : public Model {
 public:
-  Burgers_1d(const Mesh_1d_mock& mesh) : mesh_(mesh) {};   // Custom constructor
-  ~Burgers_1d()  {};   // Destructor
+  // Custom constuctor
+  Burgers_1d(const Mesh1D& mesh) : mesh_(mesh) {};
+  // Destructor
+  ~Burgers_1d()  {};   
 
   int dimen() const {
     return dimen_;
   }
 
-  int fields() const {
+  unsigned int fields() const {
     return fields_;
   }
 
-  int parameters() const {
+  unsigned int parameters() const {
     return params_;
   }
 
-  int local_model() const {
+  unsigned int local_model() const {
     return local_;
   }
 
@@ -46,27 +47,32 @@ public:
     (void) t;
 
     for (auto ed : mesh_.edge_vect) {
+      std::valarray<double> el_flux(state.element_size());
       std::valarray<double> left = state.get_element(ed.neighbor_elements.first);
       std::valarray<double> right = state.get_element(ed.neighbor_elements.second);
-      std::valarray<double> el_flux (state.element_size());
 
-      el_flux = std::signbit(ed.unit_vector[0]) * 0.5 * right * right + \
-	(1-std::signbit(ed.unit_vector[0])) * 0.5 * left * left;
+      el_flux = std::signbit(ed.unit_vector[0]) *  0.5 * std::pow(right, 2.0) + \
+	(1-std::signbit(ed.unit_vector[0])) * 0.5 * std::pow(left, 2.0);
 	
       ddt.element(ed.neighbor_elements.first) -= el_flux;
       ddt.element(ed.neighbor_elements.second) += el_flux;
     }
 
-    ddt.data_ /= mesh_.element_volume;
-    return mesh_.min_elem_vol
+    ddt.data_ /= mesh_.el_volume;
+    return mesh_.el_volume;
   }
 
 private:
-  static const int dimen_ = 1;       // 1D
-  static const int fields_ = 1;      // Density only 
-  static const int params_ = 1;      // Finite volume method
-  static const bool local_ = true;   // Local flux, source
-  const Mesh_1d_mock& mesh_;
+  // Space dimension: 1D
+  static const int dimen_ = 1;       
+  // Fields: density only
+  static const int fields_ = 1;
+  // Finit volume method
+  static const int params_ = 1;
+  // Local flux, source
+  static const bool local_ = true;
+  // Apply 1D mesh
+  const Mesh1D& mesh_;
 }
 
 #endif   //BURGERS_1D_H
