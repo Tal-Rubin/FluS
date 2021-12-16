@@ -9,8 +9,8 @@
  * 
  */
 
-#ifndef FLUS_MOCK_MESH_H_
-#define FLUS_MOCK_MESH_H_
+#ifndef FLUS_MESH_H_
+#define FLUS_MESH_H_
 
 
 #include <valarray>
@@ -136,4 +136,4 @@ class Mesh {
 };
 
 
-#endif  // FLUS_MOCK_MESH_H_
+#endif  // FLUS_MESH_H_

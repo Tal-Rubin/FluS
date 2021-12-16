@@ -9,12 +9,19 @@
  * 
  */
 
-#ifndef FLUS_MESH_H_
-#define FLUS_MESH_H_
+#ifndef FLUS_MESH_H_DEPRERCATED
+#define FLUS_MESH_H_DEPRERCATED
 
 struct Edge;
 struct Elem;
 struct Node;
+
+
+struct mesh_parameters {
+    unsigned int dimension;
+    
+};
+
 
 class Mesh {
 public:
@@ -31,4 +38,4 @@ public:
 
 };
 
-#endif // FLUS_MESH_H_
+#endif // FLUS_MESH_H_DEPRERCATED
