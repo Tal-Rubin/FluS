@@ -1,6 +1,6 @@
 /**
  * @file forward_euler.cpp
- * @author your name (you@domain.com)
+ * @author Tal Rubin (trubin@princeton.edu)
  * @brief 
  * @version 0.1
  * @date 2021-11-25

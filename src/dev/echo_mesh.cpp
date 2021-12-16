@@ -1,3 +1,14 @@
+/**
+ * @file echo_mesh.cpp
+ * @author Tal Rubin (trubin@princeton.edu)
+ * @brief 
+ * @version 0.1
+ * @date 2021-12-16
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <iostream>
 
 #include "../mocks/mesh_mock.h"
@@ -14,7 +25,7 @@ int main() {
 
   for (auto& elem :mesh.elem_vect) {
     std::cout<<"#"<<elem.elem_number<<" Volume: "<<elem.volume<<" Node 1: "<<elem.nodes[0]->node_number<<" Node 2: "<<elem.nodes[1]->node_number<<" Ghost\?: "<<elem.ghost<<std::endl;
-    std::cout<<"Position node 1: "<<elem.nodes[0]->position[0]<<" Position node 2: "<<elem.nodes[0]->position[0]<<std::endl;
+    std::cout<<"Position node 1: "<<elem.nodes[0]->position[0]<<" Position node 2: "<<elem.nodes[1]->position[0]<<std::endl;
 
   }
   std::cout<<"Nodes: "<<std::endl;

@@ -10,7 +10,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_compile_options(-Wall -Werror -pedantic -Wextra -O3)
 
-
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/FluS)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/exactRS)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/test)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/dev)
 
