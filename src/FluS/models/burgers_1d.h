@@ -25,7 +25,7 @@ public:
   // Custom constuctor
   Burgers_1d(const Mesh1D& mesh) : mesh_(mesh) {};
   // Destructor
-  ~Burgers_1d()  {};   
+  ~Burgers_1d() {};   
 
   int dimen() const {
     return dimen_;
