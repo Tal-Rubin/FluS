@@ -18,14 +18,13 @@
 
 #include "../model.h"
 #include "../dynamic_variable.h"
-
-#include "../../mocks/mesh_mock.h"
+#include "../mesh1d.h"
 
 class Advection_1d_Upwind : public Model {
 
   public:
 
-  Advection_1d_Upwind(double advection_velocity, const Mesh_1d_mock& mesh): advection_velocity_(advection_velocity), mesh_(mesh) {};
+  Advection_1d_Upwind(double advection_velocity, const Mesh1D& mesh): advection_velocity_(advection_velocity), mesh_(mesh) {};
   ~Advection_1d_Upwind() {};
 
   int dimen() const {
@@ -76,7 +75,7 @@ class Advection_1d_Upwind : public Model {
 
   const double advection_velocity_;
 
-  const Mesh_1d_mock& mesh_;
+  const Mesh1D& mesh_;
 
 };
 
