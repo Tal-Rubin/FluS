@@ -33,6 +33,9 @@ int main() {
     std::cout<<v<<" ";
   }
   std::cout<<std::endl;
+
+
+  std::cout<<mesh;
   return 0;
 }
 
