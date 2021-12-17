@@ -19,6 +19,9 @@ Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): elem
   unsigned int node_number = 0;
   unsigned int edge_number = 0;
   unsigned int ele_number = 0;
+
+  // No grouping of edges in 1D
+  edge_vect.resize(1);
   
   Node temp_node;
     temp_node.position.resize(dim_);
@@ -71,7 +74,7 @@ Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): elem
     temp_edge.unit_vector = {1.};
     temp_edge.edge_area = 1.;
     
-    edge_vect.push_back(temp_edge);
+    edge_vect[0].push_back(temp_edge);
   }
   for (unsigned int i = 0; i < num_ele+2*(!circular); i++) {
     temp_elem.elem_number = ele_number++;

@@ -57,7 +57,7 @@ class Mesh {
 
 
   std::valarray<double> element_volume;
-  std::vector<Edge> edge_vect;
+  std::vector<std::vector<Edge>> edge_vect;
   std::vector<Elem> elem_vect;
   std::vector<Node> node_vect;
 
