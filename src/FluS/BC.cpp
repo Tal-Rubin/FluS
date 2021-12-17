@@ -27,7 +27,7 @@ int BC(int num_Elems, std:vector<Elem> elem_vect, Dynamic_Variable& state,
     // Scan the elements, impose a field if they are ghost elements
     Elem elem = elem_vect[i];
     if (elem.ghost == true) {
-      state.element(elem.elem_number) = f_pr[elem.elem_number];
+      state.element(elem.elem_number) = f_pr(t)[elem.elem_number];
     }
 
   return 0;
