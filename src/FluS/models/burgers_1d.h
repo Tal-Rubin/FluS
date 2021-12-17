@@ -45,20 +45,41 @@ public:
 
   double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt) const {
     (void) t;
+    double min_timestep = 10000.0;
 
     for (auto ed : mesh_.edge_vect) {
       std::valarray<double> el_flux(state.element_size());
       std::valarray<double> left = state.get_element(ed.neighbor_elements.first);
       std::valarray<double> right = state.get_element(ed.neighbor_elements.second);
 
-      el_flux = std::signbit(ed.unit_vector[0]) *  0.5 * std::pow(right, 2.0) + \
-	(1-std::signbit(ed.unit_vector[0])) * 0.5 * std::pow(left, 2.0);
-	
+      left[1] /= left[0];
+      left[2] = 0; 
+      left[3] = 0;
+      left[4] = 0;
+
+      right[1] /= right[0];
+      right[2] = 0;
+      right[3] = 0;
+      right[4] = 0;
+
+
+      
+      Ers ers(left,right,gamma_);
+      std::valarray<double> W = ers.W(0);
+      std::valarray<double> el_flux (state.element_size());
+      el_flux[0] = W[0]*W[1];
+      el_flux[1] = W[0]*W[1]*W[1];
+      el_flux[2] = 0;
+      el_flux[3] = 0;
+      el_flux[4] = 0;
+      
       ddt.element(ed.neighbor_elements.first) -= el_flux;
       ddt.element(ed.neighbor_elements.second) += el_flux;
+
+      min_timestep = std::min(min_timestep, std::min(mesh_.elem_vect[ed.neighbor_elements.first].volume,mesh_.elem_vect[ed.neighbor_elements.second].volume)/ers.max_speed());
+
     }
 
-    ddt.data_ /= mesh_.el_volume;
     return mesh_.el_volume;
   }
 
