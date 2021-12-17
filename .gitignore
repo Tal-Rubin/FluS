@@ -1,5 +1,6 @@
 documentation/*
 .vscode/*
+.VSCodeCounter/*
 __pycache__
 build/*
 src/FluS/save/*

@@ -139,7 +139,8 @@ def plot_frame(dim, nodes, elem, data, time, x_plot_grid, y_plot_grid, filename)
 
   plt.tight_layout()
   plt.savefig(filename)
-
+  fig.clf()
+  plt.close()
 ##
 # @brief Reads the FluS solution from the saved file
 #
@@ -167,8 +168,8 @@ def read_data(filename = "data.txt"):
 if __name__ == '__main__':
   if not os.path.isdir('src/FluS/save'):
     os.makedirs('src/FluS/save')
-  dim, nodes, elem = read_geometry("src/test/mesh2.txt")  
-  time, data = read_data("src/test/data2.txt")
+  dim, nodes, elem = read_geometry("src/test/mesh.txt")  
+  time, data = read_data("src/test/data.txt")
 
   if elem.shape[1]==4:
     elem = split_quad_to_tri(elem)

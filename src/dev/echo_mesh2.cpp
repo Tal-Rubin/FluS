@@ -6,9 +6,10 @@ int main() {
 
   Mesh mesh(7,std::vector<double> {0.,0.7, 1.}, false);
   std::cout<<"Edges: "<<std::endl;
-  for (auto& edge :mesh.edge_vect) {
+  for (auto edges:mesh.edge_vect){
+  for (auto edge :edges) {
     std::cout<<"#"<<edge.edge_number<<" Element 1: "<<edge.neighbor_elements.first<<" Element 2: "<<edge.neighbor_elements.second<<std::endl;
-  }
+  }}
 
   std::cout<<"Elements: "<<std::endl;
 

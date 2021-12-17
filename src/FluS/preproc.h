@@ -10,14 +10,14 @@
  */
 
 
-#ifndef FLUS_PREP_MOCK_H_
-#define FLUS_PREP_MOCK_H_
+#ifndef FLUS_PREP_H_
+#define FLUS_PREP_H_
 
 
 #include <string>
 
 #include "../FluS/dynamic_variable.h"
-#include "../mocks/mesh_mock.h"
+#include "../mocks/mesh.h"
 
 /**
  * @brief Namespace for FluS' preprocessor functionality
@@ -25,9 +25,9 @@
  */
 namespace Preprocessor {
 
-  void initial_conditions(std::string expression, Dynamic_Variable & state, const std::size_t field, const Mesh_1d_mock & mesh);
+  void initial_conditions(std::string expression, Dynamic_Variable & state, const std::size_t field, const Mesh & mesh);
 
 
 }
 
-#endif // FLUS_PREP_MOCK_H_
+#endif // FLUS_PREP_H_

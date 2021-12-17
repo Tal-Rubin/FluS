@@ -3,7 +3,7 @@
 
 #include "../mocks/mesh_mock.h"
 #include "../FluS/dynamic_variable.h"
-#include "../FluS/models/euler_1d.h"
+#include "../mocks/euler_1d_mock.h"
 #include "../FluS/forward_euler.h"
 #include "../mocks/preproc_mock.h"
 

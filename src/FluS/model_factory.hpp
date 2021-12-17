@@ -19,7 +19,7 @@
 
 #include "model.h"
 
-#include "../mocks/mesh_mock.h"
+#include "../mocks/mesh.h"
 
 #include "models/advection_1d.h"
 #include "models/euler_1d.h"
@@ -27,7 +27,7 @@
 
 namespace Model_factory {
   
-  std::unique_ptr<Model> get_model(std::string model_name, std::vector<double> model_parameters, Mesh_1d_mock & mesh) {
+  std::unique_ptr<Model> get_model(std::string model_name, std::vector<double> model_parameters, Mesh & mesh) {
     if (model_parameters.size() != 1) {
       throw std::invalid_argument("Wrong number of model parameters.");
     }
@@ -46,8 +46,7 @@ namespace Model_factory {
     } else if (model_name == "Advection") {
       return 1;
     } else throw std::invalid_argument("No such model.");
-    // returns pointer
-    return NULL;
+    return 0;
   }
 
 
