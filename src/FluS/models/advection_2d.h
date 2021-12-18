@@ -70,8 +70,8 @@ class Advection_2d_Upwind : public Model {
       el_flux = std::signbit(advection_velocity_[1] * ed.unit_vector[1])*advection_velocity_[1] * low + \
                   (1-std::signbit(advection_velocity_[1] * ed.unit_vector[1]))*advection_velocity_[1] * upp;
       
-      ddt.element(ed.neighbor_elements.first) -=el_flux;
-      ddt.element(ed.neighbor_elements.second) +=el_flux;
+      ddt.element(ed.neighbor_elements.first) +=el_flux;
+      ddt.element(ed.neighbor_elements.second) -=el_flux;
     }
 
     ddt.data_ /= mesh_.element_volume;
