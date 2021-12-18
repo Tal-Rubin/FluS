@@ -160,7 +160,7 @@ class Euler_2d_Godunov : public Model {
 
   private:
   // Space dimension
-  static const int dimen_ = 1;
+  static const int dimen_ = 2;
   // density only
   static const int fields_ = 5;
   // finite volume
