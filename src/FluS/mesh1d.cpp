@@ -1,3 +1,16 @@
+/**
+ * @file mesh1d.cpp
+ * @author Bingjia Yang, Kehan Cai
+ * @brief 
+ * @version 0.1
+ * @date 2021-12-17
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
+
+
 // Based on https://github.com/Tal-Rubin/FluS/blob/Tal/src/mocks/mesh_mock.h
 
 #include <iostream>

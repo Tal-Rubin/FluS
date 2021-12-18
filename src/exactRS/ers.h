@@ -1,10 +1,13 @@
 /**
- * @file
- * Header for the Exact Riemann Solver class.
+ * @file ers.h
+ * @author Tal Rubin (trubin@princeton.edu)
+ * @brief Header for the Exact Riemann Solver class.
+ * @version 0.1
+ * @date 2021-12-17
+ * 
  * 
  * Implementation based on Toro, Eleuterio F. Riemann solvers and numerical methods for fluid dynamics: a practical introduction. Springer, 1999.
- * \copyright Copyright (c) 2021 Tal Rubin Distributed under MIT License.
-*/
+ */
 
 #ifndef ERS_
 #define ERS_

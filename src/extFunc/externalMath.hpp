@@ -1,9 +1,13 @@
 /**
  * @file externalMath.hpp
- * External useful math functions
+ * @author Tal Rubin (trubin@princeton.edu)
+ * @brief 
+ * @version 0.1
+ * @date 2021-12-17
  * 
- * \copyright Copyright (c) 2021 Tal Rubin Distributed under MIT License.
-*/
+ * @copyright Copyright (c) 2021
+ * 
+ */
 
 
 #ifndef EXMATH_HPP_

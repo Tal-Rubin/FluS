@@ -1,3 +1,14 @@
+/**
+ * @file echo_advection.cpp
+ * @author Tal Rubin (trubin@princeton.edu)
+ * @brief 
+ * @version 0.1
+ * @date 2021-12-17
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <iostream>
 #include <cstddef>
 #include <fstream>
@@ -46,11 +57,6 @@ int main() {
 
 
   std::cout<<"FIN\n";
-
-
-
-
-
 
   return 0;
 

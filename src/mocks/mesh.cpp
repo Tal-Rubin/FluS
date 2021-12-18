@@ -81,12 +81,14 @@ Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): elem
     temp_elem.ghost = false;
     temp_elem.nodes = {&node_vect[i], &node_vect[i+1]};
     temp_elem.volume = temp_elem.nodes[1]->position[0]-temp_elem.nodes[0]->position[0];
-    if (temp_elem.volume <= 0){
-      throw std::invalid_argument("domain parameters result in negative element volume");
-    }
+
     if ((!circular) &&(i==0 || i == num_ele+1)){
       temp_elem.ghost = true;
       ghost_elements.push_back(temp_elem.elem_number);
+      temp_elem.volume = 1000.;
+    } 
+    if (temp_elem.volume <= 0){
+      throw std::invalid_argument("domain parameters result in negative element volume");
     }
     elem_vect.push_back(temp_elem);
   }

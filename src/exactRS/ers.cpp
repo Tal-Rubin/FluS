@@ -1,3 +1,14 @@
+/**
+ * @file ers.cpp
+ * @author Tal Rubin (trubin@princeton.edu)
+ * @brief 
+ * @version 0.1
+ * @date 2021-12-17
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <cmath>
 #include <iostream>
 #include <iomanip>

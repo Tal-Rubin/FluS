@@ -1,6 +1,6 @@
 /**
  * @file mesh.h
- * @author Tal Rubin (trubin@princeton.edu)
+ * @author Tal Rubin (trubin@princeton.edu), Bingjia Yang, Kehan Cai
  * @brief 
  * @version 0.1
  * @date 2021-12-15
