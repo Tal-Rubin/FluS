@@ -13,7 +13,6 @@
 
 #include "mesh.h"
 
-//! 1D mesh constructor
 Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): element_volume(num_ele+2*(!circular)), dim_(1)  {
 
   unsigned int node_number = 0;
@@ -100,7 +99,6 @@ Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): elem
   num_ele_ = elem_vect.size();
 }
 
-//! 2D mesh constructor
 Mesh::Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> > positions, std::vector<bool> circular): element_volume( (num_ele[0]+2*(!circular[0])) * (num_ele[1]+2*(!circular[1])) ), dim_(2)
 {
     // Split edges based on orientation
@@ -277,8 +275,11 @@ unsigned int Mesh::num_elements() const {return num_ele_;}
 
 //   // --------------------- 2. testing echo ---------------------
 //   // Mesh mesh({2,3}, {{-1., 1.},{-1., 1.}}, {true, true}); // 2D
-//   Mesh mesh({4,5}, {{-1., 1.},{-1., 1.}}, {false, false}); // 2D
 //   // Mesh mesh(5, {0., 1.}, false);  // 1D
+//   Mesh mesh({4,5}, {{-1., 1.},{-1., 1.}}, {false, false}); // 2D
+
+
+//   std::cout<<"num_elements = " << mesh.num_elements()<<std::endl;
 
 //   std::cout<<"Edges: "<<std::endl;
 //   for (auto edges:mesh.edge_vect){

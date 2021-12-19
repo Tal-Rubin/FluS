@@ -106,6 +106,8 @@ public:
   Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular);
   
   //! 2D mesh constructor
+  ///
+  /// num_ele = {num_row, num_col}, evenly meshing: { {x0, x1},{y0, y1} }
   Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> > positions, std::vector<bool> circular);
 
 
