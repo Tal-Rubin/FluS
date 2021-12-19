@@ -19,7 +19,7 @@
 
 #include "../model.h"
 #include "../dynamic_variable.h"
-#include "../mesh2d.h"
+#include "../mesh.h"
 
 class Advection_2d_Upwind : public Model {
 
@@ -55,23 +55,20 @@ class Advection_2d_Upwind : public Model {
      * In edge_vector, row1 - horizontal edges; row2 - vertical edges
      * Conservation: \f$\dot U + \sum Flux * area / volume  = 0 \f$
      */
-    for (int i = 0; i < 2; i++) {
-      for (auto ed: mesh_.edge_vect[dim-i]) {
-	std::valarray<double> el_flux (state.element_size());
-        std::valarray<double> first = state.get_element(ed.neighbor_elements.first);
-        std::valarray<double> second = state.get_element(ed.neighbor_elements.second);
+    for (auto ed: mesh_.edge_vect[1-dim]) {
+      std::valarray<double> el_flux (stater.element_size());
+      std::valarray<double> first = state.get_element(ed.neighbor_elements.first);
+      std::valarray<double> second = state.get_element(ed.neighbor_elements.second);
       
-        el_flux = std::signbit(advection_velocity_[i] * ed.unit_vector[i])*advection_velocity_[i] * second + \
-	  (1-std::signbit(advection_velocity_[i] * ed.unit_vector[i]))*advection_velocity_[i] * first;
+      el_flux = std::signbit(advection_velocity_[dim] * ed.unit_vector[dim])*advection_velocity_[dim] * second + \
+	(1-std::signbit(advection_velocity_[dim] * ed.unit_vector[dim]))*advection_velocity_[dim] * first;
 
-        ddt.element(ed.neighbor_elements.first) -= ed.unit_vector[i] * el_flux;
-        ddt.element(ed.neighbor_elements.first) *= ed.edge_area;
-        ddt.element(ed.neighbor_elements.second) += ed.unit_vector[i] * el_flux;
-	ddt.element(ed.neighbor_elements.second) *= ed.edge_area;
-	
-      }
-      ddt.data_ /= mesh_.element_volume[i];
+      ddt.element(ed.neighbor_elements.first) -= ed.unit_vector[dim] * el_flux;
+      ddt.element(ed.neighbor_elements.first) *= ed.edge_area;
+      ddt.element(ed.neighbor_elements.second) += ed.unit_vector[dim] * el_flux;
+      ddt.element(ed.neighbor_elements.second) *= ed.edge_area;
     }
+    ddt.data_ /= mesh_.element_volume;
     
     return mesh_.min_elem_vol / sqrt(pow(advection_velocity_[0], 2.0) + pow(advection_velocity_[1], 2.0));
   }
