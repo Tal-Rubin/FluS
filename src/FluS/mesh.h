@@ -18,16 +18,35 @@
 #include <utility>
 #include <iostream>
 
-
+/// @brief The type used to identify an edge
 struct Edge {
+  /// @brief The ID of this edge
   unsigned int edge_number;
+
+  /// @brief The pair of neighbor elements of this edge
   std::pair<unsigned int, unsigned int> neighbor_elements;
+  
+  /// @brief The orientation of this edge
   std::valarray<double> unit_vector;
+
+  //???????????????????
   double edge_area;
 };
 
+/// @brief The type used to identify a node
 struct Node {
+  /// @brief The ID of this node
+  ///
+  /** @verbatim
+   The node numbering example (2D): 
+    1↓  4↓  7↓
+    2↓  5↓  8↓ 
+    3↓  6↓  9↓ @endverbatim 
+    */
   unsigned int node_number;
+  /// @brief The position of this node
+  ///
+  /// In 2D, the position of a node is represented by x and y coordinates
   std::valarray<double> position;
 };
 
