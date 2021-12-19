@@ -1,46 +1,77 @@
 /**
  * @file mesh.h
- * @author your name (you@domain.com)
- * @brief 
+ * @author Tal Rubin (trubin@princeton.edu), Bingjia Yang, Kehan Cai
+ * @brief
  * @version 0.1
- * @date 2021-11-23
- * 
+ * @date 2021-12-15
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 
 #ifndef FLUS_MESH_H_
 #define FLUS_MESH_H_
 
-/// @brief Base class for Mesh1D and Mesh2D.
-class Mesh {
-public:
-    /// @brief Get the number of dimensions
-    virtual int dim() =0;
 
-    /// @brief Get the number of elements
-    virtual int n_elements() =0;
+#include <valarray>
+#include <vector>
+#include <utility>
+#include <iostream>
 
-    /// @brief Get the number of interfaces
-    ///
-    /// In 1D, it is the number of points on element edges. 
-    /// In 2D, it is the number of elements edges. 
-    /// In 3D, it is the number of faces, etc.
-    virtual int n_interfaces() =0; 
 
-    /// @brief Get the volume of a specified element
-    /// @param element ID of the specified element
-    virtual double el_volume(int element) =0; 
-
-protected:
-    /// @brief The number of Elements
-    int Num_Elems_;  
-
-    /// @brief The number of Edges
-    int Num_Edges_;
-
-    /// @brief The number of Nodes, including those in ghost and corner cells.
-    int Num_Nodes_; 
+struct Edge {
+  unsigned int edge_number;
+  std::pair<unsigned int, unsigned int> neighbor_elements;
+  std::valarray<double> unit_vector;
+  double edge_area;
 };
 
-#endif // FLUS_MESH_H_
+struct Node {
+  unsigned int node_number;
+  std::valarray<double> position;
+};
+
+struct Elem {
+  unsigned int elem_number;
+  std::vector<Node *> nodes;
+  double volume;
+  bool ghost;
+};
+
+
+class Mesh {
+  public:
+  //! 1D mesh constructor
+  Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular);
+    
+    Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double>> positions, std::vector<bool> circular);
+  
+  
+
+
+  //! Getter funciton for the spatial dimension
+  unsigned int dim() const;
+  //! Getter funciton for number of elments (including ghosts)
+  unsigned int num_elements() const;
+  //! Output operator overload.
+  friend std::ostream& operator<<(std::ostream& os, Mesh& mesh1d);
+
+
+
+  std::valarray<double> element_volume;
+  std::vector<std::vector<Edge>> edge_vect;
+  std::vector<Elem> elem_vect;
+  std::vector<Node> node_vect;
+
+  std::vector<unsigned int> ghost_elements;
+
+  double min_elem_vol;
+
+
+  private:
+  unsigned int dim_;
+  unsigned int num_ele_;
+
+};
+
+#endif  // FLUS_MESH_H_
