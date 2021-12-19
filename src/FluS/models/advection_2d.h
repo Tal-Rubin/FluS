@@ -25,7 +25,7 @@ class Advection_2d_Upwind : public Model {
 
   public:
 
- Advection_2d_Upwind(std::valarray<double> advection_velocity, const Mesh2D& mesh) : advection_velocity_(advection_velocity), mesh_(mesh) {};
+  Advection_2d_Upwind(std::valarray<double> advection_velocity, const Mesh& mesh) : advection_velocity_(advection_velocity), mesh_(mesh) {};
   
   ~Advection_2d_Upwind() {};
 
@@ -45,38 +45,64 @@ class Advection_2d_Upwind : public Model {
     return local_;
   }
 
-  double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt)const {
+  double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt, const int dim) const {
     (void) t;
+    num_row_ = mesh_.num_ele[0];
+    num_col_ = mesh_.num_ele[1];
 
-    // Flux in the x direction
-    for (auto ed: mesh_.vert_edge_vect)  {
-      std::valarray<double> el_flux (state.element_size());
-      std::valarray<double> left = state.get_element(ed.neighbor_elements.first);
-      std::valarray<double> right = state.get_element(ed.neighbor_elements.second);
+    /**
+     * This for loop should be adaptable to both x and y directions
+     * In edge_vector, row1 - horizontal edges; row2 - vertical edges
+     * Conservation: \f$\dot U + \sum Flux * area / volume  = 0 \f$
+     */
+    for (int i = 0; i < 2; i++) {
+      for (auto ed: mesh_.edge_vect[dim-i]) {
+	std::valarray<double> el_flux (state.element_size());
+        std::valarray<double> first = state.get_element(ed.neighbor_elements.first);
+        std::valarray<double> second = state.get_element(ed.neighbor_elements.second);
       
-      el_flux = std::signbit(advection_velocity_[0] * ed.unit_vector[0])*advection_velocity_[0] * right + \
-	(1-std::signbit(advection_velocity_[0] * ed.unit_vector[0]))*advection_velocity_[0] * left;
-      
-      ddt.element(ed.neighbor_elements.first) -=el_flux;
-      ddt.element(ed.neighbor_elements.second) +=el_flux;
+        el_flux = std::signbit(advection_velocity_[i] * ed.unit_vector[i])*advection_velocity_[i] * second + \
+	  (1-std::signbit(advection_velocity_[i] * ed.unit_vector[i]))*advection_velocity_[i] * first;
+
+        ddt.element(ed.neighbor_elements.first) -= ed.unit_vector[i] * el_flux;
+        ddt.element(ed.neighbor_elements.first) *= ed.edge_area;
+        ddt.element(ed.neighbor_elements.second) += ed.unit_vector[i] * el_flux;
+	ddt.element(ed.neighbor_elements.second) *= ed.edge_area;
+	
+      }
+      ddt.data_ /= mesh_.element_volume[i];
     }
-
-    // Flux in the y direction
-    for (auto ed: mesh_.hori_edge_vect)  {
-      std::valarray<double> el_flux (state.element_size());
-      std::valarray<double> upp = state.get_element(ed.neighbor_elements.first);
-      std::valarray<double> low = state.get_element(ed.neighbor_elements.second);
-      
-      el_flux = std::signbit(advection_velocity_[1] * ed.unit_vector[1])*advection_velocity_[1] * low + \
-                  (1-std::signbit(advection_velocity_[1] * ed.unit_vector[1]))*advection_velocity_[1] * upp;
-      
-      ddt.element(ed.neighbor_elements.first) +=el_flux;
-      ddt.element(ed.neighbor_elements.second) -=el_flux;
-    }
-
-    ddt.data_ /= mesh_.element_volume;
     
-    return mesh_.min_elem_vol / sqrt(pow(advection_velocity_, 2.0) + pow(advection_velocity_, 2.0));
+    return mesh_.min_elem_vol / sqrt(pow(advection_velocity_[0], 2.0) + pow(advection_velocity_[1], 2.0));
+  }
+
+  int BC(Dynamic_variable& state, const double t, std::valarray<double> (*f_pr)(double, int)) {
+    /* @brief Member function to set up boundary conditions for s specific model
+     *        Impose the fields on 4 boundaries respectively
+     * 
+     * @param state A set of Dynamic_Variable
+     * @param f_pr pointer to a field function
+     */
+    num_ele_ = mesh_.num_elements();
+    num_row_ = mesh_.num_ele[0];
+    num_col_ = mesh_.num_ele[1];
+   
+    // For non-circular boundaries, impose the fields on the ghost cells after each step
+    if (mesh_.circular[0] == false) {
+      for (int j = 1; j < num_row_ -1; j++) {
+	  state.element(j) = f_pr(t, j);
+	  state.element(num_ele_ - 1 - j) = f_pr(t, num_ele_ - 1 - j);
+      }
+    }
+    
+    if (mesh_.circular[1] == false) {
+      for (int i = 1; i < num_col_ -1; i++) {
+	state.element(num_row_ * i) = f_pr(t, num_row_ * i);
+	state.element(num_row_ * (i+1) - 1) = f_pr(t, num_row_ * (i+1) - 1);
+      }  
+    }
+
+    return 0;   
   }
   
   private:
@@ -91,7 +117,7 @@ class Advection_2d_Upwind : public Model {
 
   const std::valarray<double> advection_velocity_;
 
-  const Mesh2D& mesh_;
+  const Mesh& mesh_;
 
 };
 
