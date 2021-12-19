@@ -30,7 +30,7 @@ struct Edge {
   /// @brief The orientation of this edge
   std::valarray<double> unit_vector;
 
-  //???????????????????
+  /// @brief The area of this edge
   double edge_area;
 };
 
@@ -119,6 +119,8 @@ public:
 
 
   std::valarray<double> element_volume;
+
+  /// @brief [hori_vect, vert_vect]
   std::vector<std::vector<Edge> > edge_vect;
   std::vector<Elem> elem_vect;
   std::vector<Node> node_vect;
