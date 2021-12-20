@@ -1,6 +1,6 @@
 /**
  * @file model.h
- * @author your name (you@domain.com)
+ * @author Tal Rubin (trubin@princeton.edu)
  * @brief 
  * @version 0.1
  * @date 2021-11-23
@@ -20,18 +20,28 @@ class Model
 public:
   virtual ~Model() {}
 
-  // Calculates d/dt of the state
-  // variables `x` at `t` (using f(t,x) ), returns result in `fx[]`.
-  //
-  // Should return 0 if successful, nonzero if error.
+  /**
+   * @brief Calculates the flux, \f$F\f$,for conservative PDEs, \f$\dot U + \nabla \cdot F = 0 \f$ .
+   * 
+   * @param t time
+   * @param state state vector
+   * @param ddt the flux funciton, return value.
+   * @return double Maximal time-step, based on CFL-like criterion
+   */
   virtual double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt) const = 0 ;
- // virtual Dynamic_Variable source(double t, const Dynamic_Variable& state) const = 0;
+  void source(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt) const {
+    (void) t;
+    (void) state;
+    ddt.data_ =0;
+  };
 
 
   virtual int dimen() const = 0;
-  // "getter" method for number of state variables associated with the
-  // system of ODEs (i.e. the size of x)
-  virtual int fields() const = 0;
+  //! "getter" method for number of state variables associated with the system of ODEs (i.e. the size of x) 
+  virtual unsigned int fields() const = 0;
+
+  //! Getter method for number of parameters to desctibe each field. Default is 1 (finite volume), more would correspond to discontinuous Galerkin.
+  unsigned int parameters() const {return 1;};
 
 
   /**
@@ -40,8 +50,6 @@ public:
    * @return true Model is local
    * @return false Model depend on gradients
    */
-
-
    virtual bool local_model() const = 0;
 
 };

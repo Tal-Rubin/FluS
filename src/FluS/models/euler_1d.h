@@ -10,8 +10,8 @@
  */
 
 
-#ifndef ADVEC_1D_H_
-#define ADVEC_1D_H_
+#ifndef FLUS_EULER_1D_H_
+#define FLUS_EULER_1D_H_
 
 #include <valarray>
 #include <vector>
@@ -19,7 +19,7 @@
 #include "../model.h"
 #include "../dynamic_variable.h"
 
-#include "../../mocks/mesh_mock.h"
+#include "../mesh.h"
 #include "../../exactRS/ers.h"
 
 
@@ -27,18 +27,18 @@ class Euler_1d_Godunov : public Model {
 
   public:
 
-  Euler_1d_Godunov(double gamma, const Mesh_1d_mock& mesh): gamma_(gamma), mesh_(mesh) {};
+  Euler_1d_Godunov(double gamma, Mesh& mesh): gamma_(gamma), mesh_(mesh) {};
   ~Euler_1d_Godunov() {};
 
   int dimen() const {
     return dimen_;
   }
 
-  int fields() const {
+  unsigned int fields() const {
     return fields_;
   }
 
-  int parameters() const {
+  unsigned int parameters() const {
     return params_;
   }
 
@@ -49,7 +49,8 @@ class Euler_1d_Godunov : public Model {
   double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt)const {
     (void) t;
     double min_timestep = 10000.;
-    for (auto ed:mesh_.edge_vect){
+    for (auto edges:mesh_.edge_vect){
+    for (auto ed:edges){
       std::valarray<double> left = state.get_element(ed.neighbor_elements.first);
       std::valarray<double> right = state.get_element(ed.neighbor_elements.second);
 
@@ -79,7 +80,7 @@ class Euler_1d_Godunov : public Model {
 
       min_timestep = std::min(min_timestep, std::min(mesh_.elem_vect[ed.neighbor_elements.first].volume,mesh_.elem_vect[ed.neighbor_elements.second].volume)/ers.max_speed());
     }
-    
+    }
     return min_timestep;
   }
 /*  Dynamic_Variable source(const double t, const Dynamic_Variable& state) const {
@@ -97,12 +98,12 @@ class Euler_1d_Godunov : public Model {
   static const int params_ = 1;
   // Local flux, source
   static const bool local_ = true;
-  const double gamma_;
-  const Mesh_1d_mock& mesh_;
+  double gamma_;
+  Mesh& mesh_;
 
 };
 
 
 
 
-#endif // ADVEC_1D_H_
+#endif // FLUS_EULER_1D_H_

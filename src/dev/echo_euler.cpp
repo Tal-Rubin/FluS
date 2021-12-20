@@ -1,23 +1,40 @@
+/**
+ * @file echo_euler.cpp
+ * @author Tal Rubin (trubin@princeton.edu)
+ * @brief 
+ * @version 0.1
+ * @date 2021-12-17
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #include <iostream>
 #include <cstddef>
 
-#include "../mocks/mesh_mock.h"
+#include "../FluS/mesh.h"
 #include "../FluS/dynamic_variable.h"
-#include "../FluS/models/advection_1d.h"
+#include "../FluS/models/euler_1d.h"
 #include "../FluS/forward_euler.h"
-#include "../mocks/preproc_mock.h"
+#include "../FluS/preproc.h"
 
 int main() { 
 
   std::size_t num_ele = 20;
 
-  const Mesh_1d_mock mesh(num_ele, 0., 1.);
+  Mesh mesh(num_ele,std::vector<double> {0.,1.}, false);
   
-  Advection_1d_Upwind advect (0.1, mesh);
+  Euler_1d_Godunov advect (1.4  , mesh);
   
   Dynamic_Variable u (num_ele+2, advect.fields(),advect.parameters()); 
 
   Preprocessor::initial_conditions(" ", u, 0, mesh);
+  Preprocessor::initial_conditions(" ", u, 1, mesh);
+
+  std::valarray<double> a (u.dim()[0]);
+  a=1;
+  u.field_coeff(0,0)+=a;
+  u.field_coeff(4,0)+=a;
 
 
   // set bc:
@@ -25,8 +42,10 @@ int main() {
   u.element(mesh.ghost_elements[1]) = u.element(mesh.ghost_elements[0]+1);
 
 
-  std::cout<<u;
-
+  for (auto v: u.data_) {
+    std::cout<<v<<" ";
+  }
+  std::cout<<std::endl;
   for (int i = 0; i<100; i++) {
     
     Dynamic_Variable ddt (u.dim()); 
@@ -45,8 +64,10 @@ int main() {
 
 
 
-  std::cout<<u;
-
+  for (auto v: u.data_) {
+    std::cout<<v<<" ";
+  }
+  std::cout<<std::endl;
 
 
 
