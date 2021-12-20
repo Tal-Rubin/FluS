@@ -26,6 +26,7 @@ struct Edge {
   unsigned int edge_number;
   std::pair<unsigned int, unsigned int> neighbor_elements;
   std::valarray<double> unit_vector;
+  double edge_area;
 };
 struct Node {
   unsigned int node_number;
