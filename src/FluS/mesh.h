@@ -30,7 +30,7 @@ struct Edge {
   /// @brief The orientation of this edge
   std::valarray<double> unit_vector;
 
-  //???????????????????
+  /// @brief The area of this edge
   double edge_area;
 };
 
@@ -106,6 +106,8 @@ public:
   Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular);
   
   //! 2D mesh constructor
+  ///
+  /// num_ele = {num_row, num_col}, evenly meshing: { {x0, x1},{y0, y1} }
   Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> > positions, std::vector<bool> circular);
 
 
@@ -119,6 +121,8 @@ public:
 
 
   std::valarray<double> element_volume;
+
+  /// @brief [hori_vect, vert_vect]
   std::vector<std::vector<Edge> > edge_vect;
   std::vector<Elem> elem_vect;
   std::vector<Node> node_vect;
@@ -135,3 +139,4 @@ private:
 };
 
 #endif  // FLUS_MESH_H_
+
