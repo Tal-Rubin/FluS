@@ -139,7 +139,8 @@ def plot_frame(dim, nodes, elem, data, time, x_plot_grid, y_plot_grid, filename)
 
   plt.tight_layout()
   plt.savefig(filename)
-
+  fig.clf()
+  plt.close()
 ##
 # @brief Reads the FluS solution from the saved file
 #
