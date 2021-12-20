@@ -11,8 +11,7 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from numpy.core.numeric import empty_like
-
+import shutil
 ##
 # @brief Reads the mesh geometry
 #
@@ -166,8 +165,9 @@ def read_data(filename = "data.txt"):
 
 
 if __name__ == '__main__':
-  if not os.path.isdir('src/FluS/save'):
-    os.makedirs('src/FluS/save')
+  if os.path.isdir('src/FluS/save'):
+    shutil.rmtree('src/FluS/save')
+  os.makedirs('src/FluS/save')
   dim, nodes, elem = read_geometry("src/test/mesh.txt")  
   time, data = read_data("src/test/data.txt")
 
