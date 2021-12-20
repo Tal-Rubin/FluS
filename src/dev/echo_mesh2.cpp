@@ -10,7 +10,7 @@
  */
 #include <iostream>
 
-#include "../mocks/mesh.h"
+#include "../FluS/mesh.h"
 
 int main() {
 

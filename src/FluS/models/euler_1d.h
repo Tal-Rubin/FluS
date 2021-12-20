@@ -19,7 +19,7 @@
 #include "../model.h"
 #include "../dynamic_variable.h"
 
-#include "../../mocks/mesh.h"
+#include "../mesh.h"
 #include "../../exactRS/ers.h"
 
 

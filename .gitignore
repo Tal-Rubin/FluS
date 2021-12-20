@@ -36,3 +36,5 @@ src/FluS/save/*
 *.exe
 *.out
 *.app
+
+.DS_Store

@@ -12,7 +12,7 @@
 #include <iostream>
 #include <cstddef>
 
-#include "../mocks/mesh.h"
+#include "../FluS/mesh.h"
 #include "../FluS/dynamic_variable.h"
 #include "../FluS/models/euler_1d.h"
 #include "../FluS/forward_euler.h"

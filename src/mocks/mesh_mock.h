@@ -1,6 +1,10 @@
 /**
  * @file mesh_mock.h
+<<<<<<< HEAD
  * @author Tal Rubin (trubin@princeton.edu)
+=======
+ * @author your name (you@domain.com)
+>>>>>>> dev
  * @brief 
  * @version 0.1
  * @date 2021-11-26
@@ -18,13 +22,10 @@
 #include <vector>
 #include <utility>
 
-//#include "../FluS/mesh.h"
-
 struct Edge {
   unsigned int edge_number;
   std::pair<unsigned int, unsigned int> neighbor_elements;
   std::valarray<double> unit_vector;
-  double edge_area;
 };
 struct Node {
   unsigned int node_number;
