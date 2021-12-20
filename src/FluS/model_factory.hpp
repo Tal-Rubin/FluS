@@ -19,7 +19,7 @@
 
 #include "model.h"
 
-#include "../mesh.h"
+#include "mesh.h"
 
 #include "models/advection_1d.h"
 #include "models/euler_1d.h"
