@@ -13,7 +13,6 @@
 
 #include "mesh.h"
 
-//! 1D mesh constructor
 Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): element_volume(num_ele+2*(!circular)), dim_(1)  {
 
   unsigned int node_number = 0;
@@ -100,7 +99,6 @@ Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): elem
   num_ele_ = elem_vect.size();
 }
 
-//! 2D mesh constructor
 Mesh::Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> > positions, std::vector<bool> circular): element_volume( (num_ele[0]+2*(!circular[0])) * (num_ele[1]+2*(!circular[1])) ), dim_(2)
 {
     // Split edges based on orientation
@@ -199,7 +197,8 @@ Mesh::Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> >
             }
             
             temp_edge.unit_vector = {0, -1};
-            temp_edge.edge_area = 1.;
+            
+            temp_edge.edge_area = sqrt( ( elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[0] - elem_vect[temp_edge.neighbor_elements.first].nodes[0]->position[0] ) * ( elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[0] - elem_vect[temp_edge.neighbor_elements.first].nodes[0]->position[0] ) + ( elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[1] - elem_vect[temp_edge.neighbor_elements.first].nodes[0]->position[1] ) * ( elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[1] - elem_vect[temp_edge.neighbor_elements.first].nodes[0]->position[1] ) );
             
             edge_vect[0].push_back(temp_edge);
             
@@ -218,13 +217,20 @@ Mesh::Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> >
             }
             
             temp_edge.unit_vector = {1, 0};
-            temp_edge.edge_area = 1.;
+            
+            temp_edge.edge_area = sqrt( ( elem_vect[temp_edge.neighbor_elements.first].nodes[2]->position[0] - elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[0] ) * ( elem_vect[temp_edge.neighbor_elements.first].nodes[2]->position[0] - elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[0] ) + ( elem_vect[temp_edge.neighbor_elements.first].nodes[2]->position[1] - elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[1] ) * ( elem_vect[temp_edge.neighbor_elements.first].nodes[2]->position[1] - elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[1] ) );
             
             edge_vect[1].push_back(temp_edge);
             
         }
     }
     
+  unsigned int ele_number = 0;
+  for (auto ele: elem_vect) {
+    element_volume[ele_number++] = ele.volume;
+  }
+  min_elem_vol = element_volume.min();
+  num_ele_ = elem_vect.size();
 }
 
 
@@ -259,49 +265,55 @@ unsigned int Mesh::num_elements() const {return num_ele_;}
 
 
 
-//int main() {
+// int main() {
 //
-//  // --------------------- 1. testing output ---------------------
-//  // Mesh mesh1d(5, {0., 1.}, false);
-//  // std::cout << mesh1d;
+//   // --------------------- 1. testing output ---------------------
+//   // Mesh mesh1d(5, {0., 1.}, false);
+//   // std::cout << mesh1d;
 //
-//  // Mesh mesh2d({2,2}, {{-1., 1.},{-1., 1.}}, {false, false});
-//  // std::cout << mesh2d;
-//
-//
-//  // --------------------- 2. testing echo ---------------------
-//  Mesh mesh({2,3}, {{-1., 1.},{-1., 1.}}, {true, true});
-//  std::cout<<"Edges: "<<std::endl;
-//  for (auto edges:mesh.edge_vect){
-//  for (auto edge :edges) {
-//    std::cout<<"#"<<edge.edge_number<<" Element 1: "<<edge.neighbor_elements.first<<" Element 2: "<<edge.neighbor_elements.second<<std::endl;
-//  }}
-//
-//  std::cout<<"Elements: "<<std::endl;
-//
-//  for (auto& elem :mesh.elem_vect) {
-//    std::cout<<"#"<<elem.elem_number<<" Volume: "<<elem.volume<<" Node 1: "<<elem.nodes[0]->node_number<<" Node 2: "<<elem.nodes[1]->node_number<<" Ghost\?: "<<elem.ghost<<std::endl;
-//    std::cout<<"Position node 1: "<<elem.nodes[0]->position[0]<<" Position node 2: "<<elem.nodes[1]->position[0]<<std::endl;
-//
-//  }
-//  std::cout<<"Nodes: "<<std::endl;
-//  for (auto& node :mesh.node_vect) {
-//    std::cout<<"#"<<node.node_number<<" Position: "<<node.position[0]<<std::endl;
-//  }
-//
-//  std::cout<<"Volume valarray:" <<std::endl;
-//  for (auto v:mesh.element_volume){
-//    std::cout<<v<<" ";
-//  }
-//  std::cout<<std::endl;
-//
-//  std::cout<<"Ghost elements:" <<std::endl;
-//  for (auto v:mesh.ghost_elements){
-//    std::cout<<v<<" ";
-//  }
-//  std::cout<<std::endl;
+//   // Mesh mesh2d({2,2}, {{-1., 1.},{-1., 1.}}, {false, false});
+//   // std::cout << mesh2d;
 //
 //
-//  std::cout<<mesh;
-//  return 0;
-//}
+//   // --------------------- 2. testing echo ---------------------
+//   // Mesh mesh({2,3}, {{-1., 1.},{-1., 1.}}, {true, true}); // 2D
+//   // Mesh mesh(5, {0., 1.}, false);  // 1D
+//   Mesh mesh({2,3}, {{-1., 1.},{-1., 1.}}, {false, false}); // 2D
+//
+//
+//   std::cout<<"num_elements = " << mesh.num_elements()<<std::endl;
+//
+//   std::cout<<"Edges: "<<std::endl;
+//   for (auto edges:mesh.edge_vect){
+//   for (auto edge :edges) {
+//     std::cout<<"#"<<edge.edge_number<<" Element 1: "<<edge.neighbor_elements.first<<" Element 2: "<<edge.neighbor_elements.second<<std::endl;
+//   }}
+//
+//   std::cout<<"Elements: "<<std::endl;
+//
+//   for (auto& elem :mesh.elem_vect) {
+//     std::cout<<"#"<<elem.elem_number<<" Volume: "<<elem.volume<<" Node 1: "<<elem.nodes[0]->node_number<<" Node 2: "<<elem.nodes[1]->node_number<<" Ghost\?: "<<elem.ghost<<std::endl;
+//     std::cout<<"Position node 1: "<<elem.nodes[0]->position[0]<<" Position node 2: "<<elem.nodes[1]->position[0]<<std::endl;
+//
+//   }
+//   std::cout<<"Nodes: "<<std::endl;
+//   for (auto& node :mesh.node_vect) {
+//     std::cout<<"#"<<node.node_number<<" Position: "<<node.position[0]<<std::endl;
+//   }
+//
+//   std::cout<<"Volume valarray:" <<std::endl;
+//   for (auto v:mesh.element_volume){
+//     std::cout<<v<<" ";
+//   }
+//   std::cout<<std::endl;
+//
+//   std::cout<<"Ghost elements:" <<std::endl;
+//   for (auto v:mesh.ghost_elements){
+//     std::cout<<v<<" ";
+//   }
+//   std::cout<<std::endl;
+//
+//
+//   std::cout<<mesh;
+//   return 0;
+// }
