@@ -1,34 +1,137 @@
 /**
  * @file mesh.h
- * @author your name (you@domain.com)
- * @brief 
+ * @author Tal Rubin (trubin@princeton.edu), Bingjia Yang, Kehan Cai
+ * @brief
  * @version 0.1
- * @date 2021-11-23
- * 
+ * @date 2021-12-15
+ *
  * @copyright Copyright (c) 2021
- * 
+ *
  */
 
 #ifndef FLUS_MESH_H_
 #define FLUS_MESH_H_
 
-struct Edge;
-struct Elem;
-struct Node;
+
+#include <valarray>
+#include <vector>
+#include <utility>
+#include <iostream>
+
+/// @brief The type used to identify an edge
+struct Edge {
+
+  /// @brief The ID of this edge
+  unsigned int edge_number;
+
+  /// @brief The pair of neighbor elements of this edge
+  std::pair<unsigned int, unsigned int> neighbor_elements;
+  
+  /// @brief The orientation of this edge
+  std::valarray<double> unit_vector;
+
+  //???????????????????
+  double edge_area;
+};
+
+/// @brief The type used to identify a node
+struct Node {
+
+  /// @brief The ID of this node
+  ///
+  /** @verbatim
+    The node numbering example (1D):
+    1 → 2 → 3 → 4 → 5 → 6 @endverbatim
+    */
+  /** @verbatim
+   The node numbering example (2D):
+    1↓  4↓  7↓
+    2↓  5↓  8↓
+    3↓  6↓  9↓ @endverbatim
+    */
+  unsigned int node_number;
+  /// @brief The position of this node
+  ///
+  /// In 1D, the position of a node is represented by x coordinate
+  /// In 2D, the position of a node is represented by x and y coordinates
+  std::valarray<double> position;
+};
+
+/// @brief The type used to identify an element
+struct Elem {
+
+  /// @brief The ID of this element
+  ///
+  /** @verbatim
+    The element numbering example (1D):
+    1→|__| 2→|__| 3→|__|  @endverbatim
+    */
+  /** @verbatim
+    The element numbering example (2D):
+       __     __
+    1↓|__| 3↓|__|
+    2↓|__| 4↓|__| @endverbatim
+    */
+  unsigned int elem_number;
+
+  /// @brief The nodes inside this element
+  ///
+  /// In 1D, there are 2 nodes(left node and right node) in each element
+  /** @verbatim
+    The node numbering in each element (1D):
+       |___|
+      0     1 @endverbatim
+    */
+  /// In 2D, there are 4 nodes in each element
+  /** @verbatim
+    The node numbering in each element (2D):
+      3 ____ 2
+       |    |
+       |____|
+      0      1  @endverbatim
+    */
+  std::vector<Node *> nodes;
+
+  /// @brief The volume of each element
+  double volume;
+
+  /// @brief Return true if it is a ghost element
+  bool ghost;
+};
+
 
 class Mesh {
 public:
+  //! 1D mesh constructor
+  Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular);
+  
+  //! 2D mesh constructor
+  Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> > positions, std::vector<bool> circular);
 
-    virtual ~Mesh(){}
 
-    virtual int dim() =0;
+  //! Getter funciton for the spatial dimension
+  unsigned int dim() const;
+  //! Getter funciton for number of elments (including ghosts)
+  unsigned int num_elements() const;
+  //! Output operator overload.
+  friend std::ostream& operator<<(std::ostream& os, Mesh& mesh1d);
 
-    virtual int n_elements() =0;
 
-    virtual int n_interfaces() =0; // in 1D, is the number of points on element edges, in 2D is the number of elements edges, in 3D is the number of faces, etc.
 
-    virtual double el_volume(int element)=0;  // TO DO
+  std::valarray<double> element_volume;
+  std::vector<std::vector<Edge> > edge_vect;
+  std::vector<Elem> elem_vect;
+  std::vector<Node> node_vect;
+
+  std::vector<unsigned int> ghost_elements;
+
+  double min_elem_vol;
+
+
+private:
+  unsigned int dim_;
+  unsigned int num_ele_;
 
 };
 
-#endif // FLUS_MESH_H_
+#endif  // FLUS_MESH_H_
