@@ -41,7 +41,7 @@ $ make
 
 The latex documentaion is in `refman.pdf`.
 
-### Building the code
+## Building the code
 
 From the root (FluS) directory, run:
 
@@ -55,16 +55,7 @@ $ make
 
 ## Executables and sub-programs
 
-### FluS
-
-### Exact Reimann solver for Euler equaitons
-From the root (FluS) directory, run:
-```bash
-$ cd build
-$ python ../src/exactRS/ersWrap.py
-```
-
-## To run FluS
+### To run FluS
 
 From the root (FluS) directory, run:
 ```bash
@@ -73,11 +64,31 @@ $ src/FluS/./FluS ../src/FluS/FluSConfig.cfg > data.txt
 ```
 
 
-## To run the post-processor
+### To run the post-processor
 
 From the root (FluS) directory, run:
 ```bash
 $ cd build
 $ python ../src/FluS/FluSPostProc.py
 ```
+
+### Exact Reimann solver for Euler equaitons
+From the root (FluS) directory, run:
+```bash
+$ cd build
+$ python ../src/exactRS/ersWrap.py
+```
+
+#### Other executables
+
+Other executables are located in `src/dev` and are used to print stuff to console. They are used in developent.
+
+## Unit testing
+
+From the root (FluS) directory, run:
+```bash
+$ cd build
+$ make test
+```
+
 

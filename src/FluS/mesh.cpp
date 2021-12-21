@@ -84,7 +84,6 @@ Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): elem
     if ((!circular) &&(i==0 || i == num_ele+1)){
       temp_elem.ghost = true;
       ghost_elements.push_back(temp_elem.elem_number);
-      temp_elem.volume = 1000.;
     }
     if (temp_elem.volume <= 0){
       throw std::invalid_argument("domain parameters result in negative element volume");
