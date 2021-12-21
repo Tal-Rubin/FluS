@@ -16,8 +16,8 @@
 
 #include <string>
 
-#include "../FluS/dynamic_variable.h"
-#include "../mocks/mesh.h"
+#include "dynamic_variable.h"
+#include "mesh.h"
 
 /**
  * @brief Namespace for FluS' preprocessor functionality

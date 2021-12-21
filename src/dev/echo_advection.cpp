@@ -21,7 +21,7 @@
 int main() { 
   std::size_t num_ele = 20;
 
-  Mesh mesh(num_ele, std::vector<double> {0., 1.}, true);
+  Mesh mesh(num_ele, std::vector<double> {0., 0.7 ,1.}, true);
   std::ofstream OutputFile;
   OutputFile.open ("mesh.txt");
   OutputFile << mesh;

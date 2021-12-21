@@ -44,6 +44,8 @@ class Mesh {
   //! 1D mesh constructor
   Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular);
   
+  //! Multidimensional mesh constructor
+  Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector<double>> positions, std::vector<bool> circular);
   
 
 

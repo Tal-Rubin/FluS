@@ -11,6 +11,8 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
+
 
 #include <libconfig.h++>
 
@@ -23,13 +25,19 @@
 #define VER2 0
 #define VER3 0
 
-int read_params(double &t_end, unsigned int & Ngrid);
-int main(int argc, char **argv){
-  (void) argc;
-  (void) argv;
+int read_params(std::string config_file, double &t_end, unsigned int & Ngrid);
+
+int main(int argc, char **argv) {
+  
+  if (argc != 2) {
+    throw std::invalid_argument("Expected a single string, for a configuration file path.");
+    return 1;
+  }
+  std::string config_file = argv[1];
+  
   double t_end;
   unsigned int Ngrid;
-  read_params(t_end, Ngrid);
+  read_params(config_file, t_end, Ngrid);
   //get data from user
 
   //init mesh, model, state
@@ -80,12 +88,12 @@ int main(int argc, char **argv){
 
 
 
-int read_params(double &t_end, unsigned int & Ngrid) {
+int read_params(std::string config_file, double &t_end, unsigned int & Ngrid) {
 
     libconfig::Config FluSConfig;
     
     try {
-        FluSConfig.readFile("../src/FluS/FluSConfig.cfg");
+        FluSConfig.readFile(config_file.c_str());
     } catch(const libconfig::FileIOException &fioex) {
         fprintf(stderr, "I/O error while reading file.\n");
         return -1;

@@ -20,7 +20,7 @@ namespace Preprocessor{
 
   void initial_conditions(std::string expression, Dynamic_Variable & state, const std::size_t field, const Mesh & mesh){
     (void) expression;
-
+    // makes a gaussian C* exp(-B*(x-C)^2)
     // Average 
     for (std::size_t i = 0; i < mesh.elem_vect.size(); i++){
       state.elem_field_coeff(i, field, 0) +=  0.25*std::sqrt(M_PI/5.) * (std::erf(std::sqrt(5.)*(2*mesh.elem_vect[i].nodes[1]->position[0]-1))  \

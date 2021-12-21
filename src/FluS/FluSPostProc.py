@@ -165,15 +165,16 @@ def read_data(filename = "data.txt"):
 
 
 if __name__ == '__main__':
-  if os.path.isdir('src/FluS/save'):
-    shutil.rmtree('src/FluS/save')
-  os.makedirs('src/FluS/save')
-  dim, nodes, elem = read_geometry("src/test/mesh.txt")  
-  time, data = read_data("src/test/data.txt")
+  save_dir_path = '../src/FluS/save'
+  if os.path.isdir(save_dir_path):
+    shutil.rmtree(save_dir_path)
+  os.makedirs(save_dir_path)
+  dim, nodes, elem = read_geometry("../src/test/mesh.txt")  
+  time, data = read_data("../src/test/data.txt")
 
   if elem.shape[1]==4:
     elem = split_quad_to_tri(elem)
     data = split_data(data)
   for i in range(len(time)):
-    plot_frame(dim, nodes, elem, data[i,:,0,:], time[i],1,data.shape[1],"src/FluS/save/fig{:0>5d}.png".format(i))
-  os.system('convert -delay 20 -loop 0 src/FluS/save/*.png src/FluS/save/plot.gif')
+    plot_frame(dim, nodes, elem, data[i,:,0,:], time[i],1,data.shape[1],save_dir_path+"/fig{:0>5d}.png".format(i))
+  os.system('convert -delay 20 -loop 0 '+save_dir_path+'/*.png '+save_dir_path+'/plot.gif')

@@ -14,7 +14,7 @@
 
 #include <valarray>
 #include <array>
-/*! \class Ers
+/** \class Ers
  * \brief Class for exact solution of Euler equations in 1 dimension:
  * \f[U +\nabla \cdot F(U)=0 \f]
  * with \f$U = (\rho, \rho v, \rho u, \rho w, E)^T\f$ and \f$F=(\rho u, \rho u^2 + p, \rho u v, \rho u w, u (E+p))^T\f$

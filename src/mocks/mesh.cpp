@@ -9,17 +9,24 @@
  * 
  */
 #include <stdexcept>
-
-
+#include <iostream>
 #include "mesh.h"
 
-//! 1D mesh constructor
-Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): element_volume(num_ele+2*(!circular)), dim_(1)  {
 
+
+
+/**
+ * @brief Construct a new Mesh:: Mesh object
+ * 
+ * @param num_ele 
+ * @param x_pos 
+ * @param circular 
+ */
+Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): element_volume(num_ele+2*(!circular)), dim_(1)  {
   unsigned int node_number = 0;
   unsigned int edge_number = 0;
   unsigned int ele_number = 0;
-
+  
   // No grouping of edges in 1D
   edge_vect.resize(1);
   
