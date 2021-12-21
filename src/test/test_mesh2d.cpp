@@ -1,76 +1,64 @@
 #include <iostream>
 
-#include "../FluS/mesh2d.cpp"
-
+#include "../FluS/mesh.h"
+#include "../FluS/mesh.cpp"
 #include "catch.hpp"
 
 
 TEST_CASE( "Mesh2d data access and manupulation", "[mesh2d]" ) {
-    
-    int Elem_row = 3;
-    int Elem_col = 4;
-    double x0 = -1;
-    double x1 = 1;
-    double y0 = -1;
-    double y1 = 1;
-    double dx = ( x1 - x0 ) / double(Elem_col);
-    double dy = ( y1 - y0 ) / double(Elem_row);
-    
-    Mesh2D* mesh2d = new Mesh2D(Elem_row, Elem_col, x0, x1, y0, y1);
-    
-    SECTION( "mesh2d pointer access" ) {
-        REQUIRE( mesh2d->n_elements() == Elem_row * Elem_col );
-        REQUIRE( mesh2d->n_interfaces() == ( Elem_row + 1 ) * Elem_col + ( Elem_col + 1 ) * Elem_row );
-    }
-    
-    std::vector<Node> nodeVector = mesh2d->get_NodeVector();
-    
-    SECTION( "Node vector access" ) {
-        int idx_row = GENERATE (0, 1, 2, 3, 4, 5);
-        int idx_col = GENERATE (0, 1, 2, 3, 4, 5, 6);
+    SECTION( "mesh in 2D" ) {
+        std::vector<unsigned int> num_ele = {2, 3};
+        std::vector<std::vector <double> > positions = {{-1., 1.},{-1., 1.}};
+        double dx = ( positions[0][1] - positions[0][0] ) / double(num_ele[1]);
+        double dy = ( positions[1][1] - positions[1][0] ) / double(num_ele[0]);
+        bool bc1 = GENERATE(true, false);
+        bool bc2 = GENERATE(true, false);
+        std::vector<bool> circular = {bc1, bc2};
         
-        REQUIRE( nodeVector[idx_row + idx_col * ( Elem_row + 3 )].node_number == idx_row + idx_col * ( Elem_row + 3 ) );
+        Mesh mesh({2,3}, {{-1., 1.},{-1., 1.}}, circular);
         
-        REQUIRE( nodeVector[idx_row + idx_col * ( Elem_row + 3 )].position[0] == x0 + dx * ( idx_col - 1 ) );
-        REQUIRE( nodeVector[idx_row + idx_col * ( Elem_row + 3 )].position[1] == y1 - dy * ( idx_row - 1 ) );
-    }
-    
-    std::vector<Elem> elemVector = mesh2d->get_ElemVector();
-    
-    SECTION( "Element vector access" ) {
-        int idx_row = GENERATE (0, 1, 2, 3, 4);
-        int idx_col = GENERATE (0, 1, 2, 3, 4, 5);
+        SECTION( "mesh basic quantities verify" ) {
+            REQUIRE( mesh.dim() == 2 );
+            REQUIRE( mesh.num_elements() == (num_ele[0]+2*(!circular[0])) * (num_ele[1]+2*(!circular[1])) );
+        }
         
-        REQUIRE( elemVector[idx_row + idx_col * ( Elem_row + 2 )].elem_number == idx_row + idx_col * ( Elem_row + 2 ) );
+        SECTION( "Node vector test" ) {
+            int idx_row = GENERATE (0, 1);
+            int idx_col = GENERATE (0, 1, 2);
+            
+            REQUIRE( mesh.node_vect[idx_row + idx_col * ( num_ele[0] + 1 + 2 * (!circular[0]) )].node_number == idx_row + idx_col * ( num_ele[0] + 1 + 2 * (!circular[0]) ) );
+            
+            REQUIRE( mesh.node_vect[idx_row + idx_col * ( num_ele[0] + 1 + 2 * (!circular[0]) )].position[0] == positions[0][0] + dx * ( idx_col - (!circular[0]) ) );
+            REQUIRE( mesh.node_vect[idx_row + idx_col * ( num_ele[0] + 1 + 2 * (!circular[0]) )].position[1] == positions[1][1] - dy * ( idx_row - (!circular[1]) ) );
+        }
         
-        REQUIRE( elemVector[idx_row + idx_col * ( Elem_row + 2 )].nodes[2]->node_number - elemVector[idx_row + idx_col * ( Elem_row + 2 )].nodes[1]->node_number ==  Elem_row + 3 );
-        REQUIRE( elemVector[idx_row + idx_col * ( Elem_row + 2 )].nodes[3]->node_number - elemVector[idx_row + idx_col * ( Elem_row + 2 )].nodes[0]->node_number ==  Elem_row + 3 );
+        SECTION( "Element vector test" ) {
+            int idx_row = GENERATE (0, 1);
+            int idx_col = GENERATE (0, 1, 2);
+            
+            REQUIRE( mesh.elem_vect[idx_row + idx_col * ( num_ele[0] + 2 * (!circular[0]) )].elem_number == idx_row + idx_col * ( num_ele[0] + 2 * (!circular[0]) ) );
+            
+            REQUIRE( mesh.elem_vect[idx_row + idx_col * ( num_ele[0] + 2 * (!circular[0]) )].nodes[1]->node_number - mesh.elem_vect[idx_row + idx_col * ( num_ele[0] + 2 * (!circular[0]) )].nodes[0]->node_number ==  num_ele[0] + 2 * (!circular[0]) + 1 );
+            REQUIRE( mesh.elem_vect[idx_row + idx_col * ( num_ele[0] + 2 * (!circular[0]) )].nodes[0]->node_number - mesh.elem_vect[idx_row + idx_col * ( num_ele[0] + 2 * (!circular[0]) )].nodes[3]->node_number ==  1 );
+            
+            // REQUIRE( mesh.elem_vect[idx_row + idx_col * ( num_ele[0] + 2 * (!circular[0]) )].volume == dx * dy );
+            
+        }
         
-        REQUIRE( elemVector[idx_row + idx_col * ( Elem_row + 2 )].volume == dx * dy );
-        
-    }
-    
-    std::vector<Edge> horiedgeVector = mesh2d->get_HoriEdgeVector();
-    
-    SECTION( "Hori-Edge vector access" ) {
-        int idx_row = GENERATE (0, 1, 2, 3);
-        int idx_col = GENERATE (0, 1, 2, 3);
-        
-        REQUIRE( horiedgeVector[idx_row + idx_col * ( Elem_row + 1 )].edge_number == idx_row + idx_col * ( Elem_row + 1 ) );
-        
-        REQUIRE( horiedgeVector[idx_row + idx_col * ( Elem_row + 1 )].neighbor_elements.second->elem_number - horiedgeVector[idx_row + idx_col * ( Elem_row + 1 )].neighbor_elements.first->elem_number == 1 );
-        
-    }
-    
-    std::vector<Edge> vertedgeVector = mesh2d->get_VertEdgeVector();
-    
-    SECTION( "Vert-Edge vector access" ) {
-        int idx_row = GENERATE (0, 1, 2);
-        int idx_col = GENERATE (0, 1, 2, 3, 4);
-        
-        REQUIRE( vertedgeVector[idx_col + idx_row * ( Elem_col + 1 )].edge_number == idx_col + idx_row * ( Elem_col + 1 ) );
-        
-        REQUIRE( vertedgeVector[idx_col + idx_row * ( Elem_col + 1 )].neighbor_elements.second->elem_number - vertedgeVector[idx_col + idx_row * ( Elem_col + 1 )].neighbor_elements.first->elem_number == Elem_row + 2 );
+        SECTION( "Edge vector test" ) {
+            int idx_row = GENERATE (0);
+            int idx_col = GENERATE (0, 1);
+
+            REQUIRE( mesh.edge_vect[0][idx_row + idx_col * ( num_ele[0] + (!circular[0]) )].edge_number == idx_row + idx_col * ( num_ele[0] + (!circular[0]) ) );
+
+            REQUIRE( mesh.edge_vect[0][idx_row + idx_col * ( num_ele[0] + (!circular[0]) )].neighbor_elements.second - mesh.edge_vect[0][idx_row + idx_col * ( num_ele[0] + (!circular[0]) )].neighbor_elements.first == 1 );
+
+
+            REQUIRE( mesh.edge_vect[1][idx_col + idx_row * ( num_ele[1] + (!circular[1]) )].edge_number == idx_col + idx_row * ( num_ele[1] + (!circular[1]) ) );
+
+            REQUIRE( mesh.edge_vect[1][idx_col + idx_row * ( num_ele[1] + (!circular[1]) )].neighbor_elements.second - mesh.edge_vect[1][idx_col + idx_row * ( num_ele[1] + (!circular[1]) )].neighbor_elements.first == num_ele[0] + 2 * (!circular[0]) );
+
+        }
         
     }
      
