@@ -197,7 +197,8 @@ Mesh::Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> >
             }
             
             temp_edge.unit_vector = {0, -1};
-            temp_edge.edge_area = 1.;
+            
+            temp_edge.edge_area = sqrt( ( elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[0] - elem_vect[temp_edge.neighbor_elements.first].nodes[0]->position[0] ) * ( elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[0] - elem_vect[temp_edge.neighbor_elements.first].nodes[0]->position[0] ) + ( elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[1] - elem_vect[temp_edge.neighbor_elements.first].nodes[0]->position[1] ) * ( elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[1] - elem_vect[temp_edge.neighbor_elements.first].nodes[0]->position[1] ) );
             
             edge_vect[0].push_back(temp_edge);
             
@@ -216,7 +217,8 @@ Mesh::Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> >
             }
             
             temp_edge.unit_vector = {1, 0};
-            temp_edge.edge_area = 1.;
+            
+            temp_edge.edge_area = sqrt( ( elem_vect[temp_edge.neighbor_elements.first].nodes[2]->position[0] - elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[0] ) * ( elem_vect[temp_edge.neighbor_elements.first].nodes[2]->position[0] - elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[0] ) + ( elem_vect[temp_edge.neighbor_elements.first].nodes[2]->position[1] - elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[1] ) * ( elem_vect[temp_edge.neighbor_elements.first].nodes[2]->position[1] - elem_vect[temp_edge.neighbor_elements.first].nodes[1]->position[1] ) );
             
             edge_vect[1].push_back(temp_edge);
             
@@ -276,7 +278,7 @@ unsigned int Mesh::num_elements() const {return num_ele_;}
 //   // --------------------- 2. testing echo ---------------------
 //   // Mesh mesh({2,3}, {{-1., 1.},{-1., 1.}}, {true, true}); // 2D
 //   // Mesh mesh(5, {0., 1.}, false);  // 1D
-//   Mesh mesh({4,5}, {{-1., 1.},{-1., 1.}}, {false, false}); // 2D
+//   Mesh mesh({2,3}, {{-1., 1.},{-1., 1.}}, {false, false}); // 2D
 
 
 //   std::cout<<"num_elements = " << mesh.num_elements()<<std::endl;

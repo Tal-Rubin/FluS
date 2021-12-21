@@ -44,10 +44,10 @@ struct Node {
     1 → 2 → 3 → 4 → 5 → 6 @endverbatim 
     */
   /** @verbatim
-   The node numbering example (2D): 
+  The node numbering example (2D):
     1↓  4↓  7↓
-    2↓  5↓  8↓ 
-    3↓  6↓  9↓ @endverbatim 
+    2↓  5↓  8↓
+    3↓  6↓  9↓ @endverbatim
     */
   unsigned int node_number;
   /// @brief The position of this node
@@ -61,16 +61,16 @@ struct Node {
 struct Elem {
 
   /// @brief The ID of this element
-  /// 
+  ///
   /** @verbatim
-    The element numbering example (1D): 
-    1→|__| 2→|__| 3→|__|  @endverbatim 
+    The element numbering example (1D):
+    1→|__| 2→|__| 3→|__|  @endverbatim
     */
   /** @verbatim
-    The element numbering example (2D): 
+    The element numbering example (2D):
        __     __
-    1↓|__| 3↓|__| 
-    2↓|__| 4↓|__| @endverbatim 
+    1↓|__| 3↓|__|
+    2↓|__| 4↓|__| @endverbatim
     */
   unsigned int elem_number;
 
@@ -78,17 +78,17 @@ struct Elem {
   ///
   /// In 1D, there are 2 nodes(left node and right node) in each element
   /** @verbatim
-    The node numbering in each element (1D): 
+    The node numbering in each element (1D):
        |___|
-      0     1 @endverbatim 
+      0     1 @endverbatim
     */
   /// In 2D, there are 4 nodes in each element
   /** @verbatim
-    The node numbering in each element (2D): 
+    The node numbering in each element (2D):
       3 ____ 2
-       |    | 
+       |    |
        |____|
-      0      1  @endverbatim 
+      0      1  @endverbatim
     */
   std::vector<Node *> nodes;
 
@@ -97,6 +97,13 @@ struct Elem {
 
   /// @brief Return true if it is a ghost element
   bool ghost;
+};
+
+
+
+struct mesh_parameters {
+    unsigned int dimension;
+    
 };
 
 
