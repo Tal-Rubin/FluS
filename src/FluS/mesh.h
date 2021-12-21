@@ -17,6 +17,8 @@
 #include <vector>
 #include <utility>
 #include <iostream>
+#include <cstddef>
+
 
 /// @brief The type used to identify an edge
 struct Edge {
@@ -107,11 +109,12 @@ struct mesh_parameters {
 };
 
 
-class Mesh {
+struct Mesh {
 public:
   //! 1D mesh constructor
   Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular);
-  
+  Mesh(std::size_t num_ele, std::vector<double> x_pos, bool circular);
+
   //! 2D mesh constructor
   ///
   /// num_ele = {num_row, num_col}, evenly meshing: { {x0, x1},{y0, y1} }

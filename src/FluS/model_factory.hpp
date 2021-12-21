@@ -31,9 +31,9 @@ namespace Model_factory {
     if (model_parameters.size() != 1) {
       throw std::invalid_argument("Wrong number of model parameters.");
     }
-    if (model_name == "Euler"){
+    if (model_name == "Euler_1d"){
       return std::make_unique<Euler_1d_Godunov>(model_parameters[0], mesh);
-    } else if (model_name == "Advection") {
+    } else if (model_name == "Advection_1d") {
       return std::make_unique<Advection_1d_Upwind>(model_parameters[0], mesh);
     } else throw std::invalid_argument("No such model.");
     // returns pointer
@@ -41,9 +41,9 @@ namespace Model_factory {
   }
 
   unsigned int num_model_params(std::string model_name) {
-    if (model_name == "Euler"){
+    if (model_name == "Euler_1d"){
       return 1;
-    } else if (model_name == "Advection") {
+    } else if (model_name == "Advection_1d") {
       return 1;
     } else throw std::invalid_argument("No such model.");
     return 0;

@@ -22,7 +22,7 @@
  * 
  * Example dynamic variables are the state vector of the system, and its time derivative. 
  */
-class Dynamic_Variable {
+struct Dynamic_Variable {
   public:
   /**
    * @brief Construct a new Dynamic_Variable object

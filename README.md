@@ -64,9 +64,20 @@ $ cd build
 $ python ../src/exactRS/ersWrap.py
 ```
 
+## To run FluS
 
+From the root (FluS) directory, run:
+```bash
+$ cd build
+$ src/FluS/./FluS ../src/FluS/FluSConfig.cfg > data.txt
+```
 
 
 ## To run the post-processor
-python ../src/FluS/FluSPostProc.py
+
+From the root (FluS) directory, run:
+```bash
+$ cd build
+$ python ../src/FluS/FluSPostProc.py
+```
 

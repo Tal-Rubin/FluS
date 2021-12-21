@@ -44,24 +44,20 @@ class Advection_1d_Upwind : public Model {
     return local_;
   }
 
-  double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt)const {
+  double flux(const double t, const Dynamic_Variable& state, Dynamic_Variable& ddt) const {
     (void) t;
     for (auto edges: mesh_.edge_vect){
       for (auto ed: edges)  {
         std::valarray<double> el_flux (state.element_size());
         el_flux = std::signbit(advection_velocity_ * ed.unit_vector[0])*advection_velocity_ * state.get_element(ed.neighbor_elements.second) + \
                     (1-std::signbit(advection_velocity_ * ed.unit_vector[0]))*advection_velocity_ * state.get_element(ed.neighbor_elements.first);
-        ddt.element(ed.neighbor_elements.first) -=el_flux;
-        ddt.element(ed.neighbor_elements.second) +=el_flux;
+        ddt.element(ed.neighbor_elements.first) -=  mesh_.elem_vect[ed.neighbor_elements.first].ghost* el_flux;
+        ddt.element(ed.neighbor_elements.second) += mesh_.elem_vect[ed.neighbor_elements.second].ghost* el_flux;
       }
     }
     ddt.data_ /= mesh_.element_volume;
     return mesh_.min_elem_vol/std::abs(advection_velocity_);
   }
-/*  Dynamic_Variable source(const double t, const Dynamic_Variable& state) const {
-    (void) t;
-    return (state.dim_);
-  }*/
 
 
   private:

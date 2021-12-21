@@ -169,8 +169,8 @@ if __name__ == '__main__':
   if os.path.isdir(save_dir_path):
     shutil.rmtree(save_dir_path)
   os.makedirs(save_dir_path)
-  dim, nodes, elem = read_geometry("../src/test/mesh.txt")  
-  time, data = read_data("../src/test/data.txt")
+  dim, nodes, elem = read_geometry("mesh.txt")  
+  time, data = read_data("data.txt")
 
   if elem.shape[1]==4:
     elem = split_quad_to_tri(elem)

@@ -99,6 +99,12 @@ Mesh::Mesh(unsigned int num_ele, std::vector<double> x_pos, bool circular): elem
   num_ele_ = elem_vect.size();
 }
 
+//! Delegated constructor
+Mesh::Mesh(std::size_t num_ele, std::vector<double> x_pos, bool circular):Mesh((unsigned int) num_ele, x_pos, circular){}
+
+
+
+
 Mesh::Mesh(std::vector<unsigned int> num_ele, std::vector<std::vector <double> > positions, std::vector<bool> circular): element_volume( (num_ele[0]+2*(!circular[0])) * (num_ele[1]+2*(!circular[1])) ), dim_(2)
 {
     // Split edges based on orientation

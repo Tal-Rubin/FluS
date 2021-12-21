@@ -13,8 +13,8 @@
 #include "../FluS/mesh.h"
 
 int main() {
-
-  Mesh mesh(7,std::vector<double> {0.,0.7, 1.}, false);
+  unsigned int num_ele = 7;
+  Mesh mesh(num_ele,{0.,0.7, 1.}, false);
   std::cout<<"Edges: "<<std::endl;
   for (auto edges:mesh.edge_vect){
   for (auto edge :edges) {
