@@ -1,4 +1,7 @@
+// g++ -std=c++11 -o a test_catch.cpp test_mesh1d.cpp
+
 #include <iostream>
+#include <cmath>      
 
 #include "../FluS/mesh.cpp"
 #include "../FluS/mesh.h"
@@ -27,7 +30,7 @@ TEST_CASE( "Mesh1d data access and manipulation", "[mesh]" ) {
         
         REQUIRE( mesh1d_false.node_vect[idx].node_number == idx );
         
-        REQUIRE( mesh1d_false.node_vect[idx].position[0] == x0 + dx * ( idx - 1 ) );
+        REQUIRE( std::abs(mesh1d_false.node_vect[idx].position[0] - (x0 + dx * ( idx - 1 ))) < 0.0001 );
     
     }
     
@@ -39,7 +42,7 @@ TEST_CASE( "Mesh1d data access and manipulation", "[mesh]" ) {
         REQUIRE( mesh1d_false.elem_vect[idx].nodes[1]->node_number - mesh1d_false.elem_vect[idx].nodes[0]->node_number ==  1 );
         
         if (mesh1d_false.elem_vect[idx].ghost == false){
-            REQUIRE( mesh1d_false.elem_vect[idx].volume == dx );
+            REQUIRE( std::abs(mesh1d_false.elem_vect[idx].volume  - dx) < 0.0001 );
         }else{
             REQUIRE( mesh1d_false.elem_vect[idx].volume == 1000 );
         }
