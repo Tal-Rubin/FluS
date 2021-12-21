@@ -30,7 +30,7 @@ int main() {
   Advection_1d_Upwind advect (0.1, mesh);
   
   Dynamic_Variable u (mesh.num_elements(), advect.fields(),advect.parameters()); 
-  Preprocessor::initial_conditions(" ", u, 0, mesh);
+  Preprocessor::gaussian_initial_conditions(1., u, 0, mesh);
   
   double t =0;
   std::cout<<advect.fields()<<" "<<advect.parameters()<<"\n";

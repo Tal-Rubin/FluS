@@ -25,8 +25,8 @@
  */
 namespace Preprocessor {
 
-  void initial_conditions(std::string expression, Dynamic_Variable & state, const std::size_t field, const Mesh & mesh);
-
+  void gaussian_initial_conditions(double amplitude,Dynamic_Variable & state, const std::size_t field, const Mesh & mesh);
+  void low_half_domain(double amplitude, int dim, Dynamic_Variable & state, const std::size_t field, const Mesh & mesh);
 
 }
 

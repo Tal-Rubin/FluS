@@ -20,6 +20,7 @@
 #include "model.h"
 #include "model_factory.hpp"
 #include "forward_euler.h"
+#include "preproc.h"
 #include "dynamic_variable.h"
 
 #define VER1 0
@@ -27,7 +28,8 @@
 #define VER3 0
 
 int read_params(std::string config_file, double &t_end, double & time_step_scaling, std::vector<unsigned int> & num_ele, std::vector<std::vector<double>> & positions, 
-                  std::vector<bool> & circular, std::string & model_name, std::vector<double> & model_parameters, unsigned int & output_freq);
+                  std::vector<bool> & circular, std::string & model_name, std::vector<double> & model_parameters, unsigned int & output_freq,
+                  std::vector<double> & const_IC, std::vector<double> & gaussian_amplitude, std::vector<double>& low_half_amplitude);
 
 int main(int argc, char **argv) {
   
@@ -45,7 +47,11 @@ int main(int argc, char **argv) {
   std::string model_name;
   std::vector<double> model_parameters;
   
-  
+
+  std::vector<double> const_IC;
+  std::vector<double> gaussian_amplitude;
+  std::vector<double> low_half_amplitude;
+
   
   double t_end;
   double time_step_scaling;
@@ -56,7 +62,8 @@ int main(int argc, char **argv) {
 
 
 
-  if( read_params(config_file, t_end, time_step_scaling,  num_ele, positions, circular, model_name, model_parameters, output_freq)!=0) { 
+  if( read_params(config_file, t_end, time_step_scaling,  num_ele, positions, circular, \
+  model_name, model_parameters, output_freq, const_IC, gaussian_amplitude, low_half_amplitude)!=0) { 
     return 1;
   }
 
@@ -81,12 +88,18 @@ int main(int argc, char **argv) {
   Dynamic_Variable ddt_flux(state.dim());
   Dynamic_Variable ddt_source(state.dim());
 
+  if (const_IC.size() < model->fields()){
+    throw std::invalid_argument("wrong number of initial conditions");
+  }
+  
+  for (std::size_t i =0; i<model->fields(); i++){
+    state.field_coeff(i,0) = const_IC[i];
+    Preprocessor::gaussian_initial_conditions(gaussian_amplitude[i] ,state, i, mesh);
+    Preprocessor::low_half_domain(low_half_amplitude[i] ,0 ,state, i, mesh);
 
-//  Preprocessor::initial_conditions(initial_condition_string, state);
-
+  }
 
   std::cout<< t << " " << state;
-
 
   for (std::size_t steps = 0; t< t_end; steps++) {
     
@@ -129,7 +142,8 @@ int main(int argc, char **argv) {
 
 
 int read_params(std::string config_file, double &t_end, double & time_step_scaling, std::vector<unsigned int> & num_ele, std::vector<std::vector<double>> & positions, 
-                  std::vector<bool> & circular, std::string & model_name, std::vector<double> & model_parameters, unsigned int & output_freq) {
+                  std::vector<bool> & circular, std::string & model_name, std::vector<double> & model_parameters, unsigned int & output_freq,
+                  std::vector<double> & const_IC, std::vector<double> & gaussian_amplitude, std::vector<double>& low_half_amplitude) {
 
     libconfig::Config FluSConfig;
     
@@ -224,6 +238,22 @@ int read_params(std::string config_file, double &t_end, double & time_step_scali
     } 
 
     
-    
+    try {
+      const libconfig::Setting& ICs = root["general_settings"]["IC"]["fields"];
+      const_IC.resize(ICs.getLength());
+      gaussian_amplitude.resize(ICs.getLength());
+      low_half_amplitude.resize(ICs.getLength());
+      for (std::size_t i = 0; i < const_IC.size(); i++){
+        const libconfig::Setting& IC = ICs[i];
+        const_IC[i] = IC["const"];
+        gaussian_amplitude[i] = IC["gaussian"][0];
+        low_half_amplitude[i] = IC["const_half_domain"];
+      }
+    } catch (const libconfig::SettingNotFoundException &nfex) {
+        fprintf(stderr, "No 'IC' setting in configuration file.\n" );
+        return -1;
+    } 
+
+
     return 0;
 }

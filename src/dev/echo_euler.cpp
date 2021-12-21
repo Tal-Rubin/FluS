@@ -28,8 +28,8 @@ int main() {
   
   Dynamic_Variable u (num_ele+2, advect.fields(),advect.parameters()); 
 
-  Preprocessor::initial_conditions(" ", u, 0, mesh);
-  Preprocessor::initial_conditions(" ", u, 1, mesh);
+  Preprocessor::gaussian_initial_conditions(1., u, 0, mesh);
+  Preprocessor::gaussian_initial_conditions(1., u, 1, mesh);
 
   std::valarray<double> a (u.dim()[0]);
   a=1;

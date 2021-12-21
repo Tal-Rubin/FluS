@@ -75,8 +75,8 @@ class Euler_1d_Godunov : public Model {
       el_flux[3] = W[0]*W[1]*W[3];
       el_flux[4] = W[0]*W[1]*(0.5*(W[1]*W[1]+ W[2]*W[2]+W[3]*W[3])) + W[4]*W[1]/(gamma_-1);
       
-      ddt.element(ed.neighbor_elements.first) -=  mesh_.elem_vect[ed.neighbor_elements.first].ghost* el_flux;
-      ddt.element(ed.neighbor_elements.second) += mesh_.elem_vect[ed.neighbor_elements.second].ghost* el_flux;
+      ddt.element(ed.neighbor_elements.first) -=  (!mesh_.elem_vect[ed.neighbor_elements.first].ghost)* el_flux;
+      ddt.element(ed.neighbor_elements.second) += (!mesh_.elem_vect[ed.neighbor_elements.second].ghost)* el_flux;
 
 
       min_timestep = std::min(min_timestep, std::min(mesh_.elem_vect[ed.neighbor_elements.first].volume,mesh_.elem_vect[ed.neighbor_elements.second].volume)/ers.max_speed());
