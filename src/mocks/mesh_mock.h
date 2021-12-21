@@ -1,10 +1,6 @@
 /**
  * @file mesh_mock.h
-<<<<<<< HEAD
  * @author Tal Rubin (trubin@princeton.edu)
-=======
- * @author your name (you@domain.com)
->>>>>>> dev
  * @brief 
  * @version 0.1
  * @date 2021-11-26

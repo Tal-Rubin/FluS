@@ -4,5 +4,5 @@ cmake_minimum_required(VERSION 3.10)
 project(FluS CXX)
 
 # add the executable
-add_executable(FluS FluS.cpp forward_euler.cpp dynamic_variable.cpp ../exactRS/ers.cpp ../mocks/mesh.cpp)
+add_executable(FluS FluS.cpp forward_euler.cpp dynamic_variable.cpp ../exactRS/ers.cpp mesh.cpp)
 target_link_libraries(FluS -lconfig++)
