@@ -65,7 +65,7 @@ $ src/FluS/./FluS ../src/FluS/FluSConfig.cfg > data.txt
 
 Two pre-set config files are saved:
 1. `FluSConfigAdvection.cfg` 1d advection with periodic domain.
-2. `FluSConfigEuler.cfg` 2d Euler equations with constant bounday conditions - two rarefaction wave solutions.
+2. `FluSConfigEuler.cfg` 1d Euler equations with constant bounday conditions - two rarefaction wave solutions.
 
 
 ### To run the post-processor
